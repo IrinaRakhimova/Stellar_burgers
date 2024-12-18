@@ -1,0 +1,46 @@
+.container {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 108px);
+}
+
+.tabs {
+    display: flex;
+}
+
+.scroll {
+    flex-grow: 1; 
+    overflow-y: auto; 
+}
+
+.ingredientType {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.ingredient {
+    width: 272px;
+    height: 208px;
+    margin-top: 24px;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.ingredient img {
+    width: 100%;
+    margin: 0 16px 4px 16px;
+}
+
+.price  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
