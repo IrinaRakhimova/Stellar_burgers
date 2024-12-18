@@ -11,23 +11,24 @@
 
 .scroll {
     flex-grow: 1; 
-    overflow-y: auto; 
+    overflow-y: auto;
+    overflow-x: hidden; 
 }
 
 .ingredientType {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
+    padding: 0;
+    margin-left: 16px;
+    gap: 24px;
 }
 
 .ingredient {
     width: 272px;
     height: 208px;
-    margin-top: 24px;
-    margin-bottom: 48px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     position: relative;
 }
@@ -41,6 +42,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.name {
+    text-align: center;
+    height: 46px;
 }
 
 
