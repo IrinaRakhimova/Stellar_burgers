@@ -3,3 +3,11 @@
   flex-direction: column;
   height: 100vh; 
 }
+
+.main {
+  display: flex;
+  justify-content: center;
+  height: calc(100% - 148px);
+  gap: 40px;
+  padding-bottom: 40px;
+}

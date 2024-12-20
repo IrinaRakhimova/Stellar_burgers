@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './burger-constructor.module.css';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from '../../utils/data';
-import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import classNames from 'classnames';
 
 interface BurgerConstructorProps {
@@ -11,82 +12,55 @@ interface BurgerConstructorProps {
 }
 
 export const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ burgerData }) => {
-  
-    const [current, setCurrent] = useState('one')
-  
+    const bun = burgerData.find((ingredient) => ingredient.type === 'bun'); 
+    const otherIngredients = burgerData.filter((ingredient) => ingredient.type !== 'bun');
+    const totalPrice = burgerData.reduce((sum, ingredient) => sum + ingredient.price, 0); 
+
     return (
-    <div className={styles.container}>
-        <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
-        <section className={styles.tabs}>
-            <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-                Булки
-            </Tab>
-            <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-                Соусы
-            </Tab>
-            <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-                Начинки
-            </Tab>
-        </section>
-        <div className={`${styles.scroll} custom-scroll`}>
-            <section className={styles.typeSection}>
-                <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
-                <ul className={styles.ingredientType}>
-                    {burgerData.map((ingredient) => ingredient.type === "bun" && (
-                        <li className={classNames(styles.ingredient, 'mb-8')}>
-                            <img src={ingredient.image} alt={ingredient.name} />
-                            <Counter count={1} size="default" extraClass="m-1" />
-
-                            <div className={styles.price}>    
-                                <p className='text text_type_digits-default mt-2 mb-2'>{ingredient.price}</p>
-                                <CurrencyIcon type="primary" />
-                            </div> 
-
-                            <p className={classNames(styles.name, "text text_type_main-default")}>{ingredient.name}</p>
+        <div className={classNames(styles.container, 'mt-25')}>
+            <ul className={styles.scrollContainer}>
+                <li>
+                {bun && (
+                    
+                    <ConstructorElement
+                        type="top"
+                        isLocked={true}
+                        text={`${bun.name} (верх)`}
+                        price={bun.price}
+                        thumbnail={bun.image}
+                    />
+                )}
+                </li>
+                <div className={styles.scroll}>
+                    
+                    {otherIngredients.map((ingredient) => (
+                        <li>
+                            <DragIcon type="primary" />
+                            <ConstructorElement text={ingredient.name}  thumbnail={ingredient.image} price={ingredient.price}/>
                         </li>
-                    ))} 
-                </ul>
-            </section>
-
-            <section className={styles.typeSection}>
-                <h2 className="text text_type_main-medium mt-2 mb-6">Соусы</h2>
-                <ul className={styles.ingredientType}>
-                    {burgerData.map((ingredient) => ingredient.type === "sauce" && (
-                        <li className={classNames(styles.ingredient, 'mb-8')}>
-                            <img src={ingredient.image} alt={ingredient.name} />
-                            <Counter count={1} size="default" extraClass="m-1" />
-
-                            <div className={styles.price}>    
-                                <p className='text text_type_digits-default mt-2 mb-2'>{ingredient.price}</p>
-                                <CurrencyIcon type="primary" />
-                            </div> 
-
-                            <p className={classNames(styles.name, "text text_type_main-default")}>{ingredient.name}</p>
-                        </li>
-                    ))} 
-                </ul>
-            </section>
-
-            <section className={styles.typeSection}>
-                <h2 className="text text_type_main-medium mt-2 mb-6">Начинка</h2>
-                <ul className={classNames(styles.ingredientType, 'mb-8')}>
-                    {burgerData.map((ingredient) => ingredient.type === "main" && (
-                        <li className={styles.ingredient}>
-                            <img src={ingredient.image} alt={ingredient.name} />
-                            <Counter count={1} size="default" extraClass="m-1" />
-
-                            <div className={styles.price}>    
-                                <p className='text text_type_digits-default mt-2 mb-2'>{ingredient.price}</p>
-                                <CurrencyIcon type="primary" />
-                            </div> 
-
-                            <p className={classNames(styles.name, "text text_type_main-default")}>{ingredient.name}</p>
-                        </li>
-                    ))} 
-                </ul>
-            </section>
+                    ))}
+                </div>
+                <li>
+                    {bun && (
+                        <ConstructorElement
+                            type="bottom"
+                            isLocked={true}
+                            text={`${bun.name} (низ)`}
+                            price={bun.price}
+                            thumbnail={bun.image}
+                         />
+                    )}
+                </li>
+            </ul>
+            <div className={styles.totalGroup}>
+                <p className="text text_type_digits-medium">{totalPrice}</p>
+                <div className='mr-10'>
+                    <CurrencyIcon type="primary" />
+                </div>
+                <Button htmlType="button" type="primary" size="large">
+                    Оформить заказ
+                </Button>
+            </div>
         </div>
-
-    </div>
-  );
+    );
 };
