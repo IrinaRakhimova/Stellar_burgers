@@ -48,7 +48,7 @@ export const BurgerConstructor: React.FC = () => {
                     />
                 )}
                 </li>
-                <div className={styles.scroll}>
+                <div className={`${styles.scroll} 'custom-scroll'`}>
                     
                     {otherIngredients.map((ingredient) => (
                         <li key={ingredient._id}  className={styles.constructorElement}>
@@ -72,7 +72,7 @@ export const BurgerConstructor: React.FC = () => {
             <div className={styles.totalGroup}>
                 <p className="text text_type_digits-medium">{totalPrice}</p>
                 <div className='mr-10 ml-2'>
-                    <CurrencyIcon type="primary" />
+                    <CurrencyIcon type="primary" className={styles.icon}/>
                 </div>
                 <Button htmlType="button" type="primary" size="large">
                     Оформить заказ

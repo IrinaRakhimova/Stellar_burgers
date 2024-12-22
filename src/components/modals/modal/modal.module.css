@@ -9,6 +9,16 @@
     max-width: 90%;
   }
 
+.cardTop {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    left: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .close {
-    
+    cursor: pointer; 
 }  

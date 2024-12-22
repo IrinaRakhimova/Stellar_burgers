@@ -6,7 +6,7 @@ interface IngredientDetailsProps {
     onClose: () => void;
     ingredient: {
       name: string;
-      image: string;
+      image_large: string;
       proteins: number;
       fat: number;
       carbohydrates: number;
@@ -17,11 +17,10 @@ interface IngredientDetailsProps {
 
 const IngredientDetails: React.FC<IngredientDetailsProps> = ({  onClose, ingredient }) => {
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} header="Детали ингредиента">
         <div className={styles.container}>
-            <h1 className="text text_type_main-large">Детали ингредиента</h1>
             <div className={styles.info}>
-                <img src={ingredient.image} alt={ingredient.name} className={styles.image}/>
+                <img src={ingredient.image_large} alt={ingredient.name} className={styles.image}/>
                 <p className="text text_type_main-medium mt-4 mb-8">{ingredient.name}</p>
                 <div className={styles.nutrition}>
                     <div className={styles.textContainer}>
