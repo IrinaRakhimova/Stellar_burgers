@@ -6,7 +6,7 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 interface ModalProps {
   onClose: () => void;
-  header: string;
+  header?: string;
 }
 
 const modalRoot = document.getElementById("react-modals");

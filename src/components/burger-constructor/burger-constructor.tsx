@@ -7,10 +7,12 @@ import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import classNames from 'classnames';
 import { fetchIngredients } from '../../utils/data';
+import OrderDetails from '../modals/order-details/order-details';
 
 export const BurgerConstructor: React.FC = () => {
     const [burgerData, setBurgerData] = useState<Ingredient[]>([]);
-        const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [modalIsVisible, setModalIsVisible] = useState(false);
         
         useEffect(() => {
             const getIngredients = async () => {
@@ -31,7 +33,15 @@ export const BurgerConstructor: React.FC = () => {
 
     const bun = burgerData.find((ingredient) => ingredient.type === 'bun'); 
     const otherIngredients = burgerData.filter((ingredient) => ingredient.type !== 'bun');
-    const totalPrice = burgerData.reduce((sum, ingredient) => sum + ingredient.price, 0); 
+    const totalPrice = burgerData.reduce((sum, ingredient) => sum + ingredient.price, 0);
+    
+    const handleOrderClick = () => {
+        setModalIsVisible(true);
+    };
+
+    const handleClose = () => {
+        setModalIsVisible(false);
+    }
 
     return (
         <div className={classNames(styles.container, 'mt-25')}>
@@ -74,9 +84,11 @@ export const BurgerConstructor: React.FC = () => {
                 <div className='mr-10 ml-2'>
                     <CurrencyIcon type="primary" className={styles.icon}/>
                 </div>
-                <Button htmlType="button" type="primary" size="large">
+                <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>
                     Оформить заказ
                 </Button>
+
+                {modalIsVisible && <OrderDetails onClose={handleClose}/>}
             </div>
         </div>
     );
