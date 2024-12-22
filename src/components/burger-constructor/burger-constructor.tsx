@@ -19,7 +19,7 @@ export const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ burgerData
     return (
         <div className={classNames(styles.container, 'mt-25')}>
             <ul className={styles.scrollContainer}>
-                <li>
+                <li className='ml-8 pr-5'>
                 {bun && (
                     
                     <ConstructorElement
@@ -34,13 +34,13 @@ export const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ burgerData
                 <div className={styles.scroll}>
                     
                     {otherIngredients.map((ingredient) => (
-                        <li>
+                        <li className={styles.constructorElement}>
                             <DragIcon type="primary" />
                             <ConstructorElement text={ingredient.name}  thumbnail={ingredient.image} price={ingredient.price}/>
                         </li>
                     ))}
                 </div>
-                <li>
+                <li className='ml-8 pr-5'>
                     {bun && (
                         <ConstructorElement
                             type="bottom"
@@ -54,7 +54,7 @@ export const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ burgerData
             </ul>
             <div className={styles.totalGroup}>
                 <p className="text text_type_digits-medium">{totalPrice}</p>
-                <div className='mr-10'>
+                <div className='mr-10 ml-2'>
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button htmlType="button" type="primary" size="large">

@@ -9,17 +9,20 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    gap: 16px;
 }
 
 .scroll {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1; 
     overflow-y: auto;
-    overflow-x: hidden;
-    
+    overflow-x: hidden; 
+    gap: 16px;
 }
 
 ul {
-   list-style: none; 
+   list-style: none;
 }
 
 .totalGroup {
@@ -31,3 +34,9 @@ ul {
     margin-bottom: 92px;
 }
 
+.constructorElement {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
