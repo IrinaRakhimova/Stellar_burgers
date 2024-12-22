@@ -1,6 +1,6 @@
 .container {
+    composes: pt-20 pr-10 pb-15 pl-10 from global;
     background-color: rgba(28, 28, 33, 1);
-    padding: 80px 40px 60px 40px;
     border-radius: 40px;
 }
 
@@ -9,6 +9,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.name {
+    composes: text text_type_main-medium mt-4 mb-8 from global;
 }
 
 .image {
@@ -22,6 +26,14 @@
     align-items: center;
     gap: 20px;
     color: rgba(133, 133, 173, 1);
+}
+
+.nutrient {
+    composes: text text_type_main-default from global;
+}
+
+.nutrientValue {
+    composes: text text_type_digits-default from global;
 }
 
 .textContainer {

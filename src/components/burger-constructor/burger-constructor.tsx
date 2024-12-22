@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './burger-constructor.module.css';
 import { Ingredient } from '../../utils/data';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import classNames from 'classnames';
 import { fetchIngredients } from '../../utils/data';
 import OrderDetails from '../modals/order-details/order-details';
 
@@ -14,22 +13,21 @@ export const BurgerConstructor: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [modalIsVisible, setModalIsVisible] = useState(false);
         
-        useEffect(() => {
-            const getIngredients = async () => {
-              try {
+    useEffect(() => {
+        const getIngredients = async () => {
+            try {
                 const ingredients = await fetchIngredients();
                 setBurgerData(ingredients);
-              } catch (err) {
-                setError(err instanceof Error ? err.message : 'Unknown error');
-              }
-            };
-        
-            getIngredients();
-          }, []);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Error');
+            }
+        };       
+        getIngredients();
+    }, []);
 
-          if (error) {
-            return <p>Error: {error}</p>;
-          }
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
 
     const bun = burgerData.find((ingredient) => ingredient.type === 'bun'); 
     const otherIngredients = burgerData.filter((ingredient) => ingredient.type !== 'bun');
@@ -39,27 +37,25 @@ export const BurgerConstructor: React.FC = () => {
         setModalIsVisible(true);
     };
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setModalIsVisible(false);
-    }
+    }, []);
 
     return (
-        <div className={classNames(styles.container, 'mt-25')}>
+        <div className={styles.container}>
             <ul className={styles.scrollContainer}>
-                <li className='ml-8 pr-5'>
-                {bun && (
-                    
-                    <ConstructorElement
-                        type="top"
-                        isLocked={true}
-                        text={`${bun.name} (верх)`}
-                        price={bun.price}
-                        thumbnail={bun.image}
-                    />
-                )}
+                <li className={styles.bunItem}>
+                    {bun && (                    
+                        <ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text={`${bun.name} (верх)`}
+                            price={bun.price}
+                            thumbnail={bun.image}
+                        />
+                    )}
                 </li>
-                <div className={`${styles.scroll} 'custom-scroll'`}>
-                    
+                <div className={styles.scroll}>                    
                     {otherIngredients.map((ingredient) => (
                         <li key={ingredient._id}  className={styles.constructorElement}>
                             <DragIcon type="primary" />
@@ -67,7 +63,7 @@ export const BurgerConstructor: React.FC = () => {
                         </li>
                     ))}
                 </div>
-                <li className='ml-8 pr-5'>
+                <li className={styles.bunItem}>
                     {bun && (
                         <ConstructorElement
                             type="bottom"
@@ -80,14 +76,13 @@ export const BurgerConstructor: React.FC = () => {
                 </li>
             </ul>
             <div className={styles.totalGroup}>
-                <p className="text text_type_digits-medium">{totalPrice}</p>
-                <div className='mr-10 ml-2'>
+                <p className={styles.totalPrice}>{totalPrice}</p>
+                <div className={styles.iconContainer}>
                     <CurrencyIcon type="primary" className={styles.icon}/>
                 </div>
                 <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>
                     Оформить заказ
                 </Button>
-
                 {modalIsVisible && <OrderDetails onClose={handleClose}/>}
             </div>
         </div>

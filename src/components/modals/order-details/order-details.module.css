@@ -1,11 +1,11 @@
 .container {
+   composes: pt-30 pr-10 pb-30 pl-10 from global; 
    background-color: rgba(28, 28, 33, 1);
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-items: center;
    border-radius: 40px; 
-   padding: 120px 40px 120px 40px;
 }
 
 .header {

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './order-details.module.css'
 import Modal from "../modal/modal";
-import OrderReady from "./order-ready";
+import OrderReady from "../../../images/order-ready";
 
 interface OrderDetailsProps {
     onClose: () => void;

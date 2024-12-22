@@ -1,59 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './app-header.module.css';
-import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
-import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import classNames from 'classnames';
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-interface AppHeaderProps {
-    activeItem?: 'constructor' | 'orders' | 'profile';
-}
 
-export const AppHeader: React.FC<AppHeaderProps> = ({ activeItem = 'constructor' }) => {
-  return (
+export const AppHeader: React.FC = () => {
+    const [active, setActive] = useState<'constructor' | 'orders' | 'profile'>('constructor');
+
+    const handleHeaderClick = (
+        e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+        item: 'constructor' | 'orders' | 'profile'
+    ) => {
+        e.preventDefault(); 
+        setActive(item); 
+    };
+  
+    return (
     <header className={styles.header}>
         <nav className={styles.navigation}>
             <ul className={styles.list}>
-                <li className={styles.gap}>
+                <li className={styles.leftSideList}>
                     <div className={styles.listItem}>
-                        <BurgerIcon type={activeItem === 'constructor' ? 'primary' : 'secondary'} />
+                        <BurgerIcon type={active === 'constructor' ? 'primary' : 'secondary'} />
                         <a 
-                            href="/constructor" 
-                            className={classNames(
-                                "text text_type_main-default ml-2",
-                                { [styles.active]: activeItem === 'constructor' }
-                            )}
+                            href="/" 
+                            className={`${styles.link} ${active === 'constructor' ? styles.active : ''}`}
+                            onClick={(e) => handleHeaderClick(e, 'constructor')}
                         >
                             Конструктор
                         </a>
                     </div>
                     <div className={styles.listItem}>
-                        <ListIcon type={activeItem === 'orders' ? 'primary' : 'secondary'} />
+                        <ListIcon type={active === 'orders' ? 'primary' : 'secondary'} />
                         <a 
-                            href="/orders" 
-                            className={classNames(
-                                'text text_type_main-default ml-2',
-                                { [styles.active]: activeItem === 'orders' }
-                            )}
+                            href="/" 
+                            className={`${styles.link} ${active === 'orders' ? styles.active : ''}`}
+                            onClick={(e) => handleHeaderClick(e, 'orders')}
                         >
                             Лента заказов
                         </a>
                     </div>    
                 </li>
-                <li className={styles.logo}>
+                <li>
                     <a href="/">
                         <Logo />
                     </a>
                 </li>
                 <li className={styles.listItem}>
-                    <ProfileIcon type={activeItem === 'profile' ? 'primary' : 'secondary'} />
+                    <ProfileIcon type={active === 'profile' ? 'primary' : 'secondary'} />
                     <a 
-                        href="/profile" 
-                        className={classNames(
-                            'text text_type_main-default ml-2',
-                            { [styles.active]: activeItem === 'profile' }
-                        )}
+                        href="/" 
+                        className={`${styles.link} ${active === 'profile' ? styles.active : ''}`}
+                        onClick={(e) => handleHeaderClick(e, 'profile')}
                     >
                         Личный кабинет
                     </a>

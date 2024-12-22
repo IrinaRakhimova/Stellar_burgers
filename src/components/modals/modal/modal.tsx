@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useEffect } from "react";
 import ReactDOM from "react-dom";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import styles from './modal.module.css';
@@ -17,11 +17,23 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ children, header, onClose })
     return null; 
   }
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose(); 
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
   return ReactDOM.createPortal(
     <>
       <div className={styles.modal}>
         <div className={styles.cardTop}>
-          <h1 className="text text_type_main-large">{header}</h1>
+          <h1 className={styles.header}>{header}</h1>
           <div className={styles.close} onClick={onClose}>
             <CloseIcon type="primary" />
           </div>

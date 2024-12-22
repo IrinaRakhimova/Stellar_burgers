@@ -5,8 +5,8 @@
 }
 
 .main {
+  composes: pb-10 from global;
   display: flex;
   justify-content: center;
   height: calc(100% - 148px);
-  padding-bottom: 40px;
 }

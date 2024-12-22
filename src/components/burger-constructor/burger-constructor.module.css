@@ -1,4 +1,5 @@
 .container {
+    composes: mt-25 from global;
     width: 600px;
     display: flex;
     flex-direction: column;
@@ -12,7 +13,12 @@
     gap: 16px;
 }
 
+.bunItem {
+    composes: ml-8 pr-5 from global;
+}
+
 .scroll {
+    composes: custom-scroll from global;
     display: flex;
     flex-direction: column;
     flex-grow: 1; 
@@ -26,12 +32,18 @@ ul {
 }
 
 .totalGroup {
+    composes: mr-4 mt-10 mb-23 from global;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-right: 16px;
-    margin-top: 40px;
-    margin-bottom: 92px;
+}
+
+.totalPrice {
+    composes: text text_type_digits-medium from global;
+}
+
+.iconContainer {
+    composes: mr-10 ml-2 from global;
 }
 
 .icon {
