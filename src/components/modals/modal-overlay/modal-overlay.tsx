@@ -5,9 +5,9 @@ interface ModalProps {
   onClose: () => void;
 }
 
-const ModalOverlay: React.FC<ModalProps> = () => {
+const ModalOverlay: React.FC<ModalProps> = ({ onClose }) => {
   return (
-    <span className={styles.overlay}></span>
+    <div className={styles.overlay} onClick={onClose}></div>
   );
 };
 
