@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './burger-constructor.module.css';
 import { Ingredient } from '../../utils/data';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,12 +6,29 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import classNames from 'classnames';
+import { fetchIngredients } from '../../utils/data';
 
-interface BurgerConstructorProps {
-    burgerData: Ingredient[];
-}
+export const BurgerConstructor: React.FC = () => {
+    const [burgerData, setBurgerData] = useState<Ingredient[]>([]);
+        const [error, setError] = useState<string | null>(null);
+        
+        useEffect(() => {
+            const getIngredients = async () => {
+              try {
+                const ingredients = await fetchIngredients();
+                setBurgerData(ingredients);
+              } catch (err) {
+                setError(err instanceof Error ? err.message : 'Unknown error');
+              }
+            };
+        
+            getIngredients();
+          }, []);
 
-export const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ burgerData }) => {
+          if (error) {
+            return <p>Error: {error}</p>;
+          }
+
     const bun = burgerData.find((ingredient) => ingredient.type === 'bun'); 
     const otherIngredients = burgerData.filter((ingredient) => ingredient.type !== 'bun');
     const totalPrice = burgerData.reduce((sum, ingredient) => sum + ingredient.price, 0); 
@@ -34,7 +51,7 @@ export const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ burgerData
                 <div className={styles.scroll}>
                     
                     {otherIngredients.map((ingredient) => (
-                        <li className={styles.constructorElement}>
+                        <li key={ingredient._id}  className={styles.constructorElement}>
                             <DragIcon type="primary" />
                             <ConstructorElement text={ingredient.name}  thumbnail={ingredient.image} price={ingredient.price}/>
                         </li>
