@@ -1,0 +1,22 @@
+.bunHeader {
+    composes: text text_type_main-medium mt-10 mb-6 from global;
+}
+
+.ingredientType {
+    composes: mb-8 ml-4 from global;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 0;
+    gap: 24px;
+}
+
+.ingredient {
+    composes: mb-8 from global;
+    width: 272px;
+    height: 208px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}

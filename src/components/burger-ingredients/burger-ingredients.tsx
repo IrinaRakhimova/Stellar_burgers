@@ -1,22 +1,37 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Ingredient } from '../../utils/data';
-import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { fetchIngredients } from '../../utils/data';
+import { Ingredient } from '../../utils/api';
 import IngredientDetails from '../modals/ingredient-details/ingredient-details';
+import { IngredientsCategory } from './ingredients-category/ingredients-category';
+import { fetchIngredients } from '../../utils/api';
 
 
 export const BurgerIngredients: React.FC = () => {
-  
-    const [current, setCurrent] = useState('bun');
+    
     const [burgerData, setBurgerData] = useState<Ingredient[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [current, setCurrent] = useState('bun');
     const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
     const bunsRef = useRef<HTMLDivElement>(null);
     const saucesRef = useRef<HTMLDivElement>(null);
     const mainsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+            const getIngredients = async () => {
+                try {
+                    const ingredients = await fetchIngredients();
+                    setBurgerData(ingredients);
+                } catch (err) {
+                    setError(err instanceof Error ? err.message : 'Unknown error');
+                }
+            };    
+            getIngredients();
+        }, []);
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }    
 
     const handleTabClick = (tab: string) => {
         setCurrent(tab);
@@ -32,30 +47,10 @@ export const BurgerIngredients: React.FC = () => {
                 break;
         }
     };
-
-    useEffect(() => {
-        const getIngredients = async () => {
-            try {
-                const ingredients = await fetchIngredients();
-                setBurgerData(ingredients);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Unknown error');
-            }
-        };    
-        getIngredients();
-    }, []);
-
-    const handleIngredientClick = (ingredient: Ingredient) => {
-        setSelectedIngredient(ingredient);
-    };
     
-    const closeModal = useCallback(() => {
+    const closeModal = () => {
         setSelectedIngredient(null);
-    }, []);
-    
-    if (error) {
-        return <p>Error: {error}</p>;
-    }
+    };
 
     return (
         <div className={styles.container}>
@@ -73,60 +68,15 @@ export const BurgerIngredients: React.FC = () => {
             </section>
             <div className={styles.scroll}>
                 <section ref={bunsRef} className={styles.typeSection}>
-                    <h2 className={styles.bunHeader} id='buns'>Булки</h2>
-                    <ul className={styles.ingredientType}>
-                        {burgerData.map((ingredient) => ingredient.type === "bun" && (
-                            <li key={ingredient._id} className={styles.ingredient} onClick={() => handleIngredientClick(ingredient)}>
-                                <img src={ingredient.image} alt={ingredient.name} className={styles.image}/>
-                                <Counter count={1} size="default" extraClass="m-1" />
-
-                                <div className={styles.price}>    
-                                    <p className={styles.priceValue}>{ingredient.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div> 
-
-                                <p className={styles.name}>{ingredient.name}</p>
-                            </li>
-                        ))} 
-                    </ul>
+                    <IngredientsCategory categoryName = "Булки" categoryType="bun" setSelectedIngredient={setSelectedIngredient} burgerData={burgerData}/>
                 </section>
 
                 <section ref={saucesRef} className={styles.typeSection}>
-                    <h2 className={styles.sauceHeader} id='sauce'>Соусы</h2>
-                    <ul className={styles.ingredientType}>
-                        {burgerData.map((ingredient) => ingredient.type === "sauce" && (
-                            <li key={ingredient._id} className={styles.ingredient} onClick={() => handleIngredientClick(ingredient)}>
-                                <img src={ingredient.image} alt={ingredient.name} />
-                                <Counter count={1} size="default" extraClass="m-1" />
-
-                                <div className={styles.price}>    
-                                    <p className={styles.priceValue}>{ingredient.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div> 
-
-                                <p className={styles.name}>{ingredient.name}</p>
-                            </li>
-                        ))} 
-                    </ul>
+                    <IngredientsCategory categoryName = "Соусы" categoryType="sauce" setSelectedIngredient={setSelectedIngredient} burgerData={burgerData}/>
                 </section>
 
                 <section ref={mainsRef} className={styles.typeSection}>
-                    <h2 className={styles.mainHeader} id='main'>Начинка</h2>
-                    <ul className={styles.ingredientType}>
-                        {burgerData.map((ingredient) => ingredient.type === "main" && (
-                            <li key={ingredient._id} className={styles.ingredient} onClick={() => handleIngredientClick(ingredient)}>
-                                <img src={ingredient.image} alt={ingredient.name} />
-                                <Counter count={1} size="default" extraClass="m-1" />
-
-                                <div className={styles.price}>    
-                                    <p className={styles.priceValue}>{ingredient.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div> 
-
-                                <p className={styles.name}>{ingredient.name}</p>
-                            </li>
-                        ))} 
-                    </ul>
+                    <IngredientsCategory categoryName = "Начинка" categoryType="main" setSelectedIngredient={setSelectedIngredient} burgerData={burgerData}/>
                 </section>
 
                 {selectedIngredient && (<IngredientDetails ingredient={selectedIngredient} onClose={closeModal} />)}

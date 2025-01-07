@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './burger-constructor.module.css';
-import { Ingredient } from '../../utils/data';
+import { Ingredient } from '../../utils/api';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { fetchIngredients } from '../../utils/data';
+import { fetchIngredients } from '../../utils/api';
 import OrderDetails from '../modals/order-details/order-details';
 
 export const BurgerConstructor: React.FC = () => {
@@ -29,17 +29,17 @@ export const BurgerConstructor: React.FC = () => {
         return <p>Error: {error}</p>;
     }
 
-    const bun = burgerData.find((ingredient) => ingredient.type === 'bun'); 
-    const otherIngredients = burgerData.filter((ingredient) => ingredient.type !== 'bun');
-    const totalPrice = burgerData.reduce((sum, ingredient) => sum + ingredient.price, 0);
+    const bun = useMemo(() => burgerData.find((ingredient) => ingredient.type === 'bun'), [burgerData]); 
+    const otherIngredients = useMemo(() => burgerData.filter((ingredient) => ingredient.type !== 'bun'), [burgerData]);
+    const totalPrice = useMemo(() => burgerData.reduce((sum, ingredient) => sum + ingredient.price, 0), [burgerData]);
     
     const handleOrderClick = () => {
         setModalIsVisible(true);
     };
 
-    const handleClose = useCallback(() => {
+    const handleClose = () => {
         setModalIsVisible(false);
-    }, []);
+    };
 
     return (
         <div className={styles.container}>
