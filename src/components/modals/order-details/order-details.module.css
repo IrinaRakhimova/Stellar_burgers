@@ -1,0 +1,27 @@
+.container {
+   composes: pt-30 pr-10 pb-30 pl-10 from global; 
+   background-color: rgba(28, 28, 33, 1);
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   border-radius: 40px; 
+}
+
+.header {
+    composes: text text_type_digits-large mb-8 from global;    
+
+}
+
+.orderText {
+    composes: text text_type_main-medium mb-15 from global;
+}
+
+.statusText {
+    composes: text text_type_main-default mt-15 mb-2 from global;
+}
+
+.locationText {
+    composes: text text_type_main-default from global;
+    color: rgba(133, 133, 173, 1);
+}

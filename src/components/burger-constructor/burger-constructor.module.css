@@ -1,0 +1,58 @@
+.container {
+    composes: mt-25 from global;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 300px);
+}
+
+.scrollContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 16px;
+}
+
+.bunItem {
+    composes: ml-8 pr-5 from global;
+}
+
+.scroll {
+    composes: custom-scroll from global;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+    overflow-y: auto;
+    overflow-x: hidden; 
+    gap: 16px;
+}
+
+ul {
+   list-style: none;
+}
+
+.totalGroup {
+    composes: mr-4 mt-10 mb-23 from global;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.totalPrice {
+    composes: text text_type_digits-medium from global;
+}
+
+.iconContainer {
+    composes: mr-10 ml-2 from global;
+}
+
+.icon {
+    transform: scale(1.375);
+}
+
+.constructorElement {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}

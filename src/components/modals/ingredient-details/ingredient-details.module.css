@@ -1,0 +1,41 @@
+.container {
+    composes: pt-20 pr-10 pb-15 pl-10 from global;
+    background-color: rgba(28, 28, 33, 1);
+    border-radius: 40px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.name {
+    composes: text text_type_main-medium mt-4 mb-8 from global;
+}
+
+.image {
+    height: 240px;
+    width: 480px;
+}
+
+.nutrition {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: rgba(133, 133, 173, 1);
+}
+
+.nutrient {
+    composes: text text_type_main-default from global;
+}
+
+.nutrientValue {
+    composes: text text_type_digits-default from global;
+}
+
+.textContainer {
+    text-align: center;
+}

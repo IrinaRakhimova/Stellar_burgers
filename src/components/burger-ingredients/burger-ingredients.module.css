@@ -1,0 +1,30 @@
+.container {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    composes: text text_type_main-large mt-10 mb-5 from global;
+}
+
+.tabs {
+    display: flex;
+}
+
+.scroll {
+    composes: custom-scroll from global;
+    flex-grow: 1; 
+    overflow-y: auto;
+    overflow-x: hidden; 
+}
+
+.sauceHeader {
+    composes: text text_type_main-medium mt-10 mb-6 from global;
+}
+
+.mainHeader {
+    composes: text text_type_main-medium mt-2 mb-6 from global;
+}
+
+
