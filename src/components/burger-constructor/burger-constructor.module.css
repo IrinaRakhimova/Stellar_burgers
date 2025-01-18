@@ -3,13 +3,13 @@
     width: 600px;
     display: flex;
     flex-direction: column;
-    height: calc(100% - 300px);
+    height: auto;
 }
 
 .scrollContainer {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    max-height: calc(100% - 300px);
     gap: 16px;
 }
 
@@ -55,4 +55,47 @@ ul {
     justify-content: center;
     align-items: center;
     gap: 8px;
+    padding-right: 20px;
+}
+
+.bunHolderTop {
+    height: 74px;
+    width: 502px;
+    background-color: #2f2f37;
+    border: 3px solid #2f2f37;
+    border-radius: 88px 88px 40px 40px ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bunHolderBottom {
+    height: 74px;
+    width: 502px;
+    background-color: #2f2f37;
+    border: 3px solid #2f2f37;
+    border-radius: 40px 40px 88px 88px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredientHolder {
+    height: 74px;
+    width: 510px;
+    background-color: #2f2f37;
+    border: 3px solid #2f2f37;
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 26px;
+}
+
+.holderText {
+    composes: text text_type_main-default from global;
+}
+
+.active {
+    border: 3px solid #6038e1;
 }

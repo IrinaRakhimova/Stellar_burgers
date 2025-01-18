@@ -1,5 +1,5 @@
 .container {
-    width: 600px;
+    width: 620px;
     display: flex;
     flex-direction: column;
 }
@@ -17,6 +17,7 @@
     flex-grow: 1; 
     overflow-y: auto;
     overflow-x: hidden; 
+
 }
 
 .sauceHeader {
