@@ -1,21 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types"; 
 import styles from './ingredient-details.module.css';
-import Modal from "../modal/modal";
-import { SET_SELECTED_INGREDIENT } from "../../../services/actions/modalIngredient";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
 
 const IngredientDetails = () => {
-    const dispatch = useDispatch();
-    const closeModal = () => {
-        dispatch({ type: SET_SELECTED_INGREDIENT, ingredient: null });
-    };
-
-    const { selectedIngredient } = useSelector(state => state.modal);
+const { selectedIngredient } = useSelector(state => state.modal);
 
   return (
-    <Modal onClose={closeModal} header="Детали ингредиента">
         <div className={styles.container}>
             <div className={styles.info}>
                 <img src={selectedIngredient.image_large} alt={selectedIngredient.name} className={styles.image} />
@@ -40,19 +31,7 @@ const IngredientDetails = () => {
                 </div>
             </div>    
         </div>
-    </Modal>
   );
-};
-
-IngredientDetails.propTypes = {
-    selectedIngredient: PropTypes.shape({
-        image_large: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        calories: PropTypes.number.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-    }),
 };
 
 export default IngredientDetails;

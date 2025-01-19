@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../modals/order-details/order-details';
@@ -47,9 +46,9 @@ export const BurgerConstructor = () => {
         ...ingredients.map((i) => i._id), 
         ...(bun ? [bun._id] : []),
     ];
-    dispatch(createOrder(ingredientIds)) // Create the order
+    dispatch(createOrder(ingredientIds)) 
     .then(() => {
-      dispatch(resetIngredients()); // Reset ingredients after successful order
+      dispatch(resetIngredients()); 
     })
     .catch((error) => {
       console.error("Order creation failed", error);
@@ -82,14 +81,14 @@ export const BurgerConstructor = () => {
         </li>
 
         <div className={styles.scroll}>
-          {ingredients.length != 0 ? (ingredients.map((ingredient, index) => {
+          {ingredients.length != 0 ? (ingredients.map((ingredient) => {
             const realIndex = ingredients.findIndex(
               (item) => item.instanceId === ingredient.instanceId
             );
 
             return (
               <DraggableElement
-                key={`${ingredient._id}-${index}`}
+              key={ingredient.instanceId}
                 ingredient={ingredient}
                 index={realIndex}
                 onDelete={onDelete}
@@ -132,9 +131,4 @@ export const BurgerConstructor = () => {
       </div>
     </div>
   );
-};
-
-BurgerConstructor.propTypes = {
-  addedIngredients: PropTypes.object, 
-  isModalVisible: PropTypes.bool,
 };

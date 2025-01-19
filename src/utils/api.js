@@ -1,22 +1,6 @@
 const URL = 'https://norma.nomoreparties.space/api';
 
- export const fetchIngredients = async () => {
-   try {
-     const response = await fetch(URL + '/ingredients');
-     
-     if (!response.ok) {
-       throw new Error(`HTTP error! status: ${response.status}`);
-     }
-     
-     const data = await response.json();
-     return data.data; 
-   } catch (error) {
-     console.error("Error fetching ingredients:", error);
-     throw error; 
-   }
- };
-
- const request = async (endpoint, options = {}) => {
+const request = async (endpoint, options = {}) => {
   const url = `${URL}${endpoint}`;
 
   const defaultOptions = {
@@ -38,9 +22,25 @@ const URL = 'https://norma.nomoreparties.space/api';
   }
 };
 
-export const createOrderRequest = (ingredientIds) => {
-  return request('/orders', {
+export const fetchIngredients = async () => {
+  try {
+    const data = await request('/ingredients'); 
+    return data.data; 
+  } catch (error) {
+    console.error("Error fetching ingredients:", error);
+    throw error; 
+  }
+};
+
+export const createOrderRequest = async (ingredientIds) => {
+  try {
+    const response = await request('/orders', {
       method: 'POST',
       body: JSON.stringify({ ingredients: ingredientIds }),
-  });
+    });
+    return response; 
+  } catch (error) {
+    console.error("Error creating order:", error);
+    throw error; 
+  }
 };

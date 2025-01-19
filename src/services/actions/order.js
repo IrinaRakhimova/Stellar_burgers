@@ -9,19 +9,24 @@ export const HIDE_MODAL = 'HIDE_MODAL';
 
 export const createOrder = (ingredientIds) => async (dispatch) => {
     dispatch({ type: CREATE_ORDER_REQUEST });
-
+  
     try {
-        const data = await createOrderRequest(ingredientIds);
+      const data = await createOrderRequest(ingredientIds);
+  
+      if (data && data.order && data.order.number && data.name) {
         dispatch({
-            type: CREATE_ORDER_SUCCESS,
-            orderNumber: data.order.number,
-            orderName: data.name,
+          type: CREATE_ORDER_SUCCESS,
+          orderNumber: data.order.number, 
+          orderName: data.name, 
         });
+      } else {
+        throw new Error("Invalid response format"); 
+      }
     } catch (error) {
-        dispatch({ type: CREATE_ORDER_FAILED });
-        console.error('Error creating order:', error);
+      console.error("Error creating order:", error); 
+      dispatch({ type: CREATE_ORDER_FAILED }); 
     }
-};
+  };
 
 export const showModal = () => ({
     type: SHOW_MODAL,

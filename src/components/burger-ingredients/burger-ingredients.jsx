@@ -2,11 +2,13 @@ import React, { useRef, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientDetails from '../modals/ingredient-details/ingredient-details';
+import IngredientDetails from './ingredient-details/ingredient-details';
+import Modal from '../modals/modal/modal';
 import { IngredientsCategory } from './ingredients-category/ingredients-category';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
 import { SET_CURRENT_SECTION } from '../../services/actions/ingredients';
+import { SET_SELECTED_INGREDIENT } from '../../services/actions/modalIngredient';
 
 export const BurgerIngredients = () => {
   const bunsRef = useRef(null);
@@ -18,6 +20,10 @@ export const BurgerIngredients = () => {
   const { ingredients, ingredientsRequest, ingredientsFailed, currentSection } =
     useSelector((state) => state.ingredients);
   const { selectedIngredient } = useSelector((state) => state.modal);
+
+  const closeModal = () => {
+          dispatch({ type: SET_SELECTED_INGREDIENT, ingredient: null });
+  };
 
   const groupedIngredients = useMemo(() => {
     if (ingredients.length === 0) {
@@ -123,16 +129,12 @@ export const BurgerIngredients = () => {
         onScroll={handleScroll}
       >
         {content}
-        {selectedIngredient && <IngredientDetails />}
+        {selectedIngredient && (
+          <Modal title={"Детали ингредиента"} onClose={closeModal}>
+            <IngredientDetails  />
+          </Modal>
+        )}
       </div>
     </div>
   );
-};
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.array,
-  ingredientsRequest: PropTypes.bool,
-  ingredientsFailed: PropTypes.bool,
-  selectedIngredient: PropTypes.object,
-  currentSection: PropTypes.string,
 };
