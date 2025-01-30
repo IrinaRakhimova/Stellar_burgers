@@ -1,24 +1,20 @@
-import { FC, PropsWithChildren, useEffect } from "react";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types"; 
 import ReactDOM from "react-dom";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import styles from './modal.module.css';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-interface ModalProps {
-  onClose: () => void;
-  header?: string;
-}
-
 const modalRoot = document.getElementById("react-modals");
 
-const Modal: FC<PropsWithChildren<ModalProps>> = ({ children, header, onClose }) => {
+const Modal = ({ children, header, onClose }) => {
   if (!modalRoot) {
     console.error("Modal root not found in the DOM");
     return null; 
   }
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         onClose(); 
       }
@@ -44,6 +40,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ children, header, onClose })
     </>,
     modalRoot
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  header: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;
