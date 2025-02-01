@@ -8,8 +8,8 @@ import {
 } from '../actions/burgerConstructor';
 
 const initialState = {
-    bun: null, // Initially no bun
-    ingredients: [], // Ensure this is an empty array by default
+    bun: null,
+    ingredients: [], 
   };
 
   export const constructorReducer = (state = initialState, action) => {
@@ -21,19 +21,19 @@ const initialState = {
         if (action.ingredient.type === 'bun') {
           return {
             ...state,
-            bun: action.ingredient, // Set the bun ingredient
+            bun: action.ingredient, 
           };
         }
         return {
           ...state,
-          ingredients: [...state.ingredients, action.ingredient], // Add other ingredients
+          ingredients: [...state.ingredients, action.ingredient], 
         };
   
       case DELETE_INGREDIENT:
         if (state.bun?.instanceId === action.id) {
           return {
             ...state,
-            bun: null, // Remove the bun when deleted
+            bun: null, 
           };
         }
         return {

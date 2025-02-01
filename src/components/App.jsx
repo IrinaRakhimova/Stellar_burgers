@@ -1,22 +1,21 @@
-import './App.css';
-import { AppHeader } from './app-header/app-header.jsx';
-import { BurgerConstructor } from './burger-constructor/burger-constructor.jsx';
-import { BurgerIngredients } from './burger-ingredients/burger-ingredients.jsx';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
+import "./App.css";
+import { AppHeader } from "./app-header/app-header.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Main from "../pages/main/main.jsx";
+import Login from "../pages/login/login.jsx";
 
 function App() {
   return (
-    <div className="app-container">
-      <AppHeader />
-      <div className='main'>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor /> 
-        </DndProvider>         
+    <BrowserRouter>
+      <div className="app-container">
+        <AppHeader />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </div>
-    </div>
-  )
+    </BrowserRouter>
+  );
 }
 
 export default App;
