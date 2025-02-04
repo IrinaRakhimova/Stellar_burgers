@@ -18,3 +18,8 @@
 .button {
     composes: mb-20 from global;
 }
+
+.link {
+   color: rgba(76, 76, 255, 1);
+   text-decoration: none; 
+}
