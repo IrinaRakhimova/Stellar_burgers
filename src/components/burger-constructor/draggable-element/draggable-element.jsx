@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './draggable-element.module.css';
 import { useDispatch } from 'react-redux';
-import { REORDER_INGREDIENTS } from '../../../services/actions/burgerConstructor';
+import { reorderIngredients } from '../../../services/slices/burgerConstructorSlice'; 
 
 export const DraggableElement = React.memo(({ ingredient, index, onDelete }) => {
   const dispatch = useDispatch();
@@ -13,11 +13,7 @@ export const DraggableElement = React.memo(({ ingredient, index, onDelete }) => 
 
   const moveRow = (dragIndex, hoverIndex) => {
     if (dragIndex !== hoverIndex) {
-      dispatch({
-        type: REORDER_INGREDIENTS,
-        fromIndex: dragIndex,
-        toIndex: hoverIndex,
-      });
+      dispatch(reorderIngredients({ fromIndex: dragIndex, toIndex: hoverIndex })); 
     }
   };
 

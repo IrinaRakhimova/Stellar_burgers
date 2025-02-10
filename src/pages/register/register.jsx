@@ -1,28 +1,31 @@
 import styles from "./register.module.css";
-import { useState } from "react";
-import {
-  EmailInput,
-  PasswordInput,
-  Button,
-  Input
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { EmailInput, PasswordInput, Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { setName, setEmail, setPassword, registerUser } from '../../services/slices/userDataSlice'; 
 
 function Register() {
-    const [nameValue, setNameValue] = useState("");
-    const onNameChange = (e) => {
-      setNameValue(e.target.value);
-    };
+  const dispatch = useDispatch();
 
-  const [emailValue, setEmailValue] = useState("");
+  const { name, email, password,  error } = useSelector(state => state.userData);
+
+  const onNameChange = (e) => {
+    dispatch(setName(e.target.value));
+  };
+
   const onEmailChange = (e) => {
-    setEmailValue(e.target.value);
+    dispatch(setEmail(e.target.value));
   };
 
-  const [passwordValue, setPasswordValue] = useState("");
   const onPasswordChange = (e) => {
-    setPasswordValue(e.target.value);
+    dispatch(setPassword(e.target.value));
   };
+
+  const handleRegister = () => {
+    const userData = { name, email, password };
+    dispatch(registerUser(userData));
+  };
+
   return (
     <div className={styles.container}>
       <p className={styles.header}>Регистрация</p>
@@ -31,12 +34,12 @@ function Register() {
         name={'name'}
         placeholder={'Имя'}
         onChange={onNameChange}
-        value={nameValue}
+        value={name}
         extraClass="mb-6"
       /> 
       <EmailInput
         onChange={onEmailChange}
-        value={emailValue}
+        value={email}
         name={"email"}
         placeholder="E-mail"
         isIcon={false}
@@ -44,17 +47,23 @@ function Register() {
       />
       <PasswordInput
         onChange={onPasswordChange}
-        value={passwordValue}
+        value={password}
         name={"password"}
         extraClass="mb-6"
       />
       <div className={styles.button}>
-        <Button htmlType="button" type="primary" size="large">
-        Зарегистрироваться
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={handleRegister} 
+        >
+          Зарегистрироваться
         </Button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
       <p className={styles.text}>
-      Уже зарегистрированы? <Link to='/login' className={styles.link}>Войти</Link>
+        Уже зарегистрированы? <Link to='/login' className={styles.link}>Войти</Link>
       </p>
     </div>
   );

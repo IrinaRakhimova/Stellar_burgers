@@ -1,27 +1,44 @@
 import styles from "./reset-password.module.css";
-import { useState } from "react";
 import {
   Input,
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { setPassword, setToken, resetSuccess, resetPassword } from "../../services/slices/userDataSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function ResetPassword() {
-  const [passwordValue, setPasswordValue] = useState("");
+  const { success, password, error, token } = useSelector(state => state.userData);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const onPasswordChange = (e) => {
-    setPasswordValue(e.target.value);
-  };
-  const [codeValue, setCodeValue] = useState("");
-  const onCodeChange = (e) => {
-    setPasswordValue(e.target.value);
-  };
+      dispatch(setPassword(e.target.value));
+    };
+
+    const onTokenChange = (e) => {
+      dispatch(setToken(e.target.value));
+    };
+
+  const handleReset = () => {
+      dispatch(resetPassword({ password, token }));
+    };
+
+    useEffect(() => {
+      if (success) {
+        navigate("/");
+        dispatch(resetSuccess()); 
+      }
+    }, [success, navigate, dispatch]);
+
   return (
     <div className={styles.container}>
       <p className={styles.header}>Восстановление пароля</p>
       <PasswordInput
         onChange={onPasswordChange}
-        value={passwordValue}
+        value={password}
         name={"password"}
         extraClass="mb-6"
         placeholder="Введите новый пароль"
@@ -30,15 +47,16 @@ function ResetPassword() {
         type={"text"}
         name={"code"}
         placeholder={"Введите код из письма"}
-        onChange={onCodeChange}
-        value={codeValue}
+        onChange={onTokenChange}
+        value={token}
         extraClass="mb-6"
       />
       <div className={styles.button}>
-        <Button htmlType="button" type="primary" size="large">
+        <Button htmlType="button" type="primary" size="large" onClick={handleReset}>
           Сохранить
         </Button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
       <p className={styles.text}>
         Вспомнили пароль? <Link to='/login' className={styles.link}>Войти</Link>
       </p>

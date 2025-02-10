@@ -1,28 +1,44 @@
 import styles from "./login.module.css";
-import { useState } from "react";
+import { useEffect } from "react";
 import {
   EmailInput,
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { setEmail, setPassword, logIn } from '../../services/slices/userDataSlice'; 
+import Cookies from "js-cookie";
 
 function Login() {
-  const [emailValue, setEmailValue] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { email, password, accessToken, error } = useSelector(state => state.userData);
+
   const onEmailChange = (e) => {
-    setEmailValue(e.target.value);
+    dispatch(setEmail(e.target.value));
   };
 
-  const [passwordValue, setPasswordValue] = useState("");
   const onPasswordChange = (e) => {
-    setPasswordValue(e.target.value);
+    dispatch(setPassword(e.target.value));
   };
+
+  const handleLogIn = () => {
+    dispatch(logIn({ email, password }));  
+  };
+
+  useEffect(() => {
+    if (Cookies.get("accessToken")) {
+      navigate("/");
+    }
+  }, [accessToken, navigate]);
+
   return (
     <div className={styles.container}>
       <p className={styles.header}>Вход</p>
       <EmailInput
         onChange={onEmailChange}
-        value={emailValue}
+        value={email}
         name={"email"}
         placeholder="E-mail"
         isIcon={false}
@@ -30,15 +46,16 @@ function Login() {
       />
       <PasswordInput
         onChange={onPasswordChange}
-        value={passwordValue}
+        value={password}
         name={"password"}
         extraClass="mb-6"
       />
       <div className={styles.button}>
-        <Button htmlType="button" type="primary" size="large">
+        <Button htmlType="button" type="primary" size="large" onClick={handleLogIn}>
           Войти
         </Button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
       <p className={styles.text}>
         Вы — новый пользователь? <Link to='/register' className={styles.link}>Зарегистрироваться</Link>
       </p>

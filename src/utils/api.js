@@ -1,6 +1,6 @@
 const URL = 'https://norma.nomoreparties.space/api';
 
-const request = async (endpoint, options = {}) => {
+export const request = async (endpoint, options = {}) => {
   const url = `${URL}${endpoint}`;
 
   const defaultOptions = {
