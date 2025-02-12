@@ -12,6 +12,8 @@ const initialState = {
   accessToken: Cookies.get("accessToken") || null,
   refreshToken: Cookies.get("refreshToken") || null,
   token: "",
+  userDataRequest: false,
+  successLogout: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -81,6 +83,8 @@ export const handleForgotPassword = createAsyncThunk(
       if (!response.ok) {
         return rejectWithValue(data.message || 'Password reset failed');
       }
+      
+      localStorage.setItem("forgotPasswordVisited", "true");
 
       return data; 
     } catch (error) {
@@ -141,20 +145,20 @@ export const logOut = createAsyncThunk(
 
 export const getUserData = createAsyncThunk(
   'userData/getUserData',
-  async (userData, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => { 
     try {
       const response = await fetch(BASE_URL + '/auth/user', {
-        method: 'POST',
+        method: 'GET',  
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
+          'authorization': `${Cookies.get("accessToken")}` 
+        }
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        return rejectWithValue(data.message || 'Password reset failed');
+        return rejectWithValue(data.message || 'Failed to fetch user data');
       }
 
       return data; 
@@ -163,6 +167,33 @@ export const getUserData = createAsyncThunk(
     }
   }
 );
+
+export const updateUserData = createAsyncThunk(
+  'userData/updateUserData',
+  async (userData, { rejectWithValue }) => { 
+    try {
+      const response = await fetch(BASE_URL + '/auth/user', {
+        method: 'PATCH',  
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': `${Cookies.get("accessToken")}` 
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return rejectWithValue(data.message || 'Failed to fetch user data');
+      }
+
+      return data; 
+    } catch (error) {
+      return rejectWithValue(error.message || 'An error occurred');
+    }
+  }
+);
+
 
 const userDataSlice = createSlice({
   name: 'userData',
@@ -204,6 +235,7 @@ const userDataSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
         state.error = null;
+        state.successLogout = false;
         Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
         Cookies.set("refreshToken", action.payload.refreshToken, { expires: 7 });
       })
@@ -228,10 +260,15 @@ const userDataSlice = createSlice({
         state.error = action.payload || 'Registration failed';
       })
       .addCase(logOut.fulfilled, (state) => {
-        state.success = true;
-        state.error = null;
         Cookies.remove("accessToken"); 
         Cookies.remove("refreshToken");
+        state.accessToken = null;
+        state.refreshToken = null;
+        state.name = null;
+        state.email = null;
+        state.password = null;
+        state.successLogout = true;
+        state.error = null;       
       })
       .addCase(logOut.rejected, (state, action) => {
         state.success = false;
@@ -246,6 +283,11 @@ const userDataSlice = createSlice({
       .addCase(getUserData.rejected, (state, action) => {
         state.success = false;
         state.error = action.payload || 'Registration failed';
+      })
+      .addCase(getUserData.pending, (state) => {
+        state.userDataRequest = true;
+        state.success = false;
+        state.error = null;
       })
       ;
   },

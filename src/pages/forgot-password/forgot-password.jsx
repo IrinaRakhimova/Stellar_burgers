@@ -24,7 +24,7 @@ function ForgotPassword() {
     useEffect(() => {
       if (success) {
         navigate("/reset-password");
-        dispatch(resetSuccess()); // ✅ Reset success after navigation
+        dispatch(resetSuccess()); 
       }
     }, [success, navigate, dispatch]);
 

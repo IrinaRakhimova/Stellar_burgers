@@ -3,10 +3,12 @@ import {
   EmailInput,
   PasswordInput,
   Input,
+  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, setName } from '../../services/slices/userDataSlice'; 
+import { setEmail, setPassword, setName, logOut, updateUserData } from '../../services/slices/userDataSlice'; 
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { getUserData } from "../../services/slices/userDataSlice";
@@ -15,12 +17,46 @@ function Profile() {
   const location = useLocation(); 
   const currentPath = location.pathname;
 
-  const dispatch = useDispatch();
-  const { email, password, name } = useSelector(state => state.userData);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-      dispatch(getUserData(`authorization: ${Cookies.get("accessToken")}`))
-    }, []);
+  const dispatch = useDispatch();
+  const { email, password, name, successLogout } = useSelector(state => state.userData);
+
+  const onNameChange = (e) => {
+    dispatch(setName(e.target.value));
+  };
+
+  const onEmailChange = (e) => {
+    dispatch(setEmail(e.target.value));
+  };
+
+  const onPasswordChange = (e) => {
+    dispatch(setPassword(e.target.value));
+  };
+
+  const handleLogout = () => {
+    dispatch(logOut({ token: Cookies.get("refreshToken") }))
+      .unwrap()
+      .then(() => {
+        Cookies.remove("accessToken"); 
+        Cookies.remove("refreshToken");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+        navigate("/login");
+      });
+  };
+
+  const handleDataUpdate = () => {
+    dispatch(updateUserData({ name, email, password}))
+  }
+
+useEffect(() => {
+  if (successLogout) {
+    navigate("/login");
+  }
+}, [successLogout, navigate]);
 
   return (
     <div className={styles.container}>
@@ -46,7 +82,9 @@ function Profile() {
           </Link>
         </div>
         <div className={styles.navItemContainer}>
-          <Link className={styles.navItem}>Выход</Link>
+        <button className={styles.navItem} onClick={handleLogout}>
+            Выход
+          </button>
         </div>
         <p className={styles.text}>
           В этом разделе вы можете <br />
@@ -58,13 +96,13 @@ function Profile() {
           type={"text"}
           name={"name"}
           placeholder={"Имя"}
-          onChange={setName}
+          onChange={onNameChange}
           value={name}
           extraClass="mb-6"
           icon="EditIcon"
         />
         <EmailInput
-          onChange={setEmail}
+          onChange={onEmailChange}
           value={email}
           name={"email"}
           placeholder="Логин"
@@ -73,13 +111,22 @@ function Profile() {
           icon="EditIcon"
         />
         <PasswordInput
-          onChange={setPassword}
+          onChange={onPasswordChange}
           value={password}
           name={"password"}
           extraClass="mb-6"
           placeholder="Пароль"
           icon="EditIcon"
         />
+        <div className={styles.buttonsContainer}>
+        <button className={styles.button}>
+            Отменить
+        </button>
+        <Button htmlType="button" type="primary" size="large" onClick={handleDataUpdate}>
+          Сохранить
+        </Button>
+        </div>
+        
       </div>
     </div>
   );

@@ -6,14 +6,12 @@ import { DndProvider } from "react-dnd";
 
 function Main() {
   return (
-    <div>
-      <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={HTML5Backend}>
       <div className="main">
         <BurgerIngredients />
         <BurgerConstructor />
-        </div>
-      </DndProvider>
-    </div>
+      </div>
+    </DndProvider>
   );
 }
 
