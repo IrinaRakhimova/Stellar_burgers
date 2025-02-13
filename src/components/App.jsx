@@ -8,45 +8,79 @@ import Register from "../pages/register/register.jsx";
 import ForgotPassword from "../pages/forgot-password/forgot-password.jsx";
 import ResetPassword from "../pages/reset-password/reset-password.jsx";
 import Profile from "../pages/profile/profile.jsx";
+import IngredientDetails from "./burger-ingredients/ingredient-details/ingredient-details.jsx";
+import Modal from "./modals/modal/modal.jsx";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  return (
-      <div className="app-container">
-        <AppHeader />
-        <Routes>
-          <Route 
-            path="/" 
-            element={<ProtectedRouteElement element={<Main />} />} 
-          />
+  const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
 
+  const handleModalClose = () => {
+    navigate(-1);
+  };
+  return (
+    <div className="app-container">
+      <AppHeader />
+      <Routes location={background || location}>
+        <Route
+          path="/"
+          element={<ProtectedRouteElement element={<Main />} />}
+        />
+
+        <Route
+          path="/login"
+          element={<ProtectedRouteElement element={<Login />} onlyUnAuth />}
+        />
+        <Route
+          path="/register"
+          element={<ProtectedRouteElement element={<Register />} onlyUnAuth />}
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <ProtectedRouteElement element={<ForgotPassword />} onlyUnAuth />
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <ProtectedRouteElement
+              element={<ResetPassword />}
+              requiresForgotPassword={true}
+            />
+          }
+        />
+        <Route
+          path="/profile"
+          element={<ProtectedRouteElement element={<Profile />} />}
+        />
+        {!background && (
           <Route
-            path="/login"
-            element={<ProtectedRouteElement element={<Login />} onlyUnAuth />}
+            path="/ingredients/:ingredientId"
+            element={<ProtectedRouteElement element={<IngredientDetails />} />}
           />
+        )}
+      </Routes>
+      {background && (
+        <Routes>
           <Route
-            path="/register"
+            path="/ingredients/:ingredientId"
             element={
-              <ProtectedRouteElement element={<Register />} onlyUnAuth />
+              <ProtectedRouteElement
+                element={
+                  <Modal onClose={handleModalClose}>
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
             }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <ProtectedRouteElement element={<ForgotPassword />} onlyUnAuth />
-            }
-          />
-          <Route
-            path="/reset-password"
-            element={
-              <ProtectedRouteElement element={<ResetPassword />} requiresForgotPassword={true} />
-            }
-          />
-          <Route
-            path="/profile"
-            element={<ProtectedRouteElement element={<Profile />} />}
           />
         </Routes>
-      </div>
+      )}
+    </div>
   );
 }
 

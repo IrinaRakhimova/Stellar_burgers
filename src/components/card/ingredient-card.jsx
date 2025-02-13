@@ -1,10 +1,16 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
-import styles from './ingredient-card.module.css';
-import { useDrag } from 'react-dnd';
-import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedIngredient } from '../../services/slices/modalIngredientSlice'; // Updated import
+import React, { useCallback, useEffect } from "react";
+import PropTypes from "prop-types";
+import styles from "./ingredient-card.module.css";
+import { useDrag } from "react-dnd";
+import {
+  Counter,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { setSelectedIngredient } from "../../services/slices/modalIngredientSlice";
+import { getIngredients } from "../../services/slices/ingredientsSlice";
+import { Link } from "react-router-dom";
 
 export const IngredientCard = ({ ingredient }) => {
   const { bun, ingredients = [] } = useSelector((state) => ({
@@ -14,43 +20,54 @@ export const IngredientCard = ({ ingredient }) => {
 
   const dispatch = useDispatch();
 
-  // Destructure ingredient for clarity
+  const location = useLocation();
+
+  const ingredientId = ingredient["_id"];
+
   const { _id, name, image, price, type } = ingredient;
 
-  // Drag-and-drop hook
   const [{ isDragging }, dragRef] = useDrag({
-    type: 'ingredient',
+    type: "ingredient",
     item: { _id, name, image, price, type },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  // Handle ingredient click to set it as selected
+
   const handleClick = useCallback(() => {
-    dispatch(setSelectedIngredient(ingredient)); // Use the setSelectedIngredient action
+    dispatch(setSelectedIngredient(ingredient));
   }, [dispatch, ingredient]);
 
-  // Calculate the count of this ingredient in the cart
-  const count = type === 'bun' && bun?._id === _id
-    ? 2  // If it's a bun and it's selected, set count to 2
-    : ingredients.filter((item) => item._id === _id).length;  // Otherwise, count how many times it's in the cart
+  const count =
+    type === "bun" && bun?._id === _id
+      ? 2
+      : ingredients.filter((item) => item._id === _id).length;
 
   return (
-    <div
-      ref={dragRef} 
-      className={styles.card}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
-      onClick={handleClick}
+    <Link
+      key={ingredientId}
+      to={`/ingredients/${ingredientId}`}
+      state={{ background: location }}
+      className={styles.link}
     >
-      <img src={image} alt={name} className={styles.image} />
-      {count !== 0 && <Counter count={count} size="default" extraClass="m-1" />}
-      <div className={styles.price}>
-        <p className={styles.priceValue}>{price}</p>
-        <CurrencyIcon type="primary" />
+      <div
+        ref={dragRef}
+        className={styles.card}
+        style={{ opacity: isDragging ? 0.5 : 1 }}
+        onClick={handleClick}
+      >
+        <img src={image} alt={name} className={styles.image} />
+        {count !== 0 && (
+          <Counter count={count} size="default" extraClass="m-1" />
+        )}
+        <div className={styles.price}>
+          <p className={styles.priceValue}>{price}</p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <p className={styles.name}>{name}</p>
       </div>
-      <p className={styles.name}>{name}</p>
-    </div>
+    </Link>
   );
 };
 

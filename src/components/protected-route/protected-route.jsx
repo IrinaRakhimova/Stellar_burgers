@@ -2,15 +2,16 @@ import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../../services/slices/userDataSlice";
+import Cookies from "js-cookie";
 
 const ProtectedRouteElement = ({ element, onlyUnAuth = false, requiresForgotPassword = false }) => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const { accessToken, userDataRequest } = useSelector((state) => state.userData);
+  const { userDataRequest } = useSelector((state) => state.userData);
   const forgotPasswordVisited = localStorage.getItem("forgotPasswordVisited") === "true";
 
-  
+  const accessToken = Cookies.get("accessToken");
 
   if (userDataRequest) return null; 
 

@@ -3,7 +3,6 @@ import styles from './ingredient-details.module.css';
 import { useSelector } from "react-redux";
 
 const IngredientDetails = () => {
-  // Access selectedIngredient directly from state.modalIngredient
   const selectedIngredient = useSelector(state => state.modalIngredient.selectedIngredient);
 
   return (

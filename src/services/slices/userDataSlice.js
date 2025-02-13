@@ -9,8 +9,6 @@ const initialState = {
   password: "",
   success: false,
   error: null,
-  accessToken: Cookies.get("accessToken") || null,
-  refreshToken: Cookies.get("refreshToken") || null,
   token: "",
   userDataRequest: false,
   successLogout: false,
@@ -220,8 +218,8 @@ const userDataSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.success = true;
         state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
+        Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
+        Cookies.set("refreshToken", action.payload.refreshToken, { expires: 7 });
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -232,8 +230,6 @@ const userDataSlice = createSlice({
         state.success = true;
         state.name = action.payload.user.name;
         state.email = action.payload.user.email;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
         state.error = null;
         state.successLogout = false;
         Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
@@ -262,8 +258,6 @@ const userDataSlice = createSlice({
       .addCase(logOut.fulfilled, (state) => {
         Cookies.remove("accessToken"); 
         Cookies.remove("refreshToken");
-        state.accessToken = null;
-        state.refreshToken = null;
         state.name = null;
         state.email = null;
         state.password = null;

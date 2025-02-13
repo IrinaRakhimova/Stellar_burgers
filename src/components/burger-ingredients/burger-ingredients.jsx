@@ -17,10 +17,10 @@ export const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed, currentSection } =
     useSelector((state) => state.ingredients);
-  const { selectedIngredient } = useSelector((state) => state.modalIngredient); // ✅ Updated selector
+  const { selectedIngredient } = useSelector((state) => state.modalIngredient); 
 
   const closeModal = () => {
-    dispatch(setSelectedIngredient(null)); // ✅ Use Redux Toolkit action creator
+    dispatch(setSelectedIngredient(null)); 
   };
 
   const groupedIngredients = useMemo(() => {
@@ -35,7 +35,7 @@ export const BurgerIngredients = () => {
   }, [ingredients]);
 
   useEffect(() => {
-    dispatch(getIngredients()); // ✅ Use async thunk from Redux Toolkit
+    dispatch(getIngredients()); 
   }, [dispatch]);
 
   const handleScroll = useCallback(() => {
@@ -64,7 +64,7 @@ export const BurgerIngredients = () => {
 
     const threshold = 50; 
     if (closestSection && smallestDistance < threshold && closestSection !== currentSection) {
-      dispatch(setCurrentSection(closestSection)); // ✅ Use Redux Toolkit action creator
+      dispatch(setCurrentSection(closestSection)); 
     }
   }, [dispatch, currentSection]);
 
@@ -101,11 +101,6 @@ export const BurgerIngredients = () => {
 
       <div className={styles.scroll} ref={scrollContainerRef} onScroll={handleScroll}>
         {content}
-        {selectedIngredient && (
-          <Modal title="Детали ингредиента" onClose={closeModal}>
-            <IngredientDetails />
-          </Modal>
-        )}
       </div>
     </div>
   );

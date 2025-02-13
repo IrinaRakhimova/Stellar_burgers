@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 const URL = 'https://norma.nomoreparties.space/api';
 
 export const request = async (endpoint, options = {}) => {
@@ -44,3 +46,19 @@ export const createOrderRequest = async (ingredientIds) => {
     throw error; 
   }
 };
+
+const checkResponse = (res) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+}
+
+export const refreshToken = () => {
+  return fetch (`${URL}/auth/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      token: Cookies.get("refreshToken"),
+    })
+  }).then(checkResponse);
+}
