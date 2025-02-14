@@ -1,7 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
-
-const BASE_URL = "https://norma.nomoreparties.space/api";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  registerUser,
+  loginUser,
+  handleForgotPassword,
+  resetPassword,
+  logOut,
+  getUserData,
+  updateUserData,
+} from "../../utils/api";
+import Cookies from "js-cookie";
 
 const initialState = {
   name: "",
@@ -12,189 +19,47 @@ const initialState = {
   token: "",
   userDataRequest: false,
   successLogout: false,
+  isAuth: false,
+  order: null, 
+  orderRequest: false, 
+  orderError: null, 
 };
 
-export const registerUser = createAsyncThunk(
-  'userData/registerUser',
-  async (userData, { rejectWithValue }) => {
+const createApiThunk = (type, apiCall) =>
+  createAsyncThunk(type, async (arg, { rejectWithValue }) => {
     try {
-      const response = await fetch(BASE_URL + '/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.message || 'Registration failed');
-      }
-
-      return data; 
+      return await apiCall(arg);
     } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred');
+      return rejectWithValue(error.message);
     }
-  }
+  });
+
+export const registerUserThunk = createApiThunk(
+  "userData/registerUser",
+  registerUser
 );
-
-export const logIn = createAsyncThunk(
-  'userData/logIn',
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await fetch(BASE_URL + '/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.message || 'LogIn failed');
-      }
-
-      return data; 
-    } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred');
-    }
-  }
+export const logInThunk = createApiThunk("userData/logIn", loginUser);
+export const forgotPasswordThunk = createApiThunk(
+  "userData/handleForgotPassword",
+  handleForgotPassword
 );
-
-export const handleForgotPassword = createAsyncThunk(
-  'userData/handleForgotPassword',
-  async (email, { rejectWithValue }) => {
-    try {
-      const response = await fetch(BASE_URL + '/password-reset', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(email),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.message || 'Password reset failed');
-      }
-      
-      localStorage.setItem("forgotPasswordVisited", "true");
-
-      return data; 
-    } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred');
-    }
-  }
+export const resetPasswordThunk = createApiThunk(
+  "userData/resetPassword",
+  resetPassword
 );
-
-export const resetPassword = createAsyncThunk(
-  'userData/resetPassword',
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await fetch(BASE_URL + '/password-reset/reset', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.message || 'Password reset failed');
-      }
-
-      return data; 
-    } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred');
-    }
-  }
+export const logOutThunk = createApiThunk("userData/exit", logOut);
+export const getUserDataThunk = createApiThunk(
+  "userData/getUserData",
+  getUserData
 );
-
-export const logOut = createAsyncThunk(
-  'userData/exit',
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await fetch(BASE_URL + '/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.message || 'Password reset failed');
-      }
-
-      return data; 
-    } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred');
-    }
-  }
-);
-
-export const getUserData = createAsyncThunk(
-  'userData/getUserData',
-  async (_, { rejectWithValue }) => { 
-    try {
-      const response = await fetch(BASE_URL + '/auth/user', {
-        method: 'GET',  
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `${Cookies.get("accessToken")}` 
-        }
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.message || 'Failed to fetch user data');
-      }
-
-      return data; 
-    } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred');
-    }
-  }
-);
-
-export const updateUserData = createAsyncThunk(
-  'userData/updateUserData',
-  async (userData, { rejectWithValue }) => { 
-    try {
-      const response = await fetch(BASE_URL + '/auth/user', {
-        method: 'PATCH',  
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `${Cookies.get("accessToken")}` 
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.message || 'Failed to fetch user data');
-      }
-
-      return data; 
-    } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred');
-    }
-  }
+export const updateUserDataThunk = createApiThunk(
+  "userData/updateUserData",
+  updateUserData
 );
 
 
 const userDataSlice = createSlice({
-  name: 'userData',
+  name: "userData",
   initialState,
   reducers: {
     setName: (state, action) => {
@@ -209,84 +74,46 @@ const userDataSlice = createSlice({
     setToken: (state, action) => {
       state.token = action.payload;
     },
-    resetSuccess: (state) => {   
+    resetSuccess: (state) => {
       state.success = false;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.success = true;
-        state.user = action.payload.user;
-        Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
-        Cookies.set("refreshToken", action.payload.refreshToken, { expires: 7 });
-        state.error = null;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.success = false;
-        state.error = action.payload || 'Registration failed';
-      })
-      .addCase(logIn.fulfilled, (state, action) => {
+      .addCase(registerUserThunk.fulfilled, (state, action) => {
         state.success = true;
         state.name = action.payload.user.name;
         state.email = action.payload.user.email;
-        state.error = null;
-        state.successLogout = false;
+        state.isAuth = true;
         Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
-        Cookies.set("refreshToken", action.payload.refreshToken, { expires: 7 });
-      })
-      .addCase(logIn.rejected, (state, action) => {
-        state.success = false;
-        state.error = action.payload || 'Registration failed';
-      })
-      .addCase(handleForgotPassword.fulfilled, (state) => {
-        state.success = true;
+        Cookies.set("refreshToken", action.payload.refreshToken, {
+          expires: 7,
+        });
         state.error = null;
       })
-      .addCase(handleForgotPassword.rejected, (state, action) => {
+      .addCase(registerUserThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = action.payload || 'Registration failed';
+        state.error = action.payload || "Registration failed";
       })
-      .addCase(resetPassword.fulfilled, (state) => {
-        state.success = true;
-        state.error = null;
-      })
-      .addCase(resetPassword.rejected, (state, action) => {
-        state.success = false;
-        state.error = action.payload || 'Registration failed';
-      })
-      .addCase(logOut.fulfilled, (state) => {
-        Cookies.remove("accessToken"); 
-        Cookies.remove("refreshToken");
-        state.name = null;
-        state.email = null;
-        state.password = null;
-        state.successLogout = true;
-        state.error = null;       
-      })
-      .addCase(logOut.rejected, (state, action) => {
-        state.success = false;
-        state.error = action.payload || 'Registration failed';
-      })
-      .addCase(getUserData.fulfilled, (state, action) => {
+      .addCase(logInThunk.fulfilled, (state, action) => {
         state.success = true;
         state.name = action.payload.user.name;
         state.email = action.payload.user.email;
+        state.isAuth = true;
+        Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
+        Cookies.set("refreshToken", action.payload.refreshToken, {
+          expires: 7,
+        });
         state.error = null;
       })
-      .addCase(getUserData.rejected, (state, action) => {
+      .addCase(logInThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = action.payload || 'Registration failed';
-      })
-      .addCase(getUserData.pending, (state) => {
-        state.userDataRequest = true;
-        state.success = false;
-        state.error = null;
-      })
-      ;
+        state.error = action.payload || "LogIn failed";
+      });
   },
 });
 
-export const { setName, setEmail, setPassword, setToken, resetSuccess } = userDataSlice.actions;
+export const { setName, setEmail, setPassword, setToken, resetSuccess } =
+  userDataSlice.actions;
 
 export default userDataSlice.reducer;

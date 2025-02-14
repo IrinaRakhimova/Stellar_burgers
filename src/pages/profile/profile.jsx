@@ -8,10 +8,9 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, setName, logOut, updateUserData } from '../../services/slices/userDataSlice'; 
+import { setEmail, setPassword, setName, logOutThunk, updateUserDataThunk } from '../../services/slices/userDataSlice'; 
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { getUserData } from "../../services/slices/userDataSlice";
 
 function Profile() {
   const location = useLocation(); 
@@ -35,7 +34,7 @@ function Profile() {
   };
 
   const handleLogout = () => {
-    dispatch(logOut({ token: Cookies.get("refreshToken") }))
+    dispatch(logOutThunk({ token: Cookies.get("refreshToken") }))
       .unwrap()
       .then(() => {
         Cookies.remove("accessToken"); 
@@ -49,7 +48,7 @@ function Profile() {
   };
 
   const handleDataUpdate = () => {
-    dispatch(updateUserData({ name, email, password}))
+    dispatch(updateUserDataThunk({ name, email, password}))
   }
 
 useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import styles from "./ingredient-card.module.css";
 import { useDrag } from "react-dnd";
@@ -8,8 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { setSelectedIngredient } from "../../services/slices/modalIngredientSlice";
-import { getIngredients } from "../../services/slices/ingredientsSlice";
+import { setSelectedIngredient } from "../../services/slices/ingredientsSlice";
 import { Link } from "react-router-dom";
 
 export const IngredientCard = ({ ingredient }) => {

@@ -4,8 +4,8 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import { Link, useLocation } from 'react-router-dom';
 
 export const AppHeader = () => {
-    const location = useLocation(); // ✅ Get current path
-    const currentPath = location.pathname; // ✅ Extract pathname
+    const location = useLocation();
+    const currentPath = location.pathname;
 
     return (
         <header className={styles.header}>

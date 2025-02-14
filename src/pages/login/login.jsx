@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail, setPassword, logIn } from '../../services/slices/userDataSlice'; 
+import { setEmail, setPassword, logInThunk } from '../../services/slices/userDataSlice'; 
 import Cookies from "js-cookie";
 
 function Login() {
@@ -24,7 +24,7 @@ function Login() {
   };
 
   const handleLogIn = () => {
-    dispatch(logIn({ email, password }));  
+    dispatch(logInThunk({ email, password }));  
   };
 
   useEffect(() => {

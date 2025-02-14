@@ -4,7 +4,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail, resetSuccess, handleForgotPassword } from "../../services/slices/userDataSlice";
+import { setEmail, resetSuccess, forgotPasswordThunk } from "../../services/slices/userDataSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -18,7 +18,7 @@ function ForgotPassword() {
     };
 
   const handleReset = () => {
-      dispatch( handleForgotPassword({ email }));
+      dispatch(forgotPasswordThunk({ email }));
     };
 
     useEffect(() => {

@@ -5,7 +5,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { setPassword, setToken, resetSuccess, resetPassword } from "../../services/slices/userDataSlice";
+import { setPassword, setToken, resetSuccess, resetPasswordThunk } from "../../services/slices/userDataSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -23,7 +23,7 @@ function ResetPassword() {
     };
 
   const handleReset = () => {
-      dispatch(resetPassword({ password, token }));
+      dispatch(resetPasswordThunk({ password, token }));
     };
 
     useEffect(() => {

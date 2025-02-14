@@ -1,12 +1,9 @@
 import React, { useRef, useEffect, useMemo, useCallback } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientDetails from './ingredient-details/ingredient-details';
-import Modal from '../modals/modal/modal';
 import { IngredientsCategory } from './ingredients-category/ingredients-category';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients, setCurrentSection } from '../../services/slices/ingredientsSlice';
-import { setSelectedIngredient } from '../../services/slices/modalIngredientSlice';
+import { fetchIngredientsThunk, setCurrentSection } from '../../services/slices/ingredientsSlice';
 
 export const BurgerIngredients = () => {
   const bunsRef = useRef(null);
@@ -17,11 +14,6 @@ export const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed, currentSection } =
     useSelector((state) => state.ingredients);
-  const { selectedIngredient } = useSelector((state) => state.modalIngredient); 
-
-  const closeModal = () => {
-    dispatch(setSelectedIngredient(null)); 
-  };
 
   const groupedIngredients = useMemo(() => {
     if (ingredients.length === 0) {
@@ -35,7 +27,7 @@ export const BurgerIngredients = () => {
   }, [ingredients]);
 
   useEffect(() => {
-    dispatch(getIngredients()); 
+    dispatch(fetchIngredientsThunk()); 
   }, [dispatch]);
 
   const handleScroll = useCallback(() => {

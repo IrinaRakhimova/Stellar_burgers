@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createOrderRequest } from "../../utils/api";
 
-export const createOrder = createAsyncThunk(
+export const createOrderThunk = createAsyncThunk(
   "order/createOrder",
   async (ingredientIds, { rejectWithValue }) => {
     try {
@@ -40,17 +40,17 @@ const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createOrder.pending, (state) => {
+      .addCase(createOrderThunk.pending, (state) => {
         state.orderRequest = true;
         state.orderFailed = false;
       })
-      .addCase(createOrder.fulfilled, (state, action) => {
+      .addCase(createOrderThunk.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.orderNumber = action.payload.orderNumber;
         state.orderName = action.payload.orderName;
         state.isModalVisible = true;
       })
-      .addCase(createOrder.rejected, (state) => {
+      .addCase(createOrderThunk.rejected, (state) => {
         state.orderRequest = false;
         state.orderFailed = true;
       });

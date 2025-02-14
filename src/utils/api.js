@@ -1,64 +1,48 @@
 import Cookies from "js-cookie";
 
-const URL = 'https://norma.nomoreparties.space/api';
+const URL = "https://norma.nomoreparties.space/api";
 
-export const request = async (endpoint, options = {}) => {
-  const url = `${URL}${endpoint}`;
-
-  const defaultOptions = {
-      headers: { 'Content-Type': 'application/json' },
+const request = async (endpoint, method = "GET", body) => {
+  const options = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("accessToken"),
+    },
+    body: body ? JSON.stringify(body) : undefined,
   };
 
   try {
-      const response = await fetch(url, { ...defaultOptions, ...options });
-      const data = await response.json();
+    const response = await fetch(`${URL}${endpoint}`, options);
+    const data = await response.json();
 
-      if (!response.ok) {
-          throw new Error(data.message || 'Something went wrong');
-      }
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
 
-      return data;
+    return data;
   } catch (error) {
-      console.error(`API request to ${url} failed:`, error);
-      throw error;
+    console.error(`API request failed: ${error}`);
+    throw error;
   }
 };
 
-export const fetchIngredients = async () => {
-  try {
-    const data = await request('/ingredients'); 
-    return data.data; 
-  } catch (error) {
-    console.error("Error fetching ingredients:", error);
-    throw error; 
-  }
-};
+export const createOrderRequest = (ingredientIds) =>
+  request("/orders", "POST", { ingredients: ingredientIds });
+export const fetchIngredients = () => request("/ingredients");
 
-export const createOrderRequest = async (ingredientIds) => {
-  try {
-    const response = await request('/orders', {
-      method: 'POST',
-      body: JSON.stringify({ ingredients: ingredientIds }),
-    });
-    return response; 
-  } catch (error) {
-    console.error("Error creating order:", error);
-    throw error; 
-  }
-};
+export const handleForgotPassword = (email) =>
+  request("/password-reset", "POST", email);
+export const resetPassword = (userData) =>
+  request("/password-reset/reset", "POST", userData);
+export const registerUser = (userData) =>
+  request("/auth/register", "POST", userData);
+export const loginUser = (userData) => request("/auth/login", "POST", userData);
+export const logOut = () =>
+  request("/auth/logout", "POST", { token: Cookies.get("refreshToken") });
 
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-}
 
-export const refreshToken = () => {
-  return fetch (`${URL}/auth/token`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify({
-      token: Cookies.get("refreshToken"),
-    })
-  }).then(checkResponse);
-}
+export const getUserData = () => request("/auth/user");
+export const updateUserData = (userData) =>
+  request("/auth/user", "PATCH", userData);
+

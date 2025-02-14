@@ -2,7 +2,7 @@ import styles from "./register.module.css";
 import { EmailInput, PasswordInput, Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { setName, setEmail, setPassword, registerUser } from '../../services/slices/userDataSlice'; 
+import { setName, setEmail, setPassword, registerUserThunk } from '../../services/slices/userDataSlice'; 
 
 function Register() {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function Register() {
 
   const handleRegister = () => {
     const userData = { name, email, password };
-    dispatch(registerUser(userData));
+    dispatch(registerUserThunk(userData));
   };
 
   return (

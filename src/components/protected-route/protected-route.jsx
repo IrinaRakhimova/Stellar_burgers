@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserData } from "../../services/slices/userDataSlice";
 import Cookies from "js-cookie";
 
 const ProtectedRouteElement = ({ element, onlyUnAuth = false, requiresForgotPassword = false }) => {

@@ -1,12 +1,36 @@
 import React from "react";
 import styles from './ingredient-details.module.css';
 import { useSelector } from "react-redux";
+import { useParams, useLocation } from "react-router-dom";
+import { fetchIngredientsThunk } from "../../../services/slices/ingredientsSlice";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const IngredientDetails = () => {
-  const selectedIngredient = useSelector(state => state.modalIngredient.selectedIngredient);
+  const { ingredientId } = useParams();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const isModal = location.state && location.state.background;
+
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+  const isLoading = useSelector((state) => state.ingredients.ingredientsRequest);
+  const hasError = useSelector((state) => state.ingredients.ingredientsFailed);
+
+  const selectedIngredient = ingredients.find((item) => item._id === ingredientId);
+
+  useEffect(() => {
+    if (ingredients.length === 0) {
+      dispatch(fetchIngredientsThunk());
+    }
+  }, [dispatch, ingredients.length]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (hasError) return <p>Failed to load ingredients. Please try again.</p>;
+  if (!selectedIngredient) return <p>Ingredient not found</p>;
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isModal ? styles.modal : styles.page}`}>
       <div className={styles.info}>
         <img
           src={selectedIngredient.image_large}

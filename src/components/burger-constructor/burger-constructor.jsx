@@ -5,13 +5,12 @@ import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-de
 import OrderDetails from '../modals/order-details/order-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIngredient, deleteIngredient, resetIngredients } from '../../services/slices/burgerConstructorSlice';
-import { createOrder, hideModal } from '../../services/slices/orderSlice';
+import { createOrderThunk, hideModal } from '../../services/slices/orderSlice';
 import { DraggableElement } from './draggable-element/draggable-element';
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
   
-  // Corrected useSelector paths (assuming state name is `burgerConstructor`)
   const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
   const { isModalVisible } = useSelector((state) => state.order); 
 
@@ -19,7 +18,7 @@ export const BurgerConstructor = () => {
     accept: 'ingredient',
     drop: (item) => {
       if (!item.instanceId) {
-        dispatch(addIngredient(item)); // Use Redux Toolkit's action
+        dispatch(addIngredient(item)); 
       }
     },
     collect: (monitor) => ({
@@ -27,14 +26,12 @@ export const BurgerConstructor = () => {
     }),
   });
 
-  // Calculate total price using useMemo
   const totalPrice = useMemo(() => {
     return (
       (bun ? bun.price * 2 : 0) + ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0)
     );
   }, [bun, ingredients]);
 
-  // Handle order button click
   const handleOrderClick = () => {
     if (!bun) {
       alert('Please add a bun to your order!');
@@ -51,7 +48,7 @@ export const BurgerConstructor = () => {
       ...(bun ? [bun._id] : []),
     ];
     
-    dispatch(createOrder(ingredientIds))
+    dispatch(createOrderThunk(ingredientIds))
       .then(() => {
         dispatch(resetIngredients()); 
       })
@@ -64,15 +61,13 @@ export const BurgerConstructor = () => {
     dispatch(hideModal());
   };
 
-  // Handle ingredient deletion
   const onDelete = (id) => {
-    dispatch(deleteIngredient(id)); // Use Redux Toolkit's action
+    dispatch(deleteIngredient(id)); 
   };
 
   return (
     <div ref={drop} className={styles.container}>
       <ul className={styles.scrollContainer}>
-        {/* Top Bun */}
         <li className={styles.bunItem}>
           {bun ? (
             <ConstructorElement
@@ -89,7 +84,6 @@ export const BurgerConstructor = () => {
           )}
         </li>
 
-        {/* Ingredients List */}
         <div className={styles.scroll}>
           {ingredients.length !== 0 ? (
             ingredients.map((ingredient) => {
@@ -113,7 +107,6 @@ export const BurgerConstructor = () => {
           )}
         </div>
 
-        {/* Bottom Bun */}
         <li className={styles.bunItem}>
           {bun ? (
             <ConstructorElement
@@ -131,7 +124,6 @@ export const BurgerConstructor = () => {
         </li>
       </ul>
 
-      {/* Total Price and Order Button */}
       <div className={styles.totalGroup}>
         <p className={styles.totalPrice}>{totalPrice}</p>
         <div className={styles.iconContainer}>
