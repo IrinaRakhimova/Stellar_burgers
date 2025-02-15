@@ -28,8 +28,8 @@ function ResetPassword() {
 
     useEffect(() => {
       if (success) {
-        navigate("/");
-        dispatch(resetSuccess()); 
+        navigate("/"); 
+        dispatch(resetSuccess());
       }
     }, [success, navigate, dispatch]);
 

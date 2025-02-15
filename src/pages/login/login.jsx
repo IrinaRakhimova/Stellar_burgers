@@ -8,7 +8,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setPassword, logInThunk } from '../../services/slices/userDataSlice'; 
-import Cookies from "js-cookie";
 
 function Login() {
   const dispatch = useDispatch();
@@ -28,7 +27,7 @@ function Login() {
   };
 
   useEffect(() => {
-    if (Cookies.get("accessToken")) {
+    if (localStorage.getItem("accessToken")) {
       navigate("/");
     }
   }, [accessToken, navigate]);

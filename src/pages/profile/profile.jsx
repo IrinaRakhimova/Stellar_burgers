@@ -9,7 +9,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setPassword, setName, logOutThunk, updateUserDataThunk } from '../../services/slices/userDataSlice'; 
-import Cookies from "js-cookie";
 import { useEffect } from "react";
 
 function Profile() {
@@ -34,11 +33,11 @@ function Profile() {
   };
 
   const handleLogout = () => {
-    dispatch(logOutThunk({ token: Cookies.get("refreshToken") }))
+    dispatch(logOutThunk({ token: localStorage.getItem("refreshToken") }))
       .unwrap()
       .then(() => {
-        Cookies.remove("accessToken"); 
-        Cookies.remove("refreshToken");
+        localStorage.removeItem("accessToken"); 
+        localStorage.removeItem("refreshToken");
         navigate("/login");
       })
       .catch((error) => {

@@ -8,7 +8,6 @@ import {
   getUserData,
   updateUserData,
 } from "../../utils/api";
-import Cookies from "js-cookie";
 
 const initialState = {
   name: "",
@@ -22,7 +21,8 @@ const initialState = {
   isAuth: false,
   order: null, 
   orderRequest: false, 
-  orderError: null, 
+  orderError: null,
+  resetPassword: false, 
 };
 
 const createApiThunk = (type, apiCall) =>
@@ -77,6 +77,9 @@ const userDataSlice = createSlice({
     resetSuccess: (state) => {
       state.success = false;
     },
+    setResetPassword: (state, action) => { 
+      state.resetPassword = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -85,10 +88,8 @@ const userDataSlice = createSlice({
         state.name = action.payload.user.name;
         state.email = action.payload.user.email;
         state.isAuth = true;
-        Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
-        Cookies.set("refreshToken", action.payload.refreshToken, {
-          expires: 7,
-        });
+        localStorage.setItem("accessToken", action.payload.accessToken);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.error = null;
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
@@ -100,20 +101,43 @@ const userDataSlice = createSlice({
         state.name = action.payload.user.name;
         state.email = action.payload.user.email;
         state.isAuth = true;
-        Cookies.set("accessToken", action.payload.accessToken, { expires: 1 });
-        Cookies.set("refreshToken", action.payload.refreshToken, {
-          expires: 7,
-        });
+        localStorage.setItem("accessToken", action.payload.accessToken);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.error = null;
       })
       .addCase(logInThunk.rejected, (state, action) => {
         state.success = false;
         state.error = action.payload || "LogIn failed";
+      })
+      .addCase(forgotPasswordThunk.fulfilled, (state) => {
+        state.resetPassword = true;
+        state.error = null;
+      })
+      .addCase(forgotPasswordThunk.rejected, (state, action) => {
+        state.success = false;
+        state.error = action.payload || "LogIn failed";
+      })
+      .addCase(resetPasswordThunk.fulfilled, (state) => {
+        state.success = true;
+        state.error = null;
+      })
+      .addCase(resetPasswordThunk.rejected, (state, action) => {
+        state.success = false;
+        state.error = action.payload || "LogIn failed";
+      })
+      .addCase(getUserDataThunk.fulfilled, (state, action) => {
+        state.name = action.payload.user.name;
+        state.email = action.payload.user.email;
+        state.isAuth = true;
+        state.error = null;
+      })
+      .addCase(getUserDataThunk.rejected, (state, action) => {
+        state.error = action.payload || "Failed to fetch user data";
       });
   },
 });
 
-export const { setName, setEmail, setPassword, setToken, resetSuccess } =
+export const { setName, setEmail, setPassword, setToken, resetSuccess, setResetPassword } =
   userDataSlice.actions;
 
 export default userDataSlice.reducer;

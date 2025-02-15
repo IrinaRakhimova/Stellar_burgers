@@ -4,12 +4,12 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail, resetSuccess, forgotPasswordThunk } from "../../services/slices/userDataSlice";
+import { setEmail, resetSuccess, forgotPasswordThunk, setResetPassword, } from "../../services/slices/userDataSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function ForgotPassword() {
-  const { email, success,  error } = useSelector(state => state.userData);
+  const { email, error,  resetPassword } = useSelector(state => state.userData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -17,16 +17,16 @@ function ForgotPassword() {
       dispatch(setEmail(e.target.value));
     };
 
-  const handleReset = () => {
+    const handleReset = () => {
       dispatch(forgotPasswordThunk({ email }));
     };
-
+    
     useEffect(() => {
-      if (success) {
+      if (resetPassword) {
         navigate("/reset-password");
-        dispatch(resetSuccess()); 
+        dispatch(setResetPassword(false));
       }
-    }, [success, navigate, dispatch]);
+    }, [resetPassword, navigate, dispatch]);
 
   return (
     <div className={styles.container}>

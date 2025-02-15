@@ -12,15 +12,31 @@ import IngredientDetails from "./burger-ingredients/ingredient-details/ingredien
 import Modal from "./modals/modal/modal.jsx";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchIngredientsThunk } from "../services/slices/ingredientsSlice.js";
+import { getUserDataThunk } from "../services/slices/userDataSlice.js";
+import { useDispatch } from "react-redux";
 
 function App() {
   const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
   const background = location.state && location.state.background;
 
   const handleModalClose = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+      dispatch(fetchIngredientsThunk()); 
+    }, [dispatch]);
+
+    useEffect(() => {
+      dispatch(getUserDataThunk());
+    }, [dispatch]);  
+
   return (
     <div className="app-container">
       <AppHeader />
@@ -48,8 +64,7 @@ function App() {
           path="/reset-password"
           element={
             <ProtectedRouteElement
-              element={<ResetPassword />}
-              requiresForgotPassword={true}
+              element={<ResetPassword />} onlyUnAuth
             />
           }
         />

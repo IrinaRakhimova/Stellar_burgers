@@ -26,10 +26,6 @@ export const BurgerIngredients = () => {
     };
   }, [ingredients]);
 
-  useEffect(() => {
-    dispatch(fetchIngredientsThunk()); 
-  }, [dispatch]);
-
   const handleScroll = useCallback(() => {
     if (!scrollContainerRef.current) return;
 
