@@ -1,5 +1,5 @@
 import styles from "./login.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -7,23 +7,25 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail, setPassword, logInThunk } from '../../services/slices/userDataSlice'; 
+import { setEmail, logInThunk } from '../../services/slices/userDataSlice'; 
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { email, password, accessToken, error } = useSelector(state => state.userData);
+  const { email, accessToken, error } = useSelector(state => state.userData);
 
-  const onEmailChange = (e) => {
+  const [password, setPassword] = useState('');
+
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  
+  
+  const handleEmailChange = (e) => {
     dispatch(setEmail(e.target.value));
   };
 
-  const onPasswordChange = (e) => {
-    dispatch(setPassword(e.target.value));
-  };
-
   const handleLogIn = () => {
-    dispatch(logInThunk({ email, password }));  
+    dispatch(logInThunk({ email, password }));
+    setPassword('');  
   };
 
   useEffect(() => {
@@ -32,11 +34,18 @@ function Login() {
     }
   }, [accessToken, navigate]);
 
+  useEffect(() => {
+    const resetSuccessful = localStorage.getItem("resetSuccessful") === "true";
+    if (resetSuccessful) {
+      localStorage.removeItem("resetSuccessful");
+    }
+  }, []);
+
   return (
     <div className={styles.container}>
       <p className={styles.header}>Вход</p>
       <EmailInput
-        onChange={onEmailChange}
+        onChange={handleEmailChange}
         value={email}
         name={"email"}
         placeholder="E-mail"
@@ -44,7 +53,7 @@ function Login() {
         extraClass="mb-6"
       />
       <PasswordInput
-        onChange={onPasswordChange}
+        onChange={handlePasswordChange}
         value={password}
         name={"password"}
         extraClass="mb-6"

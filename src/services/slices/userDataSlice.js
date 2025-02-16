@@ -12,7 +12,6 @@ import {
 const initialState = {
   name: "",
   email: "",
-  password: "",
   success: false,
   error: null,
   token: "",
@@ -67,9 +66,6 @@ const userDataSlice = createSlice({
     },
     setEmail: (state, action) => {
       state.email = action.payload;
-    },
-    setPassword: (state, action) => {
-      state.password = action.payload;
     },
     setToken: (state, action) => {
       state.token = action.payload;
@@ -133,11 +129,12 @@ const userDataSlice = createSlice({
       })
       .addCase(getUserDataThunk.rejected, (state, action) => {
         state.error = action.payload || "Failed to fetch user data";
-      });
+      })
+      ;
   },
 });
 
-export const { setName, setEmail, setPassword, setToken, resetSuccess, setResetPassword } =
+export const { setName, setEmail, setToken, resetSuccess, setResetPassword } =
   userDataSlice.actions;
 
 export default userDataSlice.reducer;

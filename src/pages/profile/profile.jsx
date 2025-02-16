@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styles from "./profile.module.css";
 import {
   EmailInput,
@@ -5,20 +6,44 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, setName, logOutThunk, updateUserDataThunk } from '../../services/slices/userDataSlice'; 
-import { useEffect } from "react";
+import {
+  setEmail,
+  setName,
+  logOutThunk,
+  updateUserDataThunk,
+} from "../../services/slices/userDataSlice";
 
 function Profile() {
-  const location = useLocation(); 
+  const location = useLocation();
   const currentPath = location.pathname;
-
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-  const { email, password, name, successLogout } = useSelector(state => state.userData);
+  const { email, name, successLogout } = useSelector(
+    (state) => state.userData
+  );
+
+  const [password, setPassword] = useState('');
+
+  const [initialName, setInitialName] = useState(name);
+  const [initialEmail, setInitialEmail] = useState(email);
+  const [initialPassword, setInitialPassword] = useState("");
+
+  const [hasChanges, setHasChanges] = useState(false);
+
+  useEffect(() => {
+    if (
+      name !== initialName ||
+      email !== initialEmail ||
+      password !== initialPassword
+
+    ) {
+      setHasChanges(true);
+    } else {
+      setHasChanges(false);
+    }
+  }, [name, email, password, initialName, initialEmail]);
 
   const onNameChange = (e) => {
     dispatch(setName(e.target.value));
@@ -36,7 +61,7 @@ function Profile() {
     dispatch(logOutThunk({ token: localStorage.getItem("refreshToken") }))
       .unwrap()
       .then(() => {
-        localStorage.removeItem("accessToken"); 
+        localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         navigate("/login");
       })
@@ -47,14 +72,20 @@ function Profile() {
   };
 
   const handleDataUpdate = () => {
-    dispatch(updateUserDataThunk({ name, email, password}))
-  }
+    dispatch(updateUserDataThunk({ name, email, password }));
+  };
 
-useEffect(() => {
-  if (successLogout) {
-    navigate("/login");
-  }
-}, [successLogout, navigate]);
+  const handleCancel = () => {
+    dispatch(setName(initialName));
+    dispatch(setEmail(initialEmail));
+    dispatch(setPassword(password));
+  };
+
+  useEffect(() => {
+    if (successLogout) {
+      navigate("/login");
+    }
+  }, [successLogout, navigate]);
 
   return (
     <div className={styles.container}>
@@ -80,7 +111,7 @@ useEffect(() => {
           </Link>
         </div>
         <div className={styles.navItemContainer}>
-        <button className={styles.navItem} onClick={handleLogout}>
+          <button className={styles.navItem} onClick={handleLogout}>
             Выход
           </button>
         </div>
@@ -116,15 +147,21 @@ useEffect(() => {
           placeholder="Пароль"
           icon="EditIcon"
         />
-        <div className={styles.buttonsContainer}>
-        <button className={styles.button}>
-            Отменить
-        </button>
-        <Button htmlType="button" type="primary" size="large" onClick={handleDataUpdate}>
-          Сохранить
-        </Button>
-        </div>
-        
+        {hasChanges && (
+          <div className={styles.buttonsContainer}>
+            <button className={styles.button} onClick={handleCancel}>
+              Отменить
+            </button>
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              onClick={handleDataUpdate}
+            >
+              Сохранить
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

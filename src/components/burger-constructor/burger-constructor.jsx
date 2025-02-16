@@ -7,9 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addIngredient, deleteIngredient, resetIngredients } from '../../services/slices/burgerConstructorSlice';
 import { createOrderThunk, hideModal } from '../../services/slices/orderSlice';
 import { DraggableElement } from './draggable-element/draggable-element';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
   const { isModalVisible } = useSelector((state) => state.order); 
@@ -33,6 +35,8 @@ export const BurgerConstructor = () => {
   }, [bun, ingredients]);
 
   const handleOrderClick = () => {
+    const accessToken = localStorage.getItem("accessToken");
+  
     if (!bun) {
       alert('Please add a bun to your order!');
       return;
@@ -41,7 +45,13 @@ export const BurgerConstructor = () => {
       alert('Please add some ingredients to your order!');
       return;
     }
-
+  
+    if (!accessToken) {
+      localStorage.setItem("selectedIngredients", JSON.stringify({ bun, ingredients }));
+      navigate('/login', { state: { from: "/" } });
+      return;
+    }
+  
     const ingredientIds = [
       ...(bun ? [bun._id] : []), 
       ...ingredients.map((i) => i._id), 

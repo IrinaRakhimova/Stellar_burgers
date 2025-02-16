@@ -34,7 +34,10 @@ function App() {
     }, [dispatch]);
 
     useEffect(() => {
-      dispatch(getUserDataThunk());
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        dispatch(getUserDataThunk());
+      }
     }, [dispatch]);  
 
   return (
@@ -43,7 +46,7 @@ function App() {
       <Routes location={background || location}>
         <Route
           path="/"
-          element={<ProtectedRouteElement element={<Main />} />}
+         element={<Main />} 
         />
 
         <Route
@@ -64,7 +67,7 @@ function App() {
           path="/reset-password"
           element={
             <ProtectedRouteElement
-              element={<ResetPassword />} onlyUnAuth
+              element={<ResetPassword />} requireResetPassword onlyUnAuth
             />
           }
         />

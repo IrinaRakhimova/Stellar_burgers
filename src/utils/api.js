@@ -51,16 +51,8 @@ const request = async (endpoint, method = "GET", body) => {
     },
     body: body ? JSON.stringify(body) : undefined,
   };
-
   try {
-    const response = await fetch(`${URL}${endpoint}`, options);
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Something went wrong");
-    }
-
-    return data;
+    return await fetchWithRefresh(`${URL}${endpoint}`, options);
   } catch (error) {
     console.error(`API request failed: ${error}`);
     throw error;

@@ -23,6 +23,7 @@ function ForgotPassword() {
     
     useEffect(() => {
       if (resetPassword) {
+        localStorage.setItem("resetPassword", "true");
         navigate("/reset-password");
         dispatch(setResetPassword(false));
       }

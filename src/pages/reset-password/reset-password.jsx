@@ -5,18 +5,18 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { setPassword, setToken, resetSuccess, resetPasswordThunk } from "../../services/slices/userDataSlice";
+import { setToken, resetSuccess, resetPasswordThunk } from "../../services/slices/userDataSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function ResetPassword() {
-  const { success, password, error, token } = useSelector(state => state.userData);
+  const { success, error, token } = useSelector(state => state.userData);
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onPasswordChange = (e) => {
-      dispatch(setPassword(e.target.value));
-    };
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+
 
     const onTokenChange = (e) => {
       dispatch(setToken(e.target.value));
@@ -27,9 +27,11 @@ function ResetPassword() {
     };
 
     useEffect(() => {
-      if (success) {
-        navigate("/"); 
-        dispatch(resetSuccess());
+      if (success) {  
+        localStorage.removeItem("resetPassword");
+        localStorage.setItem("resetSuccessful", "true");  
+        dispatch(resetSuccess()); 
+        navigate("/login");           
       }
     }, [success, navigate, dispatch]);
 
@@ -37,7 +39,7 @@ function ResetPassword() {
     <div className={styles.container}>
       <p className={styles.header}>Восстановление пароля</p>
       <PasswordInput
-        onChange={onPasswordChange}
+        onChange={handlePasswordChange}
         value={password}
         name={"password"}
         extraClass="mb-6"
