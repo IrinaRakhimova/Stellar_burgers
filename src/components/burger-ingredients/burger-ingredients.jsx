@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useRef, useMemo, useCallback } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientsCategory } from './ingredients-category/ingredients-category';
@@ -58,7 +58,7 @@ export const BurgerIngredients = () => {
   }, [dispatch, currentSection]);
 
   const content = useMemo(() => {
-    if (ingredientsRequest) return <p><Loader /></p>;
+    if (ingredientsRequest) return <Loader />;
     if (ingredientsFailed) return <p>Ошибка загрузки ингредиентов.</p>;
     if (!ingredients.length) return <p>Ингредиенты не найдены.</p>;
 

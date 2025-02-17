@@ -13,8 +13,8 @@ import { Link } from "react-router-dom";
 
 export const IngredientCard = ({ ingredient }) => {
   const { bun, ingredients = [] } = useSelector((state) => ({
-    bun: state.addedIngredients?.bun,
-    ingredients: state.addedIngredients?.ingredients || [],
+    bun: state.burgerConstructor.bun,
+    ingredients: state.burgerConstructor.ingredients || [],
   }));
 
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export const IngredientCard = ({ ingredient }) => {
     type: "ingredient",
     item: { _id, name, image, price, type },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      isDragging: monitor.isDragging(),   
     }),
   });
 
@@ -39,9 +39,9 @@ export const IngredientCard = ({ ingredient }) => {
   }, [dispatch, ingredient]);
 
   const count =
-    type === "bun" && bun?._id === _id
-      ? 2
-      : ingredients.filter((item) => item._id === _id).length;
+  type === "bun" && bun?._id === _id
+    ? 2
+    : ingredients.filter((item) => item._id === _id).length;
 
   return (
     <Link
