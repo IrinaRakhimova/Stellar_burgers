@@ -16,12 +16,14 @@ import { useEffect } from "react";
 import { fetchIngredientsThunk } from "../services/slices/ingredientsSlice.js";
 import { getUserDataThunk } from "../services/slices/userDataSlice.js";
 import { useDispatch } from "react-redux";
+import OrderHistory from "./ui/order-history/order-history.jsx";
+import ProfileForm from "./ui/profile-form/profile-form.jsx";
+import NotFound from "../pages/not-found/not-found.jsx";
 
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const background = location.state && location.state.background;
 
@@ -30,24 +32,23 @@ function App() {
   };
 
   useEffect(() => {
-      dispatch(fetchIngredientsThunk()); 
-    }, [dispatch]);
+    dispatch(fetchIngredientsThunk());
+  }, [dispatch]);
 
-    useEffect(() => {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        dispatch(getUserDataThunk());
-      }
-    }, [dispatch]);  
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      dispatch(getUserDataThunk());
+    }
+  }, [dispatch]);
 
   return (
     <div className="app-container">
       <AppHeader />
       <Routes location={background || location}>
-        <Route
-          path="/"
-         element={<Main />} 
-        />
+        <Route path="*" element={<NotFound />} />
+
+        <Route path="/" element={<Main />} />
 
         <Route
           path="/login"
@@ -67,14 +68,19 @@ function App() {
           path="/reset-password"
           element={
             <ProtectedRouteElement
-              element={<ResetPassword />} requireResetPassword onlyUnAuth
+              element={<ResetPassword />}
+              requireResetPassword
+              onlyUnAuth
             />
           }
         />
         <Route
           path="/profile"
           element={<ProtectedRouteElement element={<Profile />} />}
-        />
+        >
+          <Route index element={<ProfileForm />} />
+          <Route path="orders" element={<OrderHistory />} />
+        </Route>
         {!background && (
           <Route
             path="/ingredients/:ingredientId"

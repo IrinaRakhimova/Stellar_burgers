@@ -1,4 +1,3 @@
-import styles from "./main.module.css";
 import { BurgerConstructor } from "../../components/burger-constructor/burger-constructor.jsx";
 import { BurgerIngredients } from "../../components/burger-ingredients/burger-ingredients.jsx";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -11,18 +10,20 @@ function Main() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const savedIngredients = JSON.parse(localStorage.getItem("selectedIngredients"));
+    const savedIngredients = JSON.parse(
+      localStorage.getItem("selectedIngredients")
+    );
     if (savedIngredients) {
       if (savedIngredients.bun) {
         dispatch(addIngredient(savedIngredients.bun));
       }
-      savedIngredients.ingredients.forEach(ingredient => {
+      savedIngredients.ingredients.forEach((ingredient) => {
         dispatch(addIngredient(ingredient));
       });
       localStorage.removeItem("selectedIngredients");
     }
   }, [dispatch]);
-  
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="main">

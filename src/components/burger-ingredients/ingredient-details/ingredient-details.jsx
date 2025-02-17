@@ -5,6 +5,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { fetchIngredientsThunk } from "../../../services/slices/ingredientsSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { Loader } from "../../ui/loader/loader";
 
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
@@ -25,9 +26,9 @@ const IngredientDetails = () => {
     }
   }, [dispatch, ingredients.length]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (hasError) return <p>Failed to load ingredients. Please try again.</p>;
-  if (!selectedIngredient) return <p>Ingredient not found</p>;
+  if (isLoading) return <p><Loader /></p>;
+  if (hasError) return <p>Не удалось загрузить ингредиент</p>;
+  if (!selectedIngredient) return <p>Ингредиент не найден</p>;
 
   return (
     <div className={`${styles.container} ${isModal ? styles.modal : styles.page}`}>

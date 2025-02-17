@@ -16,7 +16,9 @@ export const createOrderThunk = createAsyncThunk(
         throw new Error("Invalid response format");
       }
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || error.message || "Unknown error");
+      return rejectWithValue(
+        error?.response?.data?.message || error.message || "Unknown error"
+      );
     }
   }
 );
@@ -43,6 +45,7 @@ const orderSlice = createSlice({
       .addCase(createOrderThunk.pending, (state) => {
         state.orderRequest = true;
         state.orderFailed = false;
+        state.isModalVisible = true;
       })
       .addCase(createOrderThunk.fulfilled, (state, action) => {
         state.orderRequest = false;

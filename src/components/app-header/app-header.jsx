@@ -37,10 +37,10 @@ export const AppHeader = () => {
                         </Link>
                     </li>
                     <li className={styles.listItem}>
-                        <ProfileIcon type={currentPath === '/profile' ? 'primary' : 'secondary'} />
+                        <ProfileIcon type={currentPath.startsWith('/profile')  ? 'primary' : 'secondary'} />
                         <Link 
                             to="/profile" 
-                            className={`${styles.link} ${currentPath === '/profile' ? styles.active : ''}`}
+                            className={`${styles.link} ${currentPath.startsWith('/profile') ? styles.active : ''}`}
                         >
                             Личный кабинет
                         </Link>

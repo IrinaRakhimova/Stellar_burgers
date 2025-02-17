@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   registerUser,
   loginUser,
-  handleForgotPassword,
-  resetPassword,
   logOut,
   getUserData,
   updateUserData,
@@ -14,14 +12,12 @@ const initialState = {
   email: "",
   success: false,
   error: null,
+  request: false,
   token: "",
-  userDataRequest: false,
   successLogout: false,
   isAuth: false,
-  order: null, 
-  orderRequest: false, 
-  orderError: null,
-  resetPassword: false, 
+  order: null,
+  resetPassword: false,
 };
 
 const createApiThunk = (type, apiCall) =>
@@ -38,14 +34,6 @@ export const registerUserThunk = createApiThunk(
   registerUser
 );
 export const logInThunk = createApiThunk("userData/logIn", loginUser);
-export const forgotPasswordThunk = createApiThunk(
-  "userData/handleForgotPassword",
-  handleForgotPassword
-);
-export const resetPasswordThunk = createApiThunk(
-  "userData/resetPassword",
-  resetPassword
-);
 export const logOutThunk = createApiThunk("userData/exit", logOut);
 export const getUserDataThunk = createApiThunk(
   "userData/getUserData",
@@ -55,7 +43,6 @@ export const updateUserDataThunk = createApiThunk(
   "userData/updateUserData",
   updateUserData
 );
-
 
 const userDataSlice = createSlice({
   name: "userData",
@@ -73,8 +60,17 @@ const userDataSlice = createSlice({
     resetSuccess: (state) => {
       state.success = false;
     },
-    setResetPassword: (state, action) => { 
+    setResetPassword: (state, action) => {
       state.resetPassword = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
+    setRequest: (state, action) => {
+      state.request = action.payload;
+    },
+    setSuccess: (state, action) => {
+      state.success = true;
     },
   },
   extraReducers: (builder) => {
@@ -88,9 +84,13 @@ const userDataSlice = createSlice({
         localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.error = null;
       })
+      .addCase(registerUserThunk.pending, (state) => {
+        state.request = true;
+        state.error = false;
+      })
       .addCase(registerUserThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = action.payload || "Registration failed";
+        state.error = action.payload || "Неизвестная ошибка";
       })
       .addCase(logInThunk.fulfilled, (state, action) => {
         state.success = true;
@@ -101,25 +101,13 @@ const userDataSlice = createSlice({
         localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.error = null;
       })
+      .addCase(logInThunk.pending, (state) => {
+        state.request = true;
+        state.error = false;
+      })
       .addCase(logInThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = action.payload || "LogIn failed";
-      })
-      .addCase(forgotPasswordThunk.fulfilled, (state) => {
-        state.resetPassword = true;
-        state.error = null;
-      })
-      .addCase(forgotPasswordThunk.rejected, (state, action) => {
-        state.success = false;
-        state.error = action.payload || "LogIn failed";
-      })
-      .addCase(resetPasswordThunk.fulfilled, (state) => {
-        state.success = true;
-        state.error = null;
-      })
-      .addCase(resetPasswordThunk.rejected, (state, action) => {
-        state.success = false;
-        state.error = action.payload || "LogIn failed";
+        state.error = action.payload || "Неизвестная ошибка";
       })
       .addCase(getUserDataThunk.fulfilled, (state, action) => {
         state.name = action.payload.user.name;
@@ -127,14 +115,25 @@ const userDataSlice = createSlice({
         state.isAuth = true;
         state.error = null;
       })
-      .addCase(getUserDataThunk.rejected, (state, action) => {
-        state.error = action.payload || "Failed to fetch user data";
+      .addCase(getUserDataThunk.pending, (state) => {
+        state.request = true;
+        state.error = false;
       })
-      ;
+      .addCase(getUserDataThunk.rejected, (state, action) => {
+        state.error = action.payload || "Неизвестная ошибка";
+      });
   },
 });
 
-export const { setName, setEmail, setToken, resetSuccess, setResetPassword } =
-  userDataSlice.actions;
+export const {
+  setName,
+  setEmail,
+  setToken,
+  resetSuccess,
+  setResetPassword,
+  setError,
+  setRequest,
+  setSuccess,
+} = userDataSlice.actions;
 
 export default userDataSlice.reducer;

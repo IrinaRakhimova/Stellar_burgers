@@ -3,7 +3,8 @@ import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientsCategory } from './ingredients-category/ingredients-category';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchIngredientsThunk, setCurrentSection } from '../../services/slices/ingredientsSlice';
+import { setCurrentSection } from '../../services/slices/ingredientsSlice';
+import { Loader } from '../ui/loader/loader';
 
 export const BurgerIngredients = () => {
   const bunsRef = useRef(null);
@@ -57,7 +58,7 @@ export const BurgerIngredients = () => {
   }, [dispatch, currentSection]);
 
   const content = useMemo(() => {
-    if (ingredientsRequest) return <p>Загрузка...</p>;
+    if (ingredientsRequest) return <p><Loader /></p>;
     if (ingredientsFailed) return <p>Ошибка загрузки ингредиентов.</p>;
     if (!ingredients.length) return <p>Ингредиенты не найдены.</p>;
 

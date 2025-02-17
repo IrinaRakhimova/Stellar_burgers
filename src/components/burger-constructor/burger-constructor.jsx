@@ -38,16 +38,15 @@ export const BurgerConstructor = () => {
     const accessToken = localStorage.getItem("accessToken");
   
     if (!bun) {
-      alert('Please add a bun to your order!');
+      alert('Не хватает булки!');
       return;
     }
     if (ingredients.length === 0) {
-      alert('Please add some ingredients to your order!');
+      alert('Нужно добавить ингредиенты!');
       return;
     }
   
     if (!accessToken) {
-      localStorage.setItem("selectedIngredients", JSON.stringify({ bun, ingredients }));
       navigate('/login', { state: { from: "/" } });
       return;
     }
@@ -63,7 +62,7 @@ export const BurgerConstructor = () => {
         dispatch(resetIngredients()); 
       })
       .catch((error) => {
-        console.error("Order creation failed", error);
+        console.error("Не удалось создать заказ", error);
       });
   };
 

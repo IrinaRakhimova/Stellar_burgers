@@ -6,10 +6,9 @@ export const fetchIngredientsThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await fetchIngredients();
-      console.log("API Response:", res); 
 
       if (res && Array.isArray(res.data)) {
-        return res.data; 
+        return res.data;
       } else {
         throw new Error("Invalid response format");
       }
@@ -24,8 +23,8 @@ const initialState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
-  currentSection: "bun",    
-  selectedIngredient: null, 
+  currentSection: "bun",
+  selectedIngredient: null,
 };
 
 const ingredientsSlice = createSlice({
@@ -56,6 +55,7 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const { setCurrentSection, setSelectedIngredient } = ingredientsSlice.actions;
+export const { setCurrentSection, setSelectedIngredient } =
+  ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

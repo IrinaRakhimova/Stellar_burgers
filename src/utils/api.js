@@ -1,6 +1,6 @@
 const URL = "https://norma.nomoreparties.space/api";
 
-const checkReponse = (res) => {
+const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
@@ -14,33 +14,50 @@ export const refreshToken = () => {
       token: localStorage.getItem("refreshToken"),
     }),
   })
-  .then(checkReponse)
-  .then((refreshData) => {
-    if (!refreshData.success) {
+    .then(checkResponse)
+    .then((refreshData) => {
+      if (!refreshData.success) {
         return Promise.reject(refreshData);
       }
-    localStorage.setItem("refreshToken", refreshData.refreshToken); 
-    localStorage.setItem("accessToken", refreshData.accessToken);
-    return refreshData;
-  });
+      localStorage.setItem("refreshToken", refreshData.refreshToken);
+      localStorage.setItem("accessToken", refreshData.accessToken);
+      return refreshData;
+    });
 };
 
 export const fetchWithRefresh = async (url, options) => {
   try {
     const res = await fetch(url, options);
-    return await checkReponse(res);
+    return await checkResponse(res);
   } catch (err) {
     if (err.message === "jwt expired") {
-      const refreshData = await refreshToken(); 
+      const refreshData = await refreshToken();
       options.headers.authorization = refreshData.accessToken;
-      const res = await fetch(url, options); 
-      return await checkReponse(res);
+      const res = await fetch(url, options);
+      return await checkResponse(res);
     } else {
       return Promise.reject(err);
     }
   }
 };
 
+export const handleForgotPassword = async (email) => {
+  const res = await fetch(`${URL}/password-reset`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(email),
+  });
+  return checkResponse(res);
+};
+
+export const resetPassword = async (userData) => {
+  const res = await fetch(`${URL}/password-reset/reset`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(userData),
+  });
+  return checkResponse(res);
+};
 
 const request = async (endpoint, method = "GET", body) => {
   const options = {
@@ -62,19 +79,15 @@ const request = async (endpoint, method = "GET", body) => {
 export const createOrderRequest = (ingredientIds) =>
   request("/orders", "POST", { ingredients: ingredientIds });
 export const fetchIngredients = () => request("/ingredients");
-
-export const handleForgotPassword = (email) =>
-  request("/password-reset", "POST", email);
-export const resetPassword = (userData) =>
-  request("/password-reset/reset", "POST", userData);
 export const registerUser = (userData) =>
   request("/auth/register", "POST", userData);
 export const loginUser = (userData) => request("/auth/login", "POST", userData);
 export const logOut = () =>
-  request("/auth/logout", "POST", { token: localStorage.getItem("refreshToken") });
-
-
+  request("/auth/logout", "POST", {
+    token: localStorage.getItem("refreshToken"),
+  });
 export const getUserData = () => request("/auth/user");
 export const updateUserData = (userData) =>
-  request("/auth/user", "PATCH", userData, { token: localStorage.getItem("refreshToken") });
-
+  request("/auth/user", "PATCH", userData, {
+    token: localStorage.getItem("refreshToken"),
+  });

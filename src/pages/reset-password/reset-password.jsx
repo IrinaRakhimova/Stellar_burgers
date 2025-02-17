@@ -4,63 +4,84 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from 'react-redux';
-import { setToken, resetSuccess, resetPasswordThunk } from "../../services/slices/userDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setToken,
+  setResetPassword,
+  setError,
+  setRequest,
+  setSuccess,
+} from "../../services/slices/userDataSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { resetPassword } from "../../utils/api";
 
 function ResetPassword() {
-  const { success, error, token } = useSelector(state => state.userData);
-  const [password, setPassword] = useState('');
+  const { token, success } = useSelector((state) => state.userData);
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
+  const handleTokenChange = (e) => {
+    dispatch(setToken(e.target.value));
+  };
 
-    const onTokenChange = (e) => {
-      dispatch(setToken(e.target.value));
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(setRequest(true));
 
-  const handleReset = () => {
-      dispatch(resetPasswordThunk({ password, token }));
-    };
+    try {
+      await resetPassword({ password, token });
+      dispatch(setSuccess(true));
+      dispatch(setRequest(false));
+    } catch (err) {
+      dispatch(setError(err.message || "Ошибка восстановления пароля"));
+      dispatch(setRequest(false));
+    }
+  };
 
-    useEffect(() => {
-      if (success) {  
-        localStorage.removeItem("resetPassword");
-        localStorage.setItem("resetSuccessful", "true");  
-        dispatch(resetSuccess()); 
-        navigate("/login");           
-      }
-    }, [success, navigate, dispatch]);
+  useEffect(() => {
+    console.log("Success flag:", success);
+    if (success) {
+      localStorage.removeItem("resetPassword");
+      localStorage.setItem("resetSuccessful", "true");
+      dispatch(setResetPassword(false));
+      navigate("/login");
+    }
+  }, [success, navigate, dispatch]);
 
   return (
     <div className={styles.container}>
       <p className={styles.header}>Восстановление пароля</p>
-      <PasswordInput
-        onChange={handlePasswordChange}
-        value={password}
-        name={"password"}
-        extraClass="mb-6"
-        placeholder="Введите новый пароль"
-      />
-      <Input
-        type={"text"}
-        name={"code"}
-        placeholder={"Введите код из письма"}
-        onChange={onTokenChange}
-        value={token}
-        extraClass="mb-6"
-      />
-      <div className={styles.button}>
-        <Button htmlType="button" type="primary" size="large" onClick={handleReset}>
-          Сохранить
-        </Button>
-      </div>
-      {error && <p className={styles.error}>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <PasswordInput
+          onChange={handlePasswordChange}
+          value={password}
+          name={"password"}
+          extraClass="mb-6"
+          placeholder="Введите новый пароль"
+        />
+        <Input
+          type={"text"}
+          name={"code"}
+          placeholder={"Введите код из письма"}
+          onChange={handleTokenChange}
+          value={token}
+          extraClass="mb-6"
+        />
+        <div className={styles.button}>
+          <Button htmlType="submit" type="primary" size="large">
+            Сохранить
+          </Button>
+        </div>
+      </form>
       <p className={styles.text}>
-        Вспомнили пароль? <Link to='/login' className={styles.link}>Войти</Link>
+        Вспомнили пароль?{" "}
+        <Link to="/login" className={styles.link}>
+          Войти
+        </Link>
       </p>
     </div>
   );
