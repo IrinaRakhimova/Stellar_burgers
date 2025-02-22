@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 148px);
+}
+
+.header {
+  composes: text text_type_main-large mb-6 from global;
+}
+
+.text {
+  composes: text text_type_main-default text_color_inactive mb-4 from global;
+}
+
+.button {
+  composes: mb-20 from global;
+  display: flex;
+  justify-content: center;
+}
+
+.link {
+  color: rgba(76, 76, 255, 1);
+  text-decoration: none;
+}
+
+.error {
+  composes: text text_type_main-default text_color_inactive mb-4 from global;
+  color: red;
+}

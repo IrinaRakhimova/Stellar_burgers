@@ -1,64 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './app-header.module.css';
-import PropTypes from 'prop-types'; 
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useLocation } from 'react-router-dom';
 
 export const AppHeader = () => {
-    const [active, setActive] = useState('constructor'); 
+    const location = useLocation();
+    const currentPath = location.pathname;
 
-    const handleHeaderClick = (e, item) => {
-        e.preventDefault(); 
-        setActive(item); 
-    };
-  
     return (
         <header className={styles.header}>
             <nav className={styles.navigation}>
                 <ul className={styles.list}>
                     <li className={styles.leftSideList}>
                         <div className={styles.listItem}>
-                            <BurgerIcon type={active === 'constructor' ? 'primary' : 'secondary'} />
-                            <a 
-                                href="/" 
-                                className={`${styles.link} ${active === 'constructor' ? styles.active : ''}`}
-                                onClick={(e) => handleHeaderClick(e, 'constructor')}
+                            <BurgerIcon type={currentPath === '/' ? 'primary' : 'secondary'} />
+                            <Link 
+                                to="/" 
+                                className={`${styles.link} ${currentPath === '/' ? styles.active : ''}`}
                             >
                                 Конструктор
-                            </a>
+                            </Link>
                         </div>
                         <div className={styles.listItem}>
-                            <ListIcon type={active === 'orders' ? 'primary' : 'secondary'} />
-                            <a 
-                                href="/" 
-                                className={`${styles.link} ${active === 'orders' ? styles.active : ''}`}
-                                onClick={(e) => handleHeaderClick(e, 'orders')}
+                            <ListIcon type={currentPath === '/orders' ? 'primary' : 'secondary'} />
+                            <Link 
+                                to="/orders"  
+                                className={`${styles.link} ${currentPath === '/orders' ? styles.active : ''}`}
                             >
                                 Лента заказов
-                            </a>
+                            </Link>
                         </div>    
                     </li>
                     <li>
-                        <a href="/">
+                        <Link to="/">
                             <Logo />
-                        </a>
+                        </Link>
                     </li>
                     <li className={styles.listItem}>
-                        <ProfileIcon type={active === 'profile' ? 'primary' : 'secondary'} />
-                        <a 
-                            href="/" 
-                            className={`${styles.link} ${active === 'profile' ? styles.active : ''}`}
-                            onClick={(e) => handleHeaderClick(e, 'profile')}
+                        <ProfileIcon type={currentPath.startsWith('/profile')  ? 'primary' : 'secondary'} />
+                        <Link 
+                            to="/profile" 
+                            className={`${styles.link} ${currentPath.startsWith('/profile') ? styles.active : ''}`}
                         >
                             Личный кабинет
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </nav>
         </header>
     );
-};
-
-AppHeader.propTypes = {
-    active: PropTypes.string,
-    setActive: PropTypes.func,
 };

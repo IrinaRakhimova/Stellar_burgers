@@ -18,3 +18,8 @@
     text-align: center;
     height: 46px;
 }
+
+.link {
+    text-decoration: none;
+    color: #ffffff;
+}

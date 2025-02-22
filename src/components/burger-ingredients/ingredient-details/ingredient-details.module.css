@@ -1,7 +1,13 @@
-.container {
+.modal {
     composes: pt-20 pr-10 pb-15 pl-10 from global;
     background-color: rgba(28, 28, 33, 1);
     border-radius: 40px;
+}
+
+.page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
 }
 
 .info {

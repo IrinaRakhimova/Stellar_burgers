@@ -1,0 +1,17 @@
+.active {
+  color: rgba(242, 242, 243, 1);
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button {
+  composes: text text_type_main-default from global;
+  width: 167px;
+  background-color: transparent;
+  border: none;
+  color: #593feb;
+  cursor: pointer;
+}

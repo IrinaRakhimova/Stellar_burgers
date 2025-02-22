@@ -1,9 +1,17 @@
-import { compose, createStore, applyMiddleware } from 'redux';
-import { thunk } from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import burgerConstructorReducer from './slices/burgerConstructorSlice';
+import orderReducer from './slices/orderSlice';
+import ingredientsReducer from './slices/ingredientsSlice';
+import userDataReducer from './slices/userDataSlice';
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
+export const store = configureStore({
+  reducer: {
+    burgerConstructor: burgerConstructorReducer,
+    order: orderReducer,
+    ingredients: ingredientsReducer,
+    userData: userDataReducer,
+  },
+  devTools: process.env.NODE_ENV !== 'production', // Enables Redux DevTools in development mode
+});
 
-export const enhancer = composeEnhancers(applyMiddleware(thunk));
+export default store;
