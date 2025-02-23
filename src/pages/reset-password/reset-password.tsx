@@ -43,7 +43,7 @@ const ResetPassword: React.FC = () => {
 
     try {
       await resetPassword({ password, token });
-      dispatch(setSuccess(true));
+      dispatch(setSuccess());
       dispatch(setRequest(false));
     } catch (err: unknown) {
       if (err instanceof Error) {
