@@ -1,39 +1,34 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { fetchIngredients } from "../../utils/api";
 
-interface Ingredient {
-  _id: string;
-  name: string;
-  image: string;
-  price: number;
-  type: string;
-}
-
-interface IngredientsState {
+type IngredientsState = {
   ingredients: Ingredient[];
   ingredientsRequest: boolean;
   ingredientsFailed: boolean;
   currentSection: string;
   selectedIngredient: Ingredient | null;
-}
+};
 
-export const fetchIngredientsThunk = createAsyncThunk<Ingredient[], void, { rejectValue: string }>(
-  "ingredients/fetchIngredients",
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await fetchIngredients();
+export const fetchIngredientsThunk = createAsyncThunk<
+  Ingredient[],
+  void,
+  { rejectValue: string }
+>("ingredients/fetchIngredients", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetchIngredients();
 
-      if (res && Array.isArray(res.data)) {
-        return res.data;
-      } else {
-        throw new Error("Invalid response format");
-      }
-    } catch (error) {
-      console.error("Error fetching ingredients:", error);
-      return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
+    if (res && Array.isArray(res.data)) {
+      return res.data;
+    } else {
+      throw new Error("Invalid response format");
     }
+  } catch (error) {
+    console.error("Error fetching ingredients:", error);
+    return rejectWithValue(
+      error instanceof Error ? error.message : "Unknown error"
+    );
   }
-);
+});
 
 const initialState: IngredientsState = {
   ingredients: [],
@@ -50,7 +45,10 @@ const ingredientsSlice = createSlice({
     setCurrentSection: (state, action: PayloadAction<string>) => {
       state.currentSection = action.payload;
     },
-    setSelectedIngredient: (state, action: PayloadAction<Ingredient | null>) => {
+    setSelectedIngredient: (
+      state,
+      action: PayloadAction<Ingredient | null>
+    ) => {
       state.selectedIngredient = action.payload;
     },
   },
@@ -71,6 +69,7 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const { setCurrentSection, setSelectedIngredient } = ingredientsSlice.actions;
+export const { setCurrentSection, setSelectedIngredient } =
+  ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

@@ -15,12 +15,6 @@ import {
 import { useState } from "react";
 import { AppDispatch } from "../../services/store";
 
-interface UserDataState {
-  name: string;
-  email: string;
-  error: string | null;
-}
-
 export const Register: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { name, email, error } = useSelector(
@@ -55,9 +49,9 @@ export const Register: React.FC = () => {
           placeholder={"Имя"}
           onChange={handleNameChange}
           value={name}
-          extraClass="mb-6" 
-          onPointerEnterCapture={undefined} 
-          onPointerLeaveCapture={undefined}        
+          extraClass="mb-6"
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
         />
         <EmailInput
           onChange={handleEmailChange}
@@ -89,4 +83,3 @@ export const Register: React.FC = () => {
     </div>
   );
 };
-

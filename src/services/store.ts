@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import burgerConstructorReducer from './slices/burgerConstructorSlice';
-import orderReducer from './slices/orderSlice';
-import ingredientsReducer from './slices/ingredientsSlice';
-import userDataReducer from './slices/userDataSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import burgerConstructorReducer from "./slices/burgerConstructorSlice";
+import orderReducer from "./slices/orderSlice";
+import ingredientsReducer from "./slices/ingredientsSlice";
+import userDataReducer from "./slices/userDataSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +11,7 @@ export const store = configureStore({
     ingredients: ingredientsReducer,
     userData: userDataReducer,
   },
-  devTools: process.env.NODE_ENV !== 'production', 
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;

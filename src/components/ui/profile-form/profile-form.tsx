@@ -83,9 +83,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
         onChange={handleNameChange}
         value={name}
         extraClass="mb-6"
-        icon="EditIcon" 
-        onPointerEnterCapture={undefined} 
-        onPointerLeaveCapture={undefined}      
+        icon="EditIcon"
       />
       <EmailInput
         onChange={handleEmailChange}

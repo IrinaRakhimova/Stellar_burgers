@@ -1,8 +1,8 @@
 import "./App.css";
 import { AppHeader } from "./app-header/app-header";
 import { Routes, Route } from "react-router-dom";
-import ProtectedRouteElement from "./protected-route/protected-route";
-import { Main }from "../pages/main/main";
+import { ProtectedRouteElement } from "./protected-route/protected-route";
+import { Main } from "../pages/main/main";
 import { Login } from "../pages/login/login";
 import { Register } from "../pages/register/register";
 import { ForgotPassword } from "../pages/forgot-password/forgot-password";
@@ -20,7 +20,7 @@ import ProfileForm from "./ui/profile-form/profile-form";
 import { NotFound } from "../pages/not-found/not-found";
 import { AppDispatch } from "../services/store";
 
-interface LocationState {
+type LocationState = {
   background?: Location;
 }
 
@@ -108,6 +108,6 @@ const App: React.FC = () => {
       )}
     </div>
   );
-}
+};
 
 export default App;

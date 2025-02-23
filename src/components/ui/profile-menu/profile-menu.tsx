@@ -14,7 +14,7 @@ interface RootState {
 const ProfileMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>(); 
+  const dispatch = useDispatch<AppDispatch>();
   const currentPath = location.pathname;
 
   const { successLogout } = useSelector((state: RootState) => state.userData);
@@ -27,7 +27,7 @@ const ProfileMenu: React.FC = () => {
         localStorage.removeItem("refreshToken");
         navigate("/login");
       })
-      .catch((error: unknown) => { 
+      .catch((error: unknown) => {
         if (error instanceof Error) {
           console.error("Logout failed:", error.message);
         } else {

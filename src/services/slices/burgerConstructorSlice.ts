@@ -1,23 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-// Define the Ingredient type
-interface Ingredient {
-  instanceId: string;
-  name: string;
-  image: string;
-  price: number;
-  _id: string;
-  type: string; // Assuming this is for 'bun' or other ingredient types
-}
-
-// Define the BurgerConstructorState type
-interface BurgerConstructorState {
+type BurgerConstructorState = {
   bun: Ingredient | null;
   ingredients: Ingredient[];
-}
+};
 
-// Initial state with explicit types
 const initialState: BurgerConstructorState = {
   bun: null,
   ingredients: [],
@@ -42,7 +30,7 @@ const burgerConstructorSlice = createSlice({
           payload: {
             ...ingredient,
             instanceId: uuidv4(),
-            price: ingredient.price || 0, // Ensure price is set
+            price: ingredient.price || 0,
           },
         };
       },
@@ -56,7 +44,10 @@ const burgerConstructorSlice = createSlice({
         state.bun = null;
       }
     },
-    reorderIngredients: (state, action: PayloadAction<{ fromIndex: number; toIndex: number }>) => {
+    reorderIngredients: (
+      state,
+      action: PayloadAction<{ fromIndex: number; toIndex: number }>
+    ) => {
       const { fromIndex, toIndex } = action.payload;
       const [movedItem] = state.ingredients.splice(fromIndex, 1);
       state.ingredients.splice(toIndex, 0, movedItem);
@@ -65,7 +56,6 @@ const burgerConstructorSlice = createSlice({
   },
 });
 
-// Export the action creators
 export const {
   addIngredient,
   deleteIngredient,
@@ -73,5 +63,4 @@ export const {
   resetIngredients,
 } = burgerConstructorSlice.actions;
 
-// Export the reducer
 export default burgerConstructorSlice.reducer;

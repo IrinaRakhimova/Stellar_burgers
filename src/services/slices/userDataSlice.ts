@@ -7,19 +7,6 @@ import {
   updateUserData,
 } from "../../utils/api";
 
-interface UserDataState {
-  name: string;
-  email: string;
-  success: boolean;
-  error: string | null;
-  request: boolean;
-  token: string;
-  successLogout: boolean;
-  isAuth: boolean;
-  order: null | any; 
-  resetPassword: boolean;
-}
-
 const initialState: UserDataState = {
   name: "",
   email: "",
@@ -33,10 +20,7 @@ const initialState: UserDataState = {
   resetPassword: false,
 };
 
-const createApiThunk = <T, R>(
-  type: string,
-  apiCall: (arg: T) => Promise<R>
-) =>
+const createApiThunk = <T, R>(type: string, apiCall: (arg: T) => Promise<R>) =>
   createAsyncThunk(type, async (arg: T, { rejectWithValue }) => {
     try {
       return await apiCall(arg);
@@ -99,6 +83,7 @@ const userDataSlice = createSlice({
         localStorage.setItem("accessToken", action.payload.accessToken);
         localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.error = null;
+        state.request = false;
       })
       .addCase(registerUserThunk.pending, (state) => {
         state.request = true;
@@ -106,7 +91,10 @@ const userDataSlice = createSlice({
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = typeof action.payload === 'string' ? action.payload : "Неизвестная ошибка";
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : "Неизвестная ошибка";
       })
       .addCase(logInThunk.fulfilled, (state, action) => {
         state.success = true;
@@ -116,6 +104,7 @@ const userDataSlice = createSlice({
         localStorage.setItem("accessToken", action.payload.accessToken);
         localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.error = null;
+        state.request = false;
       })
       .addCase(logInThunk.pending, (state) => {
         state.request = true;
@@ -123,20 +112,27 @@ const userDataSlice = createSlice({
       })
       .addCase(logInThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = typeof action.payload === 'string' ? action.payload : "Неизвестная ошибка";
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : "Неизвестная ошибка";
       })
       .addCase(getUserDataThunk.fulfilled, (state, action) => {
         state.name = action.payload.user.name;
         state.email = action.payload.user.email;
         state.isAuth = true;
         state.error = null;
+        state.request = false;
       })
       .addCase(getUserDataThunk.pending, (state) => {
         state.request = true;
         state.error = null;
       })
       .addCase(getUserDataThunk.rejected, (state, action) => {
-        state.error = typeof action.payload === 'string' ? action.payload : "Неизвестная ошибка";
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : "Неизвестная ошибка";
       });
   },
 });

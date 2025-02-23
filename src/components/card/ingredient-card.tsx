@@ -10,19 +10,13 @@ import { useLocation, Link } from "react-router-dom";
 import { setSelectedIngredient } from "../../services/slices/ingredientsSlice";
 import { RootState, AppDispatch } from "../../services/store";
 
-interface Ingredient {
-  _id: string;
-  name: string;
-  image: string;
-  price: number;
-  type: string;
-}
-
 interface IngredientCardProps {
   ingredient: Ingredient;
 }
 
-export const IngredientCard: React.FC<IngredientCardProps> = ({ ingredient }) => {
+export const IngredientCard: React.FC<IngredientCardProps> = ({
+  ingredient,
+}) => {
   const { bun, ingredients = [] } = useSelector((state: RootState) => ({
     bun: state.burgerConstructor.bun,
     ingredients: state.burgerConstructor.ingredients || [],
@@ -64,7 +58,9 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({ ingredient }) =>
         onClick={handleClick}
       >
         <img src={image} alt={name} className={styles.image} />
-        {count !== 0 && <Counter count={count} size="default" extraClass="m-1" />}
+        {count !== 0 && (
+          <Counter count={count} size="default" extraClass="m-1" />
+        )}
         <div className={styles.price}>
           <p className={styles.priceValue}>{price}</p>
           <CurrencyIcon type="primary" />

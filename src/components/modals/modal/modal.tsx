@@ -1,7 +1,7 @@
 import React, { useEffect, ReactNode } from "react";
 import ReactDOM from "react-dom";
 import ModalOverlay from "../modal-overlay/modal-overlay";
-import styles from './modal.module.css';
+import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const modalRoot = document.getElementById("react-modals");
@@ -15,13 +15,13 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ children, header, onClose }) => {
   if (!modalRoot) {
     console.error("Modal root not found in the DOM");
-    return null; 
+    return null;
   }
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose(); 
+        onClose();
       }
     };
     document.addEventListener("keydown", handleKeyDown);

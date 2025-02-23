@@ -1,23 +1,22 @@
-import React, { useMemo } from 'react';
-import { useDrop } from 'react-dnd';
-import styles from './burger-constructor.module.css';
-import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import OrderDetails from '../modals/order-details/order-details';
-import { useDispatch, useSelector } from 'react-redux';
-import { addIngredient, deleteIngredient, resetIngredients } from '../../services/slices/burgerConstructorSlice';
-import { createOrderThunk, hideModal } from '../../services/slices/orderSlice';
-import { DraggableElement } from './draggable-element/draggable-element';
-import { useNavigate } from 'react-router-dom';
-import { AppDispatch } from '../../services/store';
-
-interface Ingredient {
-  instanceId: string;
-  name: string;
-  image: string;
-  price: number;
-  _id: string;
-  type: string;
-}
+import React, { useMemo } from "react";
+import { useDrop } from "react-dnd";
+import styles from "./burger-constructor.module.css";
+import {
+  ConstructorElement,
+  CurrencyIcon,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import OrderDetails from "../modals/order-details/order-details";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addIngredient,
+  deleteIngredient,
+  resetIngredients,
+} from "../../services/slices/burgerConstructorSlice";
+import { createOrderThunk, hideModal } from "../../services/slices/orderSlice";
+import { DraggableElement } from "./draggable-element/draggable-element";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../services/store";
 
 interface BurgerConstructorState {
   bun: Ingredient | null;
@@ -32,11 +31,16 @@ export const BurgerConstructor: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { bun, ingredients } = useSelector((state: { burgerConstructor: BurgerConstructorState }) => state.burgerConstructor);
-  const { isModalVisible } = useSelector((state: { order: OrderState }) => state.order);
+  const { bun, ingredients } = useSelector(
+    (state: { burgerConstructor: BurgerConstructorState }) =>
+      state.burgerConstructor
+  );
+  const { isModalVisible } = useSelector(
+    (state: { order: OrderState }) => state.order
+  );
 
   const [{ isOver }, drop] = useDrop({
-    accept: 'ingredient',
+    accept: "ingredient",
     drop: (item: Ingredient) => {
       if (!item.instanceId) {
         dispatch(addIngredient(item));
@@ -49,38 +53,39 @@ export const BurgerConstructor: React.FC = () => {
 
   const totalPrice = useMemo(() => {
     return (
-      (bun ? bun.price * 2 : 0) + ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0)
+      (bun ? bun.price * 2 : 0) +
+      ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0)
     );
   }, [bun, ingredients]);
 
   const handleOrderClick = async () => {
-    const accessToken = localStorage.getItem('accessToken');
-  
+    const accessToken = localStorage.getItem("accessToken");
+
     if (!bun) {
-      alert('Не хватает булки!');
+      alert("Не хватает булки!");
       return;
     }
     if (ingredients.length === 0) {
-      alert('Нужно добавить ингредиенты!');
+      alert("Нужно добавить ингредиенты!");
       return;
     }
-  
+
     if (!accessToken) {
-      navigate('/login', { state: { from: '/' } });
+      navigate("/login", { state: { from: "/" } });
       return;
     }
-  
+
     const ingredientIds = [
       ...(bun ? [bun._id] : []),
       ...ingredients.map((i) => i._id),
       ...(bun ? [bun._id] : []),
     ];
-  
+
     try {
       await dispatch(createOrderThunk(ingredientIds)).unwrap();
       dispatch(resetIngredients());
     } catch (error) {
-      console.error('Не удалось создать заказ', error);
+      console.error("Не удалось создать заказ", error);
     }
   };
 
@@ -101,7 +106,11 @@ export const BurgerConstructor: React.FC = () => {
               thumbnail={bun.image}
             />
           ) : (
-            <div className={`${styles.bunHolderTop} ${isOver ? styles.active : ''}`}>
+            <div
+              className={`${styles.bunHolderTop} ${
+                isOver ? styles.active : ""
+              }`}
+            >
               <p className={styles.holderText}>Выберите булки</p>
             </div>
           )}
@@ -123,7 +132,11 @@ export const BurgerConstructor: React.FC = () => {
               );
             })
           ) : (
-            <div className={`${styles.ingredientHolder} ${isOver ? styles.active : ''}`}>
+            <div
+              className={`${styles.ingredientHolder} ${
+                isOver ? styles.active : ""
+              }`}
+            >
               <p className={styles.holderText}>Выберите начинку</p>
             </div>
           )}
@@ -139,7 +152,11 @@ export const BurgerConstructor: React.FC = () => {
               thumbnail={bun.image}
             />
           ) : (
-            <div className={`${styles.bunHolderBottom} ${isOver ? styles.active : ''}`}>
+            <div
+              className={`${styles.bunHolderBottom} ${
+                isOver ? styles.active : ""
+              }`}
+            >
               <p className={styles.holderText}>Выберите булки</p>
             </div>
           )}

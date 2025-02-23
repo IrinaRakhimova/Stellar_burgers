@@ -1,14 +1,6 @@
-import React from 'react';
-import styles from './ingredients-category.module.css';
-import { IngredientCard } from '../../card/ingredient-card';
-
-interface Ingredient {
-  _id: string;
-  name: string;
-  image: string;
-  price: number;
-  type: string;
-}
+import React from "react";
+import styles from "./ingredients-category.module.css";
+import { IngredientCard } from "../../card/ingredient-card";
 
 interface IngredientsCategoryProps {
   categoryName: string;
@@ -19,7 +11,7 @@ interface IngredientsCategoryProps {
 export const IngredientsCategory: React.FC<IngredientsCategoryProps> = ({
   categoryName,
   categoryType,
-  burgerData
+  burgerData,
 }) => {
   return (
     <>
@@ -36,4 +28,3 @@ export const IngredientsCategory: React.FC<IngredientsCategoryProps> = ({
     </>
   );
 };
-  

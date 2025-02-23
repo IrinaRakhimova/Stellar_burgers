@@ -15,12 +15,6 @@ import { useEffect } from "react";
 import { handleForgotPassword } from "../../utils/api";
 import { AppDispatch } from "../../services/store";
 
-interface UserDataState {
-  email: string;
-  error: string | null;
-  resetPassword: boolean;
-}
-
 export const ForgotPassword: React.FC = () => {
   const { email, error, resetPassword } = useSelector(
     (state: { userData: UserDataState }) => state.userData
@@ -35,7 +29,7 @@ export const ForgotPassword: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(setRequest(true));
-  
+
     try {
       await handleForgotPassword(email);
       dispatch(setResetPassword(true));
@@ -86,4 +80,3 @@ export const ForgotPassword: React.FC = () => {
     </div>
   );
 };
-

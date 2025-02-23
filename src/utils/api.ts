@@ -6,7 +6,9 @@ type ApiResponse<T = any> = {
   [key: string]: any;
 } & T;
 
-const checkResponse = async <T = any>(res: Response): Promise<ApiResponse<T>> => {
+const checkResponse = async <T = any>(
+  res: Response
+): Promise<ApiResponse<T>> => {
   const data: ApiResponse<T> = await res.json();
   return res.ok ? data : Promise.reject(data);
 };
@@ -54,7 +56,9 @@ export const fetchWithRefresh = async <T = any>(
   }
 };
 
-export const handleForgotPassword = async (email: string): Promise<ApiResponse> => {
+export const handleForgotPassword = async (
+  email: string
+): Promise<ApiResponse> => {
   const res = await fetch(`${URL}/password-reset`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -63,7 +67,10 @@ export const handleForgotPassword = async (email: string): Promise<ApiResponse> 
   return checkResponse(res);
 };
 
-export const resetPassword = async (userData: { password: string; token: string }): Promise<ApiResponse> => {
+export const resetPassword = async (userData: {
+  password: string;
+  token: string;
+}): Promise<ApiResponse> => {
   const res = await fetch(`${URL}/password-reset/reset`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -72,7 +79,11 @@ export const resetPassword = async (userData: { password: string; token: string 
   return checkResponse(res);
 };
 
-const request = async <T = any>(endpoint: string, method: string = "GET", body?: unknown): Promise<ApiResponse<T>> => {
+const request = async <T = any>(
+  endpoint: string,
+  method: string = "GET",
+  body?: unknown
+): Promise<ApiResponse<T>> => {
   const options: RequestInit & { headers: Record<string, string> } = {
     method,
     headers: {
@@ -90,30 +101,27 @@ const request = async <T = any>(endpoint: string, method: string = "GET", body?:
   }
 };
 
-
 export const createOrderRequest = (ingredientIds: string[]) =>
   request("/orders", "POST", { ingredients: ingredientIds });
 
-
 export const fetchIngredients = () => request("/ingredients");
 
-
-export const registerUser = (userData: { name: string; email: string; password: string }) =>
-  request("/auth/register", "POST", userData);
-
+export const registerUser = (userData: {
+  name: string;
+  email: string;
+  password: string;
+}) => request("/auth/register", "POST", userData);
 
 export const loginUser = (userData: { email: string; password: string }) =>
   request("/auth/login", "POST", userData);
-
 
 export const logOut = () =>
   request("/auth/logout", "POST", {
     token: localStorage.getItem("refreshToken"),
   });
 
-
 export const getUserData = () => request("/auth/user");
 
-
-export const updateUserData = (userData: Partial<{ name: string; email: string; password: string }>) =>
-  request("/auth/user", "PATCH", userData);
+export const updateUserData = (
+  userData: Partial<{ name: string; email: string; password: string }>
+) => request("/auth/user", "PATCH", userData);

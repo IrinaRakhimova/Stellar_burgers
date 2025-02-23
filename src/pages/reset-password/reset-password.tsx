@@ -17,11 +17,6 @@ import { useEffect, useState } from "react";
 import { resetPassword } from "../../utils/api";
 import { AppDispatch } from "../../services/store";
 
-interface UserDataState {
-  token: string;
-  success: boolean;
-}
-
 const ResetPassword: React.FC = () => {
   const { token, success } = useSelector(
     (state: { userData: UserDataState }) => state.userData
@@ -82,9 +77,9 @@ const ResetPassword: React.FC = () => {
           placeholder={"Введите код из письма"}
           onChange={handleTokenChange}
           value={token}
-          extraClass="mb-6" 
-          onPointerEnterCapture={undefined} 
-          onPointerLeaveCapture={undefined}        
+          extraClass="mb-6"
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">

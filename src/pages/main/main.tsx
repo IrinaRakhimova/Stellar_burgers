@@ -7,15 +7,6 @@ import { useDispatch } from "react-redux";
 import { addIngredient } from "../../services/slices/burgerConstructorSlice";
 import { AppDispatch } from "../../services/store";
 
-interface Ingredient {
-  instanceId: string;
-  name: string;
-  image: string;
-  price: number;
-  _id: string;
-  type: string;
-}
-
 interface SavedIngredients {
   bun?: Ingredient;
   ingredients: Ingredient[];
@@ -50,4 +41,3 @@ export const Main: React.FC = () => {
     </DndProvider>
   );
 };
-

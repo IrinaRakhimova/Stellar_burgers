@@ -10,17 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEmail, logInThunk } from "../../services/slices/userDataSlice";
 import { AppDispatch } from "../../services/store";
 
-interface UserDataState {
-  email: string;
-  accessToken: string | null;
-  error: string | null;
-}
-
 export const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { email, accessToken, error } = useSelector(
+  const { email, error } = useSelector(
     (state: { userData: UserDataState }) => state.userData
   );
 
@@ -43,7 +37,7 @@ export const Login: React.FC = () => {
     if (localStorage.getItem("accessToken")) {
       navigate("/");
     }
-  }, [accessToken, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
     const resetSuccessful = localStorage.getItem("resetSuccessful") === "true";
@@ -92,4 +86,3 @@ export const Login: React.FC = () => {
     </div>
   );
 };
-
