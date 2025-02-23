@@ -2,12 +2,12 @@ import "./App.css";
 import { AppHeader } from "./app-header/app-header";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRouteElement from "./protected-route/protected-route";
-import Main from "../pages/main/main";
-import Login from "../pages/login/login";
-import Register from "../pages/register/register";
-import ForgotPassword from "../pages/forgot-password/forgot-password";
+import { Main }from "../pages/main/main";
+import { Login } from "../pages/login/login";
+import { Register } from "../pages/register/register";
+import { ForgotPassword } from "../pages/forgot-password/forgot-password";
 import ResetPassword from "../pages/reset-password/reset-password";
-import Profile from "../pages/profile/profile";
+import { Profile } from "../pages/profile/profile";
 import IngredientDetails from "./burger-ingredients/ingredient-details/ingredient-details";
 import Modal from "./modals/modal/modal";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ import { getUserDataThunk } from "../services/slices/userDataSlice";
 import { useDispatch } from "react-redux";
 import { OrderHistory } from "./ui/order-history/order-history";
 import ProfileForm from "./ui/profile-form/profile-form";
-import NotFound from "../pages/not-found/not-found";
+import { NotFound } from "../pages/not-found/not-found";
 import { AppDispatch } from "../services/store";
 
 interface LocationState {

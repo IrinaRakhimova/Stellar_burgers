@@ -21,7 +21,7 @@ interface UserDataState {
   resetPassword: boolean;
 }
 
-const ForgotPassword: React.FC = () => {
+export const ForgotPassword: React.FC = () => {
   const { email, error, resetPassword } = useSelector(
     (state: { userData: UserDataState }) => state.userData
   );
@@ -87,4 +87,3 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-export default ForgotPassword;

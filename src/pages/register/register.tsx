@@ -13,23 +13,33 @@ import {
   registerUserThunk,
 } from "../../services/slices/userDataSlice";
 import { useState } from "react";
+import { AppDispatch } from "../../services/store";
 
-function Register() {
-  const dispatch = useDispatch();
-  const { name, email, error } = useSelector((state) => state.userData);
-  const [password, setPassword] = useState("");
+interface UserDataState {
+  name: string;
+  email: string;
+  error: string | null;
+}
 
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+export const Register: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { name, email, error } = useSelector(
+    (state: { userData: UserDataState }) => state.userData
+  );
+  const [password, setPassword] = useState<string>("");
 
-  const handleNameChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setName(e.target.value));
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setEmail(e.target.value));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userData = { name, email, password };
     dispatch(registerUserThunk(userData));
@@ -45,7 +55,9 @@ function Register() {
           placeholder={"Имя"}
           onChange={handleNameChange}
           value={name}
-          extraClass="mb-6"
+          extraClass="mb-6" 
+          onPointerEnterCapture={undefined} 
+          onPointerLeaveCapture={undefined}        
         />
         <EmailInput
           onChange={handleEmailChange}
@@ -76,6 +88,5 @@ function Register() {
       </p>
     </div>
   );
-}
+};
 
-export default Register;

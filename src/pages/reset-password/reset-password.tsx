@@ -15,20 +15,29 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { resetPassword } from "../../utils/api";
+import { AppDispatch } from "../../services/store";
 
-function ResetPassword() {
-  const { token, success } = useSelector((state) => state.userData);
-  const [password, setPassword] = useState("");
+interface UserDataState {
+  token: string;
+  success: boolean;
+}
+
+const ResetPassword: React.FC = () => {
+  const { token, success } = useSelector(
+    (state: { userData: UserDataState }) => state.userData
+  );
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
 
-  const handleTokenChange = (e) => {
+  const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setToken(e.target.value));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(setRequest(true));
 
@@ -36,8 +45,12 @@ function ResetPassword() {
       await resetPassword({ password, token });
       dispatch(setSuccess(true));
       dispatch(setRequest(false));
-    } catch (err) {
-      dispatch(setError(err.message || "Ошибка восстановления пароля"));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        dispatch(setError(err.message || "Ошибка восстановления пароля"));
+      } else {
+        dispatch(setError("Ошибка восстановления пароля"));
+      }
       dispatch(setRequest(false));
     }
   };
@@ -69,7 +82,9 @@ function ResetPassword() {
           placeholder={"Введите код из письма"}
           onChange={handleTokenChange}
           value={token}
-          extraClass="mb-6"
+          extraClass="mb-6" 
+          onPointerEnterCapture={undefined} 
+          onPointerLeaveCapture={undefined}        
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">
@@ -85,6 +100,6 @@ function ResetPassword() {
       </p>
     </div>
   );
-}
+};
 
 export default ResetPassword;

@@ -8,22 +8,33 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, logInThunk } from "../../services/slices/userDataSlice";
+import { AppDispatch } from "../../services/store";
 
-function Login() {
-  const dispatch = useDispatch();
+interface UserDataState {
+  email: string;
+  accessToken: string | null;
+  error: string | null;
+}
+
+export const Login: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { email, accessToken, error } = useSelector((state) => state.userData);
 
-  const [password, setPassword] = useState("");
+  const { email, accessToken, error } = useSelector(
+    (state: { userData: UserDataState }) => state.userData
+  );
 
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const [password, setPassword] = useState<string>("");
 
-  const handleEmailChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setEmail(e.target.value));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(logInThunk({ email, password }));
     setPassword("");
   };
@@ -48,7 +59,7 @@ function Login() {
         <EmailInput
           onChange={handleEmailChange}
           value={email}
-          name={"email"}
+          name="email"
           placeholder="E-mail"
           isIcon={false}
           extraClass="mb-6"
@@ -56,7 +67,7 @@ function Login() {
         <PasswordInput
           onChange={handlePasswordChange}
           value={password}
-          name={"password"}
+          name="password"
           extraClass="mb-6"
         />
         <div className={styles.button}>
@@ -67,7 +78,7 @@ function Login() {
       </form>
       {error && <p className={styles.error}>{error}</p>}
       <p className={styles.text}>
-        Вы — новый пользователь?{" "}
+        Вы — новый пользователь?{" "}
         <Link to="/register" className={styles.link}>
           Зарегистрироваться
         </Link>
@@ -80,6 +91,5 @@ function Login() {
       </p>
     </div>
   );
-}
+};
 
-export default Login;
