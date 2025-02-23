@@ -13,28 +13,39 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { handleForgotPassword } from "../../utils/api";
+import { AppDispatch } from "../../services/store";
 
-function ForgotPassword() {
+interface UserDataState {
+  email: string;
+  error: string | null;
+  resetPassword: boolean;
+}
+
+const ForgotPassword: React.FC = () => {
   const { email, error, resetPassword } = useSelector(
-    (state) => state.userData
+    (state: { userData: UserDataState }) => state.userData
   );
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setEmail(e.target.value));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(setRequest(true));
-
+  
     try {
-      await handleForgotPassword({ email });
+      await handleForgotPassword(email);
       dispatch(setResetPassword(true));
       dispatch(setRequest(false));
-    } catch (err) {
-      dispatch(setError(err.message || "Ошибка восстановления пароля"));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        dispatch(setError(err.message || "Ошибка восстановления пароля"));
+      } else {
+        dispatch(setError("Ошибка восстановления пароля"));
+      }
       dispatch(setRequest(false));
     }
   };
@@ -74,6 +85,6 @@ function ForgotPassword() {
       </p>
     </div>
   );
-}
+};
 
 export default ForgotPassword;

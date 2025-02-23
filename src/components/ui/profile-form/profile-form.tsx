@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import styles from "./profile-form.module.css";
 import {
   EmailInput,
@@ -13,19 +13,22 @@ import {
   setName,
   updateUserDataThunk,
 } from "../../../services/slices/userDataSlice";
+import { RootState, AppDispatch } from "../../../services/store";
 
-function ProfileForm() {
+interface ProfileFormProps {}
+
+const ProfileForm: React.FC<ProfileFormProps> = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { email, name, successLogout } = useSelector((state) => state.userData);
+  const dispatch = useDispatch<AppDispatch>();
+  const { email, name, successLogout } = useSelector(
+    (state: RootState) => state.userData
+  );
 
-  const [password, setPassword] = useState("");
-
-  const [initialName, setInitialName] = useState(name);
-  const [initialEmail, setInitialEmail] = useState(email);
-  const [initialPassword, setInitialPassword] = useState("");
-
-  const [hasChanges, setHasChanges] = useState(false);
+  const [password, setPassword] = useState<string>("");
+  const [initialName, setInitialName] = useState<string>(name);
+  const [initialEmail, setInitialEmail] = useState<string>(email);
+  const [initialPassword, setInitialPassword] = useState<string>("");
+  const [hasChanges, setHasChanges] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -39,19 +42,19 @@ function ProfileForm() {
     }
   }, [name, email, password, initialName, initialEmail, initialPassword]);
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     dispatch(setName(e.target.value));
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
     dispatch(setEmail(e.target.value));
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
     if (hasChanges) {
       dispatch(updateUserDataThunk({ name, email, password }));
@@ -59,7 +62,7 @@ function ProfileForm() {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     dispatch(setName(initialName));
     dispatch(setEmail(initialEmail));
     setPassword(initialPassword);
@@ -80,7 +83,9 @@ function ProfileForm() {
         onChange={handleNameChange}
         value={name}
         extraClass="mb-6"
-        icon="EditIcon"
+        icon="EditIcon" 
+        onPointerEnterCapture={undefined} 
+        onPointerLeaveCapture={undefined}      
       />
       <EmailInput
         onChange={handleEmailChange}
@@ -89,7 +94,6 @@ function ProfileForm() {
         placeholder="Логин"
         isIcon={false}
         extraClass="mb-6"
-        icon="EditIcon"
       />
       <PasswordInput
         onChange={handlePasswordChange}
@@ -115,6 +119,6 @@ function ProfileForm() {
       )}
     </form>
   );
-}
+};
 
 export default ProfileForm;

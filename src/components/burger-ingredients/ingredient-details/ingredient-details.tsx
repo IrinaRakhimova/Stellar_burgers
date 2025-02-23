@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from './ingredient-details.module.css';
 import { useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchIngredientsThunk } from "../../../services/slices/ingredientsSlice";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { Loader } from "../../ui/loader/loader";
+import { RootState, AppDispatch } from "../../../services/store";
 
-const IngredientDetails = () => {
-  const { ingredientId } = useParams();
-  const dispatch = useDispatch();
+interface Ingredient {
+  _id: string;
+  name: string;
+  image_large: string;
+  calories: number;
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+}
+
+const IngredientDetails: React.FC = () => {
+  const { ingredientId } = useParams<{ ingredientId: string }>(); 
+  const dispatch = useDispatch<AppDispatch>(); 
   const location = useLocation();
 
-  const isModal = location.state && location.state.background;
+  const isModal = location.state && (location.state as { background?: boolean }).background;
 
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
-  const isLoading = useSelector((state) => state.ingredients.ingredientsRequest);
-  const hasError = useSelector((state) => state.ingredients.ingredientsFailed);
+  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients as Ingredient[]);
+  const isLoading = useSelector((state: RootState) => state.ingredients.ingredientsRequest);
+  const hasError = useSelector((state: RootState) => state.ingredients.ingredientsFailed);
 
   const selectedIngredient = ingredients.find((item) => item._id === ingredientId);
 

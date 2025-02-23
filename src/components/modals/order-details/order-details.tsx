@@ -1,15 +1,20 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "./order-details.module.css";
 import Modal from "../modal/modal";
 import OrderReady from "../../../images/order-ready";
 import { useSelector } from "react-redux";
 import { Loader } from "../../ui/loader/loader";
+import { RootState } from "../../../services/store";
 
-const OrderDetails = ({ onClose }) => {
+interface OrderDetailsProps {
+  onClose: () => void;
+}
+
+const OrderDetails: React.FC<OrderDetailsProps> = ({ onClose }) => {
   const { orderNumber, orderName, orderRequest } = useSelector(
-    (state) => state.order
+    (state: RootState) => state.order
   );
+
   return (
     <Modal onClose={onClose}>
       <div className={styles.container}>
@@ -29,10 +34,6 @@ const OrderDetails = ({ onClose }) => {
       </div>
     </Modal>
   );
-};
-
-OrderDetails.propTypes = {
-  onClose: PropTypes.func,
 };
 
 export default OrderDetails;

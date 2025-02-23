@@ -8,19 +8,38 @@ import { addIngredient, deleteIngredient, resetIngredients } from '../../service
 import { createOrderThunk, hideModal } from '../../services/slices/orderSlice';
 import { DraggableElement } from './draggable-element/draggable-element';
 import { useNavigate } from 'react-router-dom';
+import { AppDispatch } from '../../services/store';
 
-export const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+interface Ingredient {
+  instanceId: string;
+  name: string;
+  image: string;
+  price: number;
+  _id: string;
+  type: string;
+}
+
+interface BurgerConstructorState {
+  bun: Ingredient | null;
+  ingredients: Ingredient[];
+}
+
+interface OrderState {
+  isModalVisible: boolean;
+}
+
+export const BurgerConstructor: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  
-  const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
-  const { isModalVisible } = useSelector((state) => state.order); 
+
+  const { bun, ingredients } = useSelector((state: { burgerConstructor: BurgerConstructorState }) => state.burgerConstructor);
+  const { isModalVisible } = useSelector((state: { order: OrderState }) => state.order);
 
   const [{ isOver }, drop] = useDrop({
     accept: 'ingredient',
-    drop: (item) => {
+    drop: (item: Ingredient) => {
       if (!item.instanceId) {
-        dispatch(addIngredient(item)); 
+        dispatch(addIngredient(item));
       }
     },
     collect: (monitor) => ({
@@ -34,8 +53,8 @@ export const BurgerConstructor = () => {
     );
   }, [bun, ingredients]);
 
-  const handleOrderClick = () => {
-    const accessToken = localStorage.getItem("accessToken");
+  const handleOrderClick = async () => {
+    const accessToken = localStorage.getItem('accessToken');
   
     if (!bun) {
       alert('Не хватает булки!');
@@ -47,31 +66,26 @@ export const BurgerConstructor = () => {
     }
   
     if (!accessToken) {
-      navigate('/login', { state: { from: "/" } });
+      navigate('/login', { state: { from: '/' } });
       return;
     }
   
     const ingredientIds = [
-      ...(bun ? [bun._id] : []), 
-      ...ingredients.map((i) => i._id), 
+      ...(bun ? [bun._id] : []),
+      ...ingredients.map((i) => i._id),
       ...(bun ? [bun._id] : []),
     ];
-    
-    dispatch(createOrderThunk(ingredientIds))
-      .then(() => {
-        dispatch(resetIngredients()); 
-      })
-      .catch((error) => {
-        console.error("Не удалось создать заказ", error);
-      });
+  
+    try {
+      await dispatch(createOrderThunk(ingredientIds)).unwrap();
+      dispatch(resetIngredients());
+    } catch (error) {
+      console.error('Не удалось создать заказ', error);
+    }
   };
 
   const handleClose = () => {
     dispatch(hideModal());
-  };
-
-  const onDelete = (id) => {
-    dispatch(deleteIngredient(id)); 
   };
 
   return (
@@ -105,7 +119,6 @@ export const BurgerConstructor = () => {
                   key={ingredient.instanceId}
                   ingredient={ingredient}
                   index={realIndex}
-                  onDelete={onDelete}
                 />
               );
             })

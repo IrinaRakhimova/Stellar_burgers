@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
   registerUser,
   loginUser,
@@ -7,7 +7,20 @@ import {
   updateUserData,
 } from "../../utils/api";
 
-const initialState = {
+interface UserDataState {
+  name: string;
+  email: string;
+  success: boolean;
+  error: string | null;
+  request: boolean;
+  token: string;
+  successLogout: boolean;
+  isAuth: boolean;
+  order: null | any; 
+  resetPassword: boolean;
+}
+
+const initialState: UserDataState = {
   name: "",
   email: "",
   success: false,
@@ -20,11 +33,14 @@ const initialState = {
   resetPassword: false,
 };
 
-const createApiThunk = (type, apiCall) =>
-  createAsyncThunk(type, async (arg, { rejectWithValue }) => {
+const createApiThunk = <T, R>(
+  type: string,
+  apiCall: (arg: T) => Promise<R>
+) =>
+  createAsyncThunk(type, async (arg: T, { rejectWithValue }) => {
     try {
       return await apiCall(arg);
-    } catch (error) {
+    } catch (error: any) {
       return rejectWithValue(error.message);
     }
   });
@@ -48,28 +64,28 @@ const userDataSlice = createSlice({
   name: "userData",
   initialState,
   reducers: {
-    setName: (state, action) => {
+    setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
-    setEmail: (state, action) => {
+    setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
-    setToken: (state, action) => {
+    setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
     },
     resetSuccess: (state) => {
       state.success = false;
     },
-    setResetPassword: (state, action) => {
+    setResetPassword: (state, action: PayloadAction<boolean>) => {
       state.resetPassword = action.payload;
     },
-    setError: (state, action) => {
+    setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
-    setRequest: (state, action) => {
+    setRequest: (state, action: PayloadAction<boolean>) => {
       state.request = action.payload;
     },
-    setSuccess: (state, action) => {
+    setSuccess: (state) => {
       state.success = true;
     },
   },
@@ -86,11 +102,11 @@ const userDataSlice = createSlice({
       })
       .addCase(registerUserThunk.pending, (state) => {
         state.request = true;
-        state.error = false;
+        state.error = null;
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = action.payload || "Неизвестная ошибка";
+        state.error = typeof action.payload === 'string' ? action.payload : "Неизвестная ошибка";
       })
       .addCase(logInThunk.fulfilled, (state, action) => {
         state.success = true;
@@ -103,11 +119,11 @@ const userDataSlice = createSlice({
       })
       .addCase(logInThunk.pending, (state) => {
         state.request = true;
-        state.error = false;
+        state.error = null;
       })
       .addCase(logInThunk.rejected, (state, action) => {
         state.success = false;
-        state.error = action.payload || "Неизвестная ошибка";
+        state.error = typeof action.payload === 'string' ? action.payload : "Неизвестная ошибка";
       })
       .addCase(getUserDataThunk.fulfilled, (state, action) => {
         state.name = action.payload.user.name;
@@ -117,10 +133,10 @@ const userDataSlice = createSlice({
       })
       .addCase(getUserDataThunk.pending, (state) => {
         state.request = true;
-        state.error = false;
+        state.error = null;
       })
       .addCase(getUserDataThunk.rejected, (state, action) => {
-        state.error = action.payload || "Неизвестная ошибка";
+        state.error = typeof action.payload === 'string' ? action.payload : "Неизвестная ошибка";
       });
   },
 });

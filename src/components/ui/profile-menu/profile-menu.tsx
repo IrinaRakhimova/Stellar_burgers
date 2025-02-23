@@ -3,14 +3,21 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./profile-menu.module.css";
 import { logOutThunk } from "../../../services/slices/userDataSlice";
+import { AppDispatch } from "../../../services/store";
 
-const ProfileMenu = () => {
+interface RootState {
+  userData: {
+    successLogout: boolean;
+  };
+}
+
+const ProfileMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>(); 
   const currentPath = location.pathname;
 
-  const { successLogout } = useSelector((state) => state.userData);
+  const { successLogout } = useSelector((state: RootState) => state.userData);
 
   const handleLogout = () => {
     dispatch(logOutThunk({ token: localStorage.getItem("refreshToken") }))
@@ -20,11 +27,16 @@ const ProfileMenu = () => {
         localStorage.removeItem("refreshToken");
         navigate("/login");
       })
-      .catch((error) => {
-        console.error("Logout failed:", error);
+      .catch((error: unknown) => { 
+        if (error instanceof Error) {
+          console.error("Logout failed:", error.message);
+        } else {
+          console.error("Logout failed:", error);
+        }
         navigate("/login");
       });
   };
+
   useEffect(() => {
     if (successLogout) {
       navigate("/login");

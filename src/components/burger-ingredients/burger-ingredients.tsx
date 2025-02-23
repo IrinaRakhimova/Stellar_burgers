@@ -5,20 +5,35 @@ import { IngredientsCategory } from './ingredients-category/ingredients-category
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentSection } from '../../services/slices/ingredientsSlice';
 import { Loader } from '../ui/loader/loader';
+import { RootState, AppDispatch } from '../../services/store';
 
-export const BurgerIngredients = () => {
-  const bunsRef = useRef(null);
-  const saucesRef = useRef(null);
-  const mainsRef = useRef(null);
-  const scrollContainerRef = useRef(null);
+interface Ingredient {
+  _id: string;
+  name: string;
+  type: 'bun' | 'sauce' | 'main';
+  image: string;
+  price: number;
+}
 
-  const dispatch = useDispatch();
+// Component
+export const BurgerIngredients: React.FC = () => {
+  const bunsRef = useRef<HTMLDivElement | null>(null);
+  const saucesRef = useRef<HTMLDivElement | null>(null);
+  const mainsRef = useRef<HTMLDivElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
   const { ingredients, ingredientsRequest, ingredientsFailed, currentSection } =
-    useSelector((state) => state.ingredients);
+  useSelector((state: RootState) => state.ingredients as { 
+    ingredients: Ingredient[]; 
+    ingredientsRequest: boolean; 
+    ingredientsFailed: boolean; 
+    currentSection: string; 
+  });
 
   const groupedIngredients = useMemo(() => {
     if (ingredients.length === 0) {
-      return { bun: [], sauce: [], main: [] };
+      return { bun: [] as Ingredient[], sauce: [] as Ingredient[], main: [] as Ingredient[] };
     }
     return {
       bun: ingredients.filter((item) => item.type === 'bun'),
@@ -37,7 +52,7 @@ export const BurgerIngredients = () => {
       { ref: mainsRef, id: 'main' },
     ];
 
-    let closestSection = null;
+    let closestSection: string | null = null;
     let smallestDistance = Infinity;
 
     sections.forEach(({ ref, id }) => {
@@ -51,9 +66,9 @@ export const BurgerIngredients = () => {
       }
     });
 
-    const threshold = 50; 
+    const threshold = 50;
     if (closestSection && smallestDistance < threshold && closestSection !== currentSection) {
-      dispatch(setCurrentSection(closestSection)); 
+      dispatch(setCurrentSection(closestSection));
     }
   }, [dispatch, currentSection]);
 
@@ -77,15 +92,15 @@ export const BurgerIngredients = () => {
         </section>
       </div>
     );
-  }, [ingredientsRequest, ingredients, ingredientsFailed, groupedIngredients]);
+  }, [ingredientsRequest, ingredients, ingredientsFailed, groupedIngredients, handleScroll]);
 
   return (
     <div className={styles.container} ref={scrollContainerRef}>
       <h1 className={styles.header}>Соберите бургер</h1>
       <section className={styles.tabs}>
-        <Tab value="bun" active={currentSection === 'bun'}>Булки</Tab>
-        <Tab value="sauce" active={currentSection === 'sauce'}>Соусы</Tab>
-        <Tab value="main" active={currentSection === 'main'}>Начинки</Tab>
+        <Tab value="bun" active={currentSection === 'bun'} onClick={() => {}}>Булки</Tab>
+        <Tab value="sauce" active={currentSection === 'sauce'} onClick={() => {}}>Соусы</Tab>
+        <Tab value="main" active={currentSection === 'main'} onClick={() => {}}>Начинки</Tab>
       </section>
 
       <div className={styles.scroll} ref={scrollContainerRef} onScroll={handleScroll}>

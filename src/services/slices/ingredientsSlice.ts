@@ -1,7 +1,23 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { fetchIngredients } from "../../utils/api";
 
-export const fetchIngredientsThunk = createAsyncThunk(
+interface Ingredient {
+  _id: string;
+  name: string;
+  image: string;
+  price: number;
+  type: string;
+}
+
+interface IngredientsState {
+  ingredients: Ingredient[];
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+  currentSection: string;
+  selectedIngredient: Ingredient | null;
+}
+
+export const fetchIngredientsThunk = createAsyncThunk<Ingredient[], void, { rejectValue: string }>(
   "ingredients/fetchIngredients",
   async (_, { rejectWithValue }) => {
     try {
@@ -14,12 +30,12 @@ export const fetchIngredientsThunk = createAsyncThunk(
       }
     } catch (error) {
       console.error("Error fetching ingredients:", error);
-      return rejectWithValue(error.message);
+      return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
     }
   }
 );
 
-const initialState = {
+const initialState: IngredientsState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
@@ -31,11 +47,11 @@ const ingredientsSlice = createSlice({
   name: "ingredients",
   initialState,
   reducers: {
-    setCurrentSection: (state, action) => {
+    setCurrentSection: (state, action: PayloadAction<string>) => {
       state.currentSection = action.payload;
     },
-    setSelectedIngredient: (state, action) => {
-      state.selectedIngredient = action.payload || null;
+    setSelectedIngredient: (state, action: PayloadAction<Ingredient | null>) => {
+      state.selectedIngredient = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -55,7 +71,6 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const { setCurrentSection, setSelectedIngredient } =
-  ingredientsSlice.actions;
+export const { setCurrentSection, setSelectedIngredient } = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

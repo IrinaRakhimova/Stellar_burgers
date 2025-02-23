@@ -1,31 +1,51 @@
 import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './draggable-element.module.css';
 import { useDispatch } from 'react-redux';
 import { reorderIngredients } from '../../../services/slices/burgerConstructorSlice'; 
+import { deleteIngredient } from '../../../services/slices/burgerConstructorSlice';
+import type {Identifier} from 'dnd-core';
 
-export const DraggableElement = React.memo(({ ingredient, index, onDelete }) => {
+interface Ingredient {
+  instanceId: string;
+  name: string;
+  image: string;
+  price: number;
+}
+
+type TDraggableElement = {
+  ingredient: Ingredient;
+  index: number;
+};
+type DragObject = TDraggableElement;
+
+type DragCollectedProps = { isDragging: boolean };
+
+type DropCollectedProps = { 
+  handlerId: Identifier | null
+ };
+
+export const DraggableElement: React.FC<TDraggableElement>= React.memo(({ ingredient, index }) => {
   const dispatch = useDispatch();
-  const ref = useRef(null);
-  const lastMovedRef = useRef(null);
+  const ref = useRef<HTMLLIElement | null>(null);
+  const lastMovedRef = useRef<number | null>(null);
 
-  const moveRow = (dragIndex, hoverIndex) => {
+  const moveRow = (dragIndex: number, hoverIndex: number) => {
     if (dragIndex !== hoverIndex) {
       dispatch(reorderIngredients({ fromIndex: dragIndex, toIndex: hoverIndex })); 
     }
   };
 
-  const [{ isDragging }, dragRef] = useDrag({
+  const [{ isDragging }, dragRef] = useDrag<DragObject, unknown, DragCollectedProps>({
     type: 'ingredient',
-    item: { instanceId: ingredient.instanceId, index },
+    item:  { ingredient, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  const [, dropRef] = useDrop({
+  const [, dropRef] = useDrop<DragObject, unknown, DropCollectedProps >({
     accept: 'ingredient',
     hover: (item, monitor) => {
       if (!ref.current) return;
@@ -42,6 +62,7 @@ export const DraggableElement = React.memo(({ ingredient, index, onDelete }) => 
       const hoverBoundingRect = ref.current.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
@@ -51,6 +72,10 @@ export const DraggableElement = React.memo(({ ingredient, index, onDelete }) => 
       item.index = hoverIndex;
     },
   });
+
+  const onDelete = (id: string) => {
+    dispatch(deleteIngredient(id)); 
+  };
 
   return (
     <li
@@ -73,14 +98,3 @@ export const DraggableElement = React.memo(({ ingredient, index, onDelete }) => 
     </li>
   );
 });
-
-DraggableElement.propTypes = {
-  ingredient: PropTypes.shape({
-    instanceId: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired, 
-  }).isRequired,
-  index: PropTypes.number.isRequired,
-  onDelete: PropTypes.func.isRequired,
-};
