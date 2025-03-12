@@ -1,0 +1,108 @@
+.card {
+  height: 246px;
+  width: 844px;
+  background-color: rgba(28, 28, 33, 1);
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
+    0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.cardFirstRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.number {
+    composes: text text_type_digits-default from global;
+}
+
+.date {
+    composes: text text_type_main-small text_color_inactive from global;
+}
+
+.name {
+    composes: text text_type_main-large from global;
+    margin-top: 24px;
+}
+
+.status {
+    composes:text text_type_main-medium from global;
+    margin-top: 8px;
+}
+
+
+.picture {
+    height: 60px;
+    width: 60px;
+    position: relative;
+    margin-top: 2px;
+    margin-left: 2px;
+    z-index: 4;
+}
+
+.picture:first-child {
+    z-index: 0; 
+}
+
+.cardLastRow {
+    display: flex;
+    justify-content: space-between; 
+}
+
+.price {
+    display: flex;
+    align-items: center;
+}
+
+.priceNumber {
+    composes: text text_type_digits-default from global;
+    margin-right: 8px;
+}
+
+.imageBackground {
+    height: 64px;
+    width: 64px;
+    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    border-radius: 100%;
+    position: absolute;
+}
+
+.pictures {
+    display: flex;
+    position: relative;
+    margin-top: 24px;
+    flex-direction: row-reverse; 
+    margin-left: 16px;
+}
+
+.imageCard {
+    position: relative;
+    margin-left: -16px; 
+    z-index: 2;
+}
+
+.imageCard:last-child {
+    z-index: 3; 
+}
+
+.extraOverlay {
+    composes: text text_type_main-small from global;
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    top: 0;
+    left: 0; 
+    margin-top: 2px;
+    margin-left: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50%;
+    z-index: 5; 
+}

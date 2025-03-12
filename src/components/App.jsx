@@ -16,9 +16,11 @@ import { useEffect } from "react";
 import { fetchIngredientsThunk } from "../services/slices/ingredientsSlice.js";
 import { getUserDataThunk } from "../services/slices/userDataSlice.js";
 import { useDispatch } from "react-redux";
-import OrderHistory from "./ui/order-history/order-history.jsx";
-import ProfileForm from "./ui/profile-form/profile-form.jsx";
-import NotFound from "../pages/not-found/not-found.jsx";
+import { OrderHistory } from "./ui/order-history/order-history";
+import ProfileForm from "./ui/profile-form/profile-form";
+import { NotFound } from "../pages/not-found/not-found";
+import { AppDispatch } from "../services/store";
+import { Feed } from "../pages/feed/feed";
 
 function App() {
   const location = useLocation();
@@ -49,7 +51,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
 
         <Route path="/" element={<Main />} />
-
+        <Route path="/feed" element={<Feed />} />
         <Route
           path="/login"
           element={<ProtectedRouteElement element={<Login />} onlyUnAuth />}
