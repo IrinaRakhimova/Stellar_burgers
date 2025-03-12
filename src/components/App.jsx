@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 import { OrderHistory } from "./ui/order-history/order-history";
 import ProfileForm from "./ui/profile-form/profile-form";
 import { NotFound } from "../pages/not-found/not-found";
-import { AppDispatch } from "../services/store";
 import { Feed } from "../pages/feed/feed";
 
 function App() {
