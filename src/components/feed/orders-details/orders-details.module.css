@@ -1,6 +1,12 @@
+.container {
+    height: calc(100vh - 217px);
+    overflow-y: scroll;
+
+}
+
 .card {
-  height: 246px;
-  width: 844px;
+  height: 166px;
+  width: 536px;
   background-color: rgba(28, 28, 33, 1);
   box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
     0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
@@ -15,7 +21,7 @@
 }
 
 .number {
-    composes: text text_type_digits-default from global;
+    composes: text text_type_digits-default mb-6 from global;
 }
 
 .date {
@@ -23,15 +29,8 @@
 }
 
 .name {
-    composes: text text_type_main-large from global;
-    margin-top: 24px;
+    composes: text text_type_main-medium mb-6 from global;
 }
-
-.status {
-    composes:text text_type_main-medium from global;
-    margin-top: 8px;
-}
-
 
 .picture {
     height: 60px;
@@ -72,7 +71,6 @@
 .pictures {
     display: flex;
     position: relative;
-    margin-top: 24px;
     flex-direction: row-reverse; 
     margin-left: 16px;
 }

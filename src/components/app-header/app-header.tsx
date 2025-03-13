@@ -32,12 +32,12 @@ export const AppHeader: React.FC = () => {
             </div>
             <div className={styles.listItem}>
               <ListIcon
-                type={currentPath === "/orders" ? "primary" : "secondary"}
+                type={currentPath === "/feed" ? "primary" : "secondary"}
               />
               <Link
-                to="/orders"
+                to="/feed"
                 className={`${styles.link} ${
-                  currentPath === "/orders" ? styles.active : ""
+                  currentPath === "/feed" ? styles.active : ""
                 }`}
               >
                 Лента заказов

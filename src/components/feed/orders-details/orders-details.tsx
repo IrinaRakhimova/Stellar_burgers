@@ -89,11 +89,77 @@ const mockData = [
     ],
     price: "100",
   },
+  {
+    number: "#463704603",
+    date: "Сегодня",
+    time: "11.03",
+    name: "Interstellar бургер",
+    status: "Готовится",
+    ingredients: [
+      {
+        id: 1,
+        img: "src/assets/react.svg",
+      },
+      {
+        id: 2,
+        img: "src/assets/react.svg",
+      },
+      {
+        id: 3,
+        img: "src/assets/react.svg",
+      },
+    ],
+    price: "100",
+  },
+  {
+    number: "#463704603",
+    date: "Сегодня",
+    time: "11.03",
+    name: "Interstellar бургер",
+    status: "Готовится",
+    ingredients: [
+      {
+        id: 1,
+        img: "src/assets/react.svg",
+      },
+      {
+        id: 2,
+        img: "src/assets/react.svg",
+      },
+      {
+        id: 3,
+        img: "src/assets/react.svg",
+      },
+    ],
+    price: "100",
+  },
+  {
+    number: "#463704603",
+    date: "Сегодня",
+    time: "11.03",
+    name: "Interstellar бургер",
+    status: "Готовится",
+    ingredients: [
+      {
+        id: 1,
+        img: "src/assets/react.svg",
+      },
+      {
+        id: 2,
+        img: "src/assets/react.svg",
+      },
+      {
+        id: 3,
+        img: "src/assets/react.svg",
+      },
+    ],
+    price: "100",
+  },
 ];
 
 export const OrdersDetails: React.FC = () => {
     return (
-      <div>
+      <div className={styles.container}>
         {mockData.map((order) => {
           const totalIngredients = order.ingredients.length;
           const displayedIngredients = order.ingredients.slice(0, 6); 
@@ -106,7 +172,6 @@ export const OrdersDetails: React.FC = () => {
                 <p className={styles.date}>{`${order.date}, ${order.time}`}</p>
               </div>
               <p className={styles.name}>{order.name}</p>
-              <p className={styles.status}>{order.status}</p>
               <div className={styles.cardLastRow}>
                 <div className={styles.pictures}>
                   {displayedIngredients.map((ingredient, index) => {
