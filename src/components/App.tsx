@@ -20,10 +20,11 @@ import ProfileForm from "./ui/profile-form/profile-form";
 import { NotFound } from "../pages/not-found/not-found";
 import { Feed } from "../pages/feed/feed";
 import { AppDispatch } from "../services/store";
+import { OrderInfo } from "./ui/order-info/order-info";
 
 type LocationState = {
   background?: Location;
-}
+};
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -54,6 +55,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Main />} />
         <Route path="/feed" element={<Feed />} />
+        {!background && <Route path="/feed/:number" element={<OrderInfo />} />}
         <Route
           path="/login"
           element={<ProtectedRouteElement element={<Login />} onlyUnAuth />}
@@ -87,6 +89,12 @@ const App: React.FC = () => {
         </Route>
         {!background && (
           <Route
+            path="profile/orders/:number"
+            element={<ProtectedRouteElement element={<OrderInfo />} />}
+          />
+        )}
+        {!background && (
+          <Route
             path="/ingredients/:ingredientId"
             element={<ProtectedRouteElement element={<IngredientDetails />} />}
           />
@@ -101,6 +109,26 @@ const App: React.FC = () => {
                 element={
                   <Modal onClose={handleModalClose}>
                     <IngredientDetails />
+                  </Modal>
+                }
+              />
+            }
+          />
+          <Route
+            path="/feed/:number"
+            element={
+              <Modal onClose={handleModalClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path="profile/orders/:number"
+            element={
+              <ProtectedRouteElement
+                element={
+                  <Modal onClose={handleModalClose}>
+                    <OrderInfo />
                   </Modal>
                 }
               />

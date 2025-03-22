@@ -5,14 +5,15 @@
 }
 
 .card {
-height: 166px;
-width: 536px;
+height: 246px;
+width: 916px;
 background-color: rgba(28, 28, 33, 1);
 box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
   0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
   padding: 24px;
   margin-bottom: 16px;
+  margin-left: 10px;
 }
 
 .cardFirstRow {
@@ -21,14 +22,18 @@ box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
 }
 
 .number {
-  composes: text text_type_digits-default mb-6 from global;
+  composes: text text_type_digits-medium mb-6 from global;
 }
 
 .date {
-  composes: text text_type_main-small text_color_inactive from global;
+  composes: text text_type_main-medium text_color_inactive from global;
 }
 
 .name {
+  composes: text text_type_main-large mb-6 from global;
+}
+
+.status {
   composes: text text_type_main-medium mb-6 from global;
 }
 

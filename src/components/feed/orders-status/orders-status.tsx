@@ -14,14 +14,21 @@ export const OrdersStatus: React.FC = () => {
       <div className={styles.upperContainer}>
         <div className={styles.ready}>
           <p className={styles.readyTitle}>Готовы:</p>
-          {orders.ready.map((order) => (
-            <p className={styles.readyNumbers}>{order}</p>
+          {orders.ready.map((order, index) => (
+            <p key={`ready-${order}-${index}`} className={styles.readyNumbers}>
+              {order}
+            </p>
           ))}
         </div>
         <div className={styles.making}>
           <p className={styles.makingTitle}>В работе:</p>
-          {orders.making.map((order) => (
-            <p className={styles.makingNumbers}>{order}</p>
+          {orders.making.map((order, index) => (
+            <p
+              key={`making-${order}-${index}`}
+              className={styles.makingNumbers}
+            >
+              {order}
+            </p>
           ))}
         </div>
       </div>
@@ -31,7 +38,7 @@ export const OrdersStatus: React.FC = () => {
       </div>
       <div>
         <p className={styles.todayTitle}>Выполнено за сегодня:</p>
-        <p  className={styles.todayNumber}>{orders.today}</p>
+        <p className={styles.todayNumber}>{orders.today}</p>
       </div>
     </div>
   );
