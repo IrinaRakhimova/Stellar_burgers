@@ -1,216 +1,121 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../services/store";
 import styles from "./orders-details.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useLocation, Link } from "react-router-dom";
 
-const mockData = [
-  {
-    number: "163704603",
-    date: "Сегодня",
-    time: "11.03",
-    name: "Interstellar бургер",
-    status: "Готовится",
-    ingredients: [
-      {
-        id: 1,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 2,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 3,
-        img: "src/assets/react.svg",
-      },
-    ],
-    price: "100",
-  },
-  {
-    number: "263704603",
-    date: "Сегодня",
-    time: "11.03",
-    name: "Interstellar бургер",
-    status: "Готовится",
-    ingredients: [
-      {
-        id: 1,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 2,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 3,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 4,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 5,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 6,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 7,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 8,
-        img: "src/assets/react.svg",
-      },
-    ],
-    price: "100",
-  },
-  {
-    number: "363704603",
-    date: "Сегодня",
-    time: "11.03",
-    name: "Interstellar бургер",
-    status: "Готовится",
-    ingredients: [
-      {
-        id: 1,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 2,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 3,
-        img: "src/assets/react.svg",
-      },
-    ],
-    price: "100",
-  },
-  {
-    number: "463704603",
-    date: "Сегодня",
-    time: "11.03",
-    name: "Interstellar бургер",
-    status: "Готовится",
-    ingredients: [
-      {
-        id: 1,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 2,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 3,
-        img: "src/assets/react.svg",
-      },
-    ],
-    price: "100",
-  },
-  {
-    number: "563704603",
-    date: "Сегодня",
-    time: "11.03",
-    name: "Interstellar бургер",
-    status: "Готовится",
-    ingredients: [
-      {
-        id: 1,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 2,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 3,
-        img: "src/assets/react.svg",
-      },
-    ],
-    price: "100",
-  },
-  {
-    number: "663704603",
-    date: "Сегодня",
-    time: "11.03",
-    name: "Interstellar бургер",
-    status: "Готовится",
-    ingredients: [
-      {
-        id: 1,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 2,
-        img: "src/assets/react.svg",
-      },
-      {
-        id: 3,
-        img: "src/assets/react.svg",
-      },
-    ],
-    price: "100",
-  },
-];
+interface Order {
+  ingredients: string[];
+  number: number;
+  createdAt: string;
+  name: string;
+  status: string;
+  price?: number;
+}
 
 export const OrdersDetails: React.FC = () => {
   const location = useLocation();
+
+  const orders: Order[] = useSelector(
+    (state: RootState) => state.websocket.orders?.orders || []
+  );
+
+  const ingredientsData = useSelector(
+    (state: RootState) => state.ingredients.ingredients || []
+  );
+
+  const ingredientMap = useMemo(() => {
+    const map: Record<string, { image: string; price: number }> = {}; 
+    ingredientsData.forEach((ingredient: any) => {
+      map[ingredient._id] = { 
+        image: ingredient.image, 
+        price: ingredient.price
+      };
+    });
+    return map;
+  }, [ingredientsData]);
+
   return (
-    <div className={styles.container}>
-      {mockData.map((order) => {
-        const totalIngredients = order.ingredients.length;
-        const displayedIngredients = order.ingredients.slice(0, 6);
-        const extraCount = totalIngredients - 5;
+  <div className={styles.container}>
+    {orders.map((order) => {
+      const totalPrice = order.ingredients.reduce((sum, ingredientId) => {
+        return sum + (ingredientMap[ingredientId]?.price); 
+      }, 0);
 
-        return (
-          <Link
-            to={`/feed/${order.number}`}
-            key={order.number}
-            className={styles.link}
-            state={{ background: location }}
-          >
-            <div className={styles.card}>
-              <div className={styles.cardFirstRow}>
-                <p className={styles.number}>#{order.number}</p>
-                <p className={styles.date}>{`${order.date}, ${order.time}`}</p>
-              </div>
+      const totalIngredients = order.ingredients.length;
+      const displayedIngredients = order.ingredients.slice(0, 6);
+      const extraCount = totalIngredients - 5;
+
+      const createdDate = new Date(order.createdAt);
+
+      const formatOrderDate = (date: Date) => {
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+      
+        const orderDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      
+        if (orderDate.getTime() === today.getTime()) {
+          return `Today`;
+        } else if (orderDate.getTime() === yesterday.getTime()) {
+          return `Yesterday`;
+        } else {
+          return date.toLocaleDateString(); 
+        }
+      };
+      
+      const dateString = formatOrderDate(createdDate);
+      const timeString = createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      return (
+        <Link
+          to={`/feed/${order.number}`}
+          key={order.number}
+          className={styles.link}
+          state={{ background: location }}
+        >
+          <div className={styles.card}>
+            <div className={styles.cardFirstRow}>
+              <p className={styles.number}>#{order.number}</p>
+              <p className={styles.date}>{`${dateString}, ${timeString}`}</p>
+            </div>
+            <div className={styles.nameContainer}>
               <p className={styles.name}>{order.name}</p>
-              <div className={styles.cardLastRow}>
-                <div className={styles.pictures}>
-                  {displayedIngredients.map((ingredient, index) => {
-                    const isFirstVisually = index === 0;
-
-                    return (
-                      <div key={ingredient.id} className={styles.imageCard}>
-                        <div className={styles.imageBackground}></div>
-                        <img
-                          src={ingredient.img}
-                          alt="No"
-                          className={styles.picture}
-                        />
-                        {isFirstVisually && extraCount > 0 && (
-                          <div className={styles.extraOverlay}>
-                            +{extraCount}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className={styles.price}>
-                  <p className={styles.priceNumber}>{order.price}</p>
-                  <CurrencyIcon type="primary" />
-                </div>
+            </div>
+            <div className={styles.cardLastRow}>
+              <div className={styles.pictures}>
+                {displayedIngredients.map((ingredientId, index) => {
+                  const isFirstVisually = index === 0;
+                  const ingredientImg = ingredientMap[ingredientId]?.image;
+                  return (
+                    <div key={ingredientId} className={styles.imageCard}>
+                      <div className={styles.imageBackground}></div>
+                      <div className={styles.imageBackgroundOverlay}></div>
+                      <img
+                        src={ingredientImg}
+                        alt="Ingredient"
+                        className={styles.picture}
+                      />
+                      {isFirstVisually && extraCount > 0 && (
+                        <div className={styles.extraOverlay}>
+                          +{extraCount}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className={styles.price}>
+                <p className={styles.priceNumber}>{totalPrice}</p>
+                <CurrencyIcon type="primary" />
               </div>
             </div>
-          </Link>
-        );
-      })}
-    </div>
-  );
+          </div>
+        </Link>
+      );
+    })}
+  </div>
+);
 };

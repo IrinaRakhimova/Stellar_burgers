@@ -15,6 +15,11 @@
     margin-bottom: 16px;
 }
 
+.link {
+    text-decoration: none;
+    color: rgba(242, 242, 243, 1);
+}
+
 .cardFirstRow {
     display: flex;
     justify-content: space-between;
@@ -28,8 +33,18 @@
     composes: text text_type_main-small text_color_inactive from global;
 }
 
+.nameContainer {
+  width: 536px; 
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block; 
+  box-sizing: border-box;
+  margin-bottom: 24px;
+}
+
 .name {
-    composes: text text_type_main-medium mb-6 from global;
+    composes: text text_type_main-medium from global;
 }
 
 .picture {
@@ -39,6 +54,7 @@
     margin-top: 2px;
     margin-left: 2px;
     z-index: 4;
+    object-fit: cover;
 }
 
 .picture:first-child {
@@ -63,9 +79,21 @@
 .imageBackground {
     height: 64px;
     width: 64px;
-    background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+    background:  #801AB3 0%;
     border-radius: 100%;
     position: absolute;
+}
+
+.imageBackgroundOverlay {
+    height: 60px;
+    width: 60px;
+    background: rgba(19, 19, 22, 1);
+    border-radius: 100%;
+    position: absolute;
+    top: 0;
+    left: 0; 
+    margin-top: 2px;
+    margin-left: 2px;  
 }
 
 .pictures {

@@ -16,6 +16,11 @@ box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
   margin-left: 10px;
 }
 
+.link {
+  text-decoration: none;
+  color: rgba(242, 242, 243, 1);
+}
+
 .cardFirstRow {
   display: flex;
   justify-content: space-between;

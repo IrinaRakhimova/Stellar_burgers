@@ -48,6 +48,14 @@ const App: React.FC = () => {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch({ type: "websocket/start" });
+
+    return () => {
+      dispatch({ type: "websocket/stop" });
+    };
+  }, [dispatch]);
+
   return (
     <div className="app-container">
       <AppHeader />

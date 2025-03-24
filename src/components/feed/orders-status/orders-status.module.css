@@ -21,6 +21,10 @@
     composes: text text_type_main-large mb-6 from global;
 }
 
+.readyContainer {
+    max-height: 152px;
+}
+
 .readyNumbers {
     composes: text text_type_digits-default mb-2 from global;
     color: rgba(0, 204, 204, 1);
