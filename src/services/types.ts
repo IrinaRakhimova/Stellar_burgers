@@ -4,7 +4,7 @@ type Ingredient = {
   image: string;
   image_large: string;
   price: number;
-  type: 'bun' | 'sauce' | 'main';
+  type: "bun" | "sauce" | "main";
   instanceId: string;
   calories: number;
   proteins: number;
@@ -25,3 +25,11 @@ type UserDataState = {
   resetPassword: boolean;
 };
 
+type Order = {
+  ingredients: string[];
+  number: number;
+  createdAt: string;
+  name: string;
+  status: string;
+  price?: number;
+};

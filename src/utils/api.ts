@@ -125,3 +125,7 @@ export const getUserData = () => request("/auth/user");
 export const updateUserData = (
   userData: Partial<{ name: string; email: string; password: string }>
 ) => request("/auth/user", "PATCH", userData);
+
+export const fetchOrderByNumber = async (orderNumber: number) => {
+  return request<{ orders: any[] }>(`/orders/${orderNumber}`);
+};

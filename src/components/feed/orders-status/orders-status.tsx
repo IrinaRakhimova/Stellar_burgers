@@ -1,44 +1,71 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../services/store"; 
+import { RootState } from "../../../services/store";
 import styles from "./orders-status.module.css";
 
 export const OrdersStatus: React.FC = () => {
-  const { orders, total, totalToday } = useSelector((state: RootState) => ({
-    orders: state.websocket.orders?.orders || [],
-    total: state.websocket.orders?.total || 0,
-    totalToday: state.websocket.orders?.totalToday || 0,
-  }));
-
+  const { allOrders, total, totalToday } = useSelector(
+    (state: RootState) => state.websocket
+  );
+  console.log(allOrders);
   const getLastOrders = (status: string) =>
-    orders
-      .filter((order: { status: string; }) => order.status.toLowerCase() === status) 
-      .sort((a: { createdAt: string | number | Date; }, b: { createdAt: string | number | Date; }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // Sort by latest
-      .slice(0, 5); 
+    allOrders
+      .filter(
+        (order: { status: string }) => order.status.toLowerCase() === status
+      )
+      .sort(
+        (
+          a: { createdAt: string | number | Date },
+          b: { createdAt: string | number | Date }
+        ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .slice(0, 20);
 
-  const readyOrders = getLastOrders("done");
-  const makingOrders = getLastOrders("pending");
+  const chunkArray = (arr: any[], size: number) => {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+      arr.slice(i * size, i * size + size)
+    );
+  };
+
+  const readyOrdersChunks = chunkArray(getLastOrders("done"), 10);
+  const makingOrdersChunks = chunkArray(getLastOrders("pending"), 10);
 
   return (
     <div className={styles.container}>
       <div className={styles.upperContainer}>
         <div className={styles.ready}>
           <p className={styles.readyTitle}>Готовы:</p>
-          <div className={styles.readyContainer}>
-          {readyOrders.map((order: { number: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
-            <p key={`ready-${order.number}`} className={styles.readyNumbers}>
-              {order.number}
-            </p>
-          ))}
+          <div className={styles.ordersGrid}>
+            {readyOrdersChunks.map((chunk, index) => (
+              <div key={`ready-col-${index}`} className={styles.orderColumn}>
+                {chunk.map((order) => (
+                  <p
+                    key={`ready-${order.number}`}
+                    className={styles.readyNumbers}
+                  >
+                    {order.number}
+                  </p>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
         <div className={styles.making}>
           <p className={styles.makingTitle}>В работе:</p>
-          {makingOrders.map((order: { number: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
-            <p key={`making-${order.number}`} className={styles.makingNumbers}>
-              {order.number}
-            </p>
-          ))}
+          <div className={styles.ordersGrid}>
+            {makingOrdersChunks.map((chunk, index) => (
+              <div key={`making-col-${index}`} className={styles.orderColumn}>
+                {chunk.map((order) => (
+                  <p
+                    key={`making-${order.number}`}
+                    className={styles.makingNumbers}
+                  >
+                    {order.number}
+                  </p>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div>

@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface WebSocketState {
-  orders: any | null;
+  allOrders: [];
+  userOrders: [];
+  total: number | null;
+  totalToday: number | null;
   connected: boolean;
   error: string | null;
 }
 
 const initialState: WebSocketState = {
-  orders: null,
+  allOrders: [],
+  userOrders: [],
+  total: null,
+  totalToday: null,
   connected: false,
   error: null,
 };
@@ -22,13 +28,23 @@ const wsSlice = createSlice({
     },
     wsDisconnect: (state) => {
       state.connected = false;
-      state.orders = null;
+      state.allOrders = [];
+      state.userOrders = [];
     },
     wsError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
-    wsMessage: (state, action: PayloadAction<any>) => {
-      state.orders = action.payload;
+    wsMessage: (
+      state,
+      action: PayloadAction<{ type: "all" | "my"; data: any }>
+    ) => {
+      if (action.payload.type === "all") {
+        state.allOrders = action.payload.data.orders || [];
+        state.total = action.payload.data.total || 0;
+        state.totalToday = action.payload.data.totalToday || 0;
+      } else {
+        state.userOrders = action.payload.data.orders || [];
+      }
     },
   },
 });

@@ -1,25 +1,35 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { createOrderRequest } from "../../utils/api";
+import { createOrderRequest, fetchOrderByNumber } from "../../utils/api";
+import { RootState } from "../store";
 
-type Order = {
-  number: number;
-  name: string;
-};
-
-type OrderResponse = {
+interface OrderResponse {
   order: Order;
-};
+}
 
-type ThunkError = {
+interface ThunkError {
   message: string;
-};
+}
 
-type OrderState = {
+interface OrderState {
+  order: Order | null;
   orderNumber: number | null;
   orderName: string;
   orderRequest: boolean;
   orderFailed: boolean;
   isModalVisible: boolean;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: OrderState = {
+  order: null,
+  orderNumber: null,
+  orderName: "",
+  orderRequest: false,
+  orderFailed: false,
+  isModalVisible: false,
+  loading: false,
+  error: null,
 };
 
 export const createOrderThunk = createAsyncThunk<
@@ -30,41 +40,52 @@ export const createOrderThunk = createAsyncThunk<
   try {
     const data = await createOrderRequest(ingredientIds);
 
-    if (
-      data &&
-      data.order &&
-      typeof data.order.number === "number" &&
-      typeof data.order.name === "string"
-    ) {
-      return {
-        order: {
-          number: data.order.number,
-          name: data.order.name,
-        },
-      };
+    if (data?.order?.number && typeof data.order.name === "string") {
+      return { order: data.order };
     } else {
       throw new Error("Invalid response format");
     }
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return rejectWithValue({
-        message: error.message || "Unknown error",
-      });
-    } else {
-      return rejectWithValue({
-        message: "An unknown error occurred",
-      });
-    }
+    return rejectWithValue({
+      message:
+        error instanceof Error ? error.message : "An unknown error occurred",
+    });
   }
 });
 
-const initialState: OrderState = {
-  orderNumber: null,
-  orderName: "",
-  orderRequest: false,
-  orderFailed: false,
-  isModalVisible: false,
-};
+export const fetchOrderByNumberThunk = createAsyncThunk<
+  Order,
+  number,
+  { rejectValue: string; state: RootState }
+>(
+  "order/fetchOrderByNumber",
+  async (orderNumber, { getState, rejectWithValue }) => {
+    const state = getState();
+
+    const existingOrder =
+      state.websocket.allOrders.find(
+        (order: { number: number }) => order.number === orderNumber
+      ) ||
+      state.websocket.userOrders.find(
+        (order: { number: number }) => order.number === orderNumber
+      );
+
+    if (existingOrder) {
+      return existingOrder;
+    }
+
+    try {
+      const response = await fetchOrderByNumber(orderNumber);
+      if (response.orders.length > 0) {
+        return response.orders[0];
+      } else {
+        return rejectWithValue("Order not found");
+      }
+    } catch (error: any) {
+      return rejectWithValue("Failed to fetch order");
+    }
+  }
+);
 
 const orderSlice = createSlice({
   name: "order",
@@ -75,6 +96,11 @@ const orderSlice = createSlice({
     },
     hideModal: (state) => {
       state.isModalVisible = false;
+    },
+    clearOrder: (state) => {
+      state.order = null;
+      state.error = null;
+      state.loading = false;
     },
   },
   extraReducers: (builder) => {
@@ -96,9 +122,25 @@ const orderSlice = createSlice({
       .addCase(createOrderThunk.rejected, (state) => {
         state.orderRequest = false;
         state.orderFailed = true;
+      })
+
+      .addCase(fetchOrderByNumberThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchOrderByNumberThunk.fulfilled,
+        (state, action: PayloadAction<Order>) => {
+          state.loading = false;
+          state.order = action.payload;
+        }
+      )
+      .addCase(fetchOrderByNumberThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
 
-export const { showModal, hideModal } = orderSlice.actions;
+export const { showModal, hideModal, clearOrder } = orderSlice.actions;
 export default orderSlice.reducer;

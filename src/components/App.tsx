@@ -49,12 +49,14 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch({ type: "websocket/start" });
-
-    return () => {
+    if (location.pathname.startsWith("/feed")) {
+      dispatch({ type: "websocket/start", payload: { type: "all" } });
+    } else if (location.pathname.startsWith("/profile/orders")) {
+      dispatch({ type: "websocket/start", payload: { type: "my" } });
+    } else {
       dispatch({ type: "websocket/stop" });
-    };
-  }, [dispatch]);
+    }
+  }, [dispatch, location.pathname]);
 
   return (
     <div className="app-container">

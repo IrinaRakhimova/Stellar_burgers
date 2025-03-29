@@ -1,15 +1,14 @@
 .container {
   height: calc(100vh - 217px);
   overflow-y: scroll;
-
 }
 
 .card {
-height: 246px;
-width: 916px;
-background-color: rgba(28, 28, 33, 1);
-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
-  0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
+  height: 246px;
+  width: 916px;
+  background-color: rgba(28, 28, 33, 1);
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
+    0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
   padding: 24px;
   margin-bottom: 16px;
@@ -27,19 +26,33 @@ box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
 }
 
 .number {
-  composes: text text_type_digits-medium mb-6 from global;
+  composes: text text_type_digits-default mb-6 from global;
 }
 
 .date {
-  composes: text text_type_main-medium text_color_inactive from global;
+  composes: text text_type_main-small text_color_inactive from global;
+}
+
+.nameContainer {
+  width: 536px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  box-sizing: border-box;
+  margin-bottom: 24px;
 }
 
 .name {
-  composes: text text_type_main-large mb-6 from global;
+  composes: text text_type_main-medium mb-2 from global;
 }
 
 .status {
-  composes: text text_type_main-medium mb-6 from global;
+  composes: text text_type_main-small mb-6 from global;
+}
+
+.done {
+  color: rgba(0, 204, 204, 1);
 }
 
 .picture {
@@ -49,15 +62,16 @@ box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
   margin-top: 2px;
   margin-left: 2px;
   z-index: 4;
+  object-fit: cover;
 }
 
 .picture:first-child {
-  z-index: 0; 
+  z-index: 0;
 }
 
 .cardLastRow {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 .price {
@@ -73,26 +87,38 @@ box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
 .imageBackground {
   height: 64px;
   width: 64px;
-  background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+  background: #801ab3 0%;
   border-radius: 100%;
   position: absolute;
+}
+
+.imageBackgroundOverlay {
+  height: 60px;
+  width: 60px;
+  background: rgba(19, 19, 22, 1);
+  border-radius: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 2px;
+  margin-left: 2px;
 }
 
 .pictures {
   display: flex;
   position: relative;
-  flex-direction: row-reverse; 
+  flex-direction: row-reverse;
   margin-left: 16px;
 }
 
 .imageCard {
   position: relative;
-  margin-left: -16px; 
+  margin-left: -16px;
   z-index: 2;
 }
 
 .imageCard:last-child {
-  z-index: 3; 
+  z-index: 3;
 }
 
 .extraOverlay {
@@ -101,7 +127,7 @@ box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
   height: 60px;
   width: 60px;
   top: 0;
-  left: 0; 
+  left: 0;
   margin-top: 2px;
   margin-left: 2px;
   display: flex;
@@ -112,5 +138,5 @@ box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
   font-size: 16px;
   font-weight: bold;
   border-radius: 50%;
-  z-index: 5; 
+  z-index: 5;
 }

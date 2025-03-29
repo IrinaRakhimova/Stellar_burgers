@@ -1,7 +1,6 @@
 .container {
-    height: calc(100vh - 217px);
-    overflow-y: scroll;
-
+  height: calc(100vh - 217px);
+  overflow-y: scroll;
 }
 
 .card {
@@ -10,125 +9,125 @@
   background-color: rgba(28, 28, 33, 1);
   box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
     0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
-    border-radius: 40px;
-    padding: 24px;
-    margin-bottom: 16px;
+  border-radius: 40px;
+  padding: 24px;
+  margin-bottom: 16px;
 }
 
 .link {
-    text-decoration: none;
-    color: rgba(242, 242, 243, 1);
+  text-decoration: none;
+  color: rgba(242, 242, 243, 1);
 }
 
 .cardFirstRow {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .number {
-    composes: text text_type_digits-default mb-6 from global;
+  composes: text text_type_digits-default mb-6 from global;
 }
 
 .date {
-    composes: text text_type_main-small text_color_inactive from global;
+  composes: text text_type_main-small text_color_inactive from global;
 }
 
 .nameContainer {
-  width: 536px; 
+  width: 536px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  display: block; 
+  display: block;
   box-sizing: border-box;
   margin-bottom: 24px;
 }
 
 .name {
-    composes: text text_type_main-medium from global;
+  composes: text text_type_main-medium from global;
 }
 
 .picture {
-    height: 60px;
-    width: 60px;
-    position: relative;
-    margin-top: 2px;
-    margin-left: 2px;
-    z-index: 4;
-    object-fit: cover;
+  height: 60px;
+  width: 60px;
+  position: relative;
+  margin-top: 2px;
+  margin-left: 2px;
+  z-index: 4;
+  object-fit: cover;
 }
 
 .picture:first-child {
-    z-index: 0; 
+  z-index: 0;
 }
 
 .cardLastRow {
-    display: flex;
-    justify-content: space-between; 
+  display: flex;
+  justify-content: space-between;
 }
 
 .price {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .priceNumber {
-    composes: text text_type_digits-default from global;
-    margin-right: 8px;
+  composes: text text_type_digits-default from global;
+  margin-right: 8px;
 }
 
 .imageBackground {
-    height: 64px;
-    width: 64px;
-    background:  #801AB3 0%;
-    border-radius: 100%;
-    position: absolute;
+  height: 64px;
+  width: 64px;
+  background: #801ab3 0%;
+  border-radius: 100%;
+  position: absolute;
 }
 
 .imageBackgroundOverlay {
-    height: 60px;
-    width: 60px;
-    background: rgba(19, 19, 22, 1);
-    border-radius: 100%;
-    position: absolute;
-    top: 0;
-    left: 0; 
-    margin-top: 2px;
-    margin-left: 2px;  
+  height: 60px;
+  width: 60px;
+  background: rgba(19, 19, 22, 1);
+  border-radius: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 2px;
+  margin-left: 2px;
 }
 
 .pictures {
-    display: flex;
-    position: relative;
-    flex-direction: row-reverse; 
-    margin-left: 16px;
+  display: flex;
+  position: relative;
+  flex-direction: row-reverse;
+  margin-left: 16px;
 }
 
 .imageCard {
-    position: relative;
-    margin-left: -16px; 
-    z-index: 2;
+  position: relative;
+  margin-left: -16px;
+  z-index: 2;
 }
 
 .imageCard:last-child {
-    z-index: 3; 
+  z-index: 3;
 }
 
 .extraOverlay {
-    composes: text text_type_main-small from global;
-    position: absolute;
-    height: 60px;
-    width: 60px;
-    top: 0;
-    left: 0; 
-    margin-top: 2px;
-    margin-left: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 50%;
-    z-index: 5; 
+  composes: text text_type_main-small from global;
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  top: 0;
+  left: 0;
+  margin-top: 2px;
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 50%;
+  z-index: 5;
 }

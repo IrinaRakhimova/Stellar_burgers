@@ -62,7 +62,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
     }
   };
 
-  const handleCancel = (): void => {
+  const handleCancel: () => void = () => {
     dispatch(setName(initialName));
     dispatch(setEmail(initialEmail));
     setPassword(initialPassword);
