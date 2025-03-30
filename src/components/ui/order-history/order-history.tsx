@@ -4,8 +4,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../services/store";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../services/store";
 
 export const OrderHistory: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch({ type: "websocket/start", payload: { type: "my" } });
+
+    return () => {
+      dispatch({ type: "websocket/stop" });
+    };
+  }, [dispatch]);
   const location = useLocation();
 
   const orders: Order[] = useSelector(
@@ -17,7 +29,7 @@ export const OrderHistory: React.FC = () => {
 
   const ingredientMap = useMemo(() => {
     const map: Record<string, { image: string; price: number }> = {};
-    ingredientsData.forEach((ingredient: any) => {
+    ingredientsData.forEach((ingredient: Ingredient) => {
       map[ingredient._id] = {
         image: ingredient.image,
         price: ingredient.price,

@@ -21,7 +21,7 @@ type UserDataState = {
   token: string;
   successLogout: boolean;
   isAuth: boolean;
-  order: null | any;
+  order: null | Order;
   resetPassword: boolean;
 };
 

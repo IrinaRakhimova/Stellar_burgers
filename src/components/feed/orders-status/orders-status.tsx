@@ -7,11 +7,10 @@ export const OrdersStatus: React.FC = () => {
   const { allOrders, total, totalToday } = useSelector(
     (state: RootState) => state.websocket
   );
-  console.log(allOrders);
   const getLastOrders = (status: string) =>
     allOrders
       .filter(
-        (order: { status: string }) => order.status.toLowerCase() === status
+        (order: { status: string, number: number }) => order.status.toLowerCase() === status
       )
       .sort(
         (
@@ -21,7 +20,7 @@ export const OrdersStatus: React.FC = () => {
       )
       .slice(0, 20);
 
-  const chunkArray = (arr: any[], size: number) => {
+  const chunkArray = (arr: Order[], size: number) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
       arr.slice(i * size, i * size + size)
     );

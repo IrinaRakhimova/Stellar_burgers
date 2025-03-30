@@ -6,7 +6,7 @@ import styles from "./orders-details.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export const OrdersDetails: React.FC = () => {
-  const location = useLocation();
+    const location = useLocation();
 
   const orders: Order[] = useSelector(
     (state: RootState) => state.websocket.allOrders || []
@@ -18,7 +18,7 @@ export const OrdersDetails: React.FC = () => {
 
   const ingredientMap = useMemo(() => {
     const map: Record<string, { image: string; price: number }> = {};
-    ingredientsData.forEach((ingredient: any) => {
+    ingredientsData.forEach((ingredient: Ingredient) => {
       map[ingredient._id] = {
         image: ingredient.image,
         price: ingredient.price,

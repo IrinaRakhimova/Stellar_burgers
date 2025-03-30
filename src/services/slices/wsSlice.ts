@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface WebSocketResponse {
+  orders: Order[];
+  total: number;
+  totalToday: number;
+}
+
 interface WebSocketState {
-  allOrders: [];
-  userOrders: [];
+  allOrders: Order[];
+  userOrders: Order[];
   total: number | null;
   totalToday: number | null;
   connected: boolean;
@@ -36,7 +42,7 @@ const wsSlice = createSlice({
     },
     wsMessage: (
       state,
-      action: PayloadAction<{ type: "all" | "my"; data: any }>
+      action: PayloadAction<{ type: "all" | "my"; data: WebSocketResponse }>
     ) => {
       if (action.payload.type === "all") {
         state.allOrders = action.payload.data.orders || [];

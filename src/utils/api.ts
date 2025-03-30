@@ -1,19 +1,21 @@
 const URL = "https://norma.nomoreparties.space/api";
 
-type ApiResponse<T = any> = {
+type ApiResponse<T = {}> = {
+  user: any;
+  accessToken: string;
+  refreshToken: string;
+  order: any;
   success: boolean;
   message?: string;
-  [key: string]: any;
 } & T;
 
-const checkResponse = async <T = any>(
-  res: Response
-): Promise<ApiResponse<T>> => {
+const checkResponse = async <T = {}>(res: Response): Promise<ApiResponse<T>> => {
   const data: ApiResponse<T> = await res.json();
   return res.ok ? data : Promise.reject(data);
 };
 
 interface RefreshTokenResponse {
+  [x: string]: any;
   refreshToken: string;
   accessToken: string;
 }
@@ -37,23 +39,27 @@ export const refreshToken = async (): Promise<RefreshTokenResponse> => {
   return refreshData;
 };
 
-export const fetchWithRefresh = async <T = any>(
+export const fetchWithRefresh = async <T = {}>(
   url: string,
   options: RequestInit & { headers: Record<string, string> }
 ): Promise<ApiResponse<T>> => {
-  try {
-    const res = await fetch(url, options);
-    return await checkResponse<T>(res);
-  } catch (err: any) {
-    if (err.message === "jwt expired") {
-      const refreshData = await refreshToken();
-      options.headers.Authorization = refreshData.accessToken;
-      const res = await fetch(url, options);
-      return await checkResponse<T>(res);
-    } else {
-      return Promise.reject(err);
+  let res = await fetch(url, options);
+  let data = await res.json(); 
+
+  if (res.status === 401 || (data.success === false && data.message === "jwt expired")) {
+    const refreshData = await refreshToken();
+
+    if (!refreshData.success) {
+      return Promise.reject(new Error("Token refresh failed"));
     }
+
+    options.headers.Authorization = `Bearer ${refreshData.accessToken}`;
+
+    res = await fetch(url, options);
+    data = await res.json();
   }
+
+  return data;
 };
 
 export const handleForgotPassword = async (
@@ -79,7 +85,7 @@ export const resetPassword = async (userData: {
   return checkResponse(res);
 };
 
-const request = async <T = any>(
+const request = async <T = {}>(
   endpoint: string,
   method: string = "GET",
   body?: unknown
@@ -127,5 +133,5 @@ export const updateUserData = (
 ) => request("/auth/user", "PATCH", userData);
 
 export const fetchOrderByNumber = async (orderNumber: number) => {
-  return request<{ orders: any[] }>(`/orders/${orderNumber}`);
+  return request<{ orders: Order[] }>(`/orders/${orderNumber}`);
 };

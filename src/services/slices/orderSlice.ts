@@ -81,7 +81,7 @@ export const fetchOrderByNumberThunk = createAsyncThunk<
       } else {
         return rejectWithValue("Order not found");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       return rejectWithValue("Failed to fetch order");
     }
   }

@@ -5,6 +5,7 @@ import {
   wsError,
   wsMessage,
 } from "../services/slices/wsSlice";
+import { RootState } from "../services/store";
 
 interface WebSocketStartAction {
   type: "websocket/start";
@@ -19,11 +20,16 @@ type WebSocketAction = WebSocketStartAction | WebSocketStopAction;
 
 const URL = "wss://norma.nomoreparties.space/orders";
 
-const isWebSocketStartAction = (action: any): action is WebSocketStartAction =>
-  action?.type === "websocket/start" && action?.payload?.type;
+const isWebSocketStartAction = (action: unknown): action is WebSocketStartAction =>
+  typeof action === "object" &&
+  action !== null &&
+  "type" in action &&
+  action.type === "websocket/start" &&
+  "payload" in action &&
+  typeof (action as WebSocketStartAction).payload?.type === "string";
 
 export const wsMiddleware: Middleware = (
-  store: MiddlewareAPI<Dispatch, any>
+  store: MiddlewareAPI<Dispatch, RootState>
 ) => {
   let socket: WebSocket | null = null;
   let activeConnection: "all" | "my" | null = null;
@@ -52,7 +58,10 @@ export const wsMiddleware: Middleware = (
         activeConnection = type;
 
         socket.onopen = () => {
-          store.dispatch(wsConnect());
+          console.log("WebSocket connected!");
+          if (socket?.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({ type: "subscribe", channel: "orders" }));
+          }
         };
 
         socket.onmessage = (event) => {
@@ -73,6 +82,9 @@ export const wsMiddleware: Middleware = (
 
       if (action.type === "websocket/stop") {
         if (socket) {
+          console.log("Closing WebSocket connection...");
+          socket.onclose = null; 
+          socket.onerror = null; 
           socket.close();
           socket = null;
           activeConnection = null;
