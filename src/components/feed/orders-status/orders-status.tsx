@@ -1,16 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../services/store";
 import styles from "./orders-status.module.css";
+import { useAppSelector } from "../../../store/hooks";
 
 export const OrdersStatus: React.FC = () => {
-  const { allOrders, total, totalToday } = useSelector(
-    (state: RootState) => state.websocket
+  const { allOrders, total, totalToday } = useAppSelector(
+    (state) => state.websocket
   );
   const getLastOrders = (status: string) =>
     allOrders
       .filter(
-        (order: { status: string, number: number }) => order.status.toLowerCase() === status
+        (order: { status: string; number: number }) =>
+          order.status.toLowerCase() === status
       )
       .sort(
         (

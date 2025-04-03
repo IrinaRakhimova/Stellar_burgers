@@ -1,19 +1,18 @@
 import React, { useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../services/store";
 import styles from "./orders-details.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppSelector } from "../../../store/hooks";
 
 export const OrdersDetails: React.FC = () => {
-    const location = useLocation();
+  const location = useLocation();
 
-  const orders: Order[] = useSelector(
-    (state: RootState) => state.websocket.allOrders || []
+  const orders: Order[] = useAppSelector(
+    (state) => state.websocket.allOrders || []
   );
 
-  const ingredientsData = useSelector(
-    (state: RootState) => state.ingredients.ingredients || []
+  const ingredientsData = useAppSelector(
+    (state) => state.ingredients.ingredients || []
   );
 
   const ingredientMap = useMemo(() => {

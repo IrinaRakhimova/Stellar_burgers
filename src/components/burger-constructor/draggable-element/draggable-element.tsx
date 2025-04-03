@@ -5,9 +5,9 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./draggable-element.module.css";
-import { useDispatch } from "react-redux";
-import { reorderIngredients } from "../../../services/slices/burgerConstructorSlice";
-import { deleteIngredient } from "../../../services/slices/burgerConstructorSlice";
+import { useAppDispatch } from "../../../store/hooks";
+import { reorderIngredients } from "../../../slices/burgerConstructorSlice";
+import { deleteIngredient } from "../../../slices/burgerConstructorSlice";
 import type { Identifier } from "dnd-core";
 
 type TDraggableElement = {
@@ -28,7 +28,7 @@ type DropCollectedProps = {
 
 export const DraggableElement: React.FC<TDraggableElement> = React.memo(
   ({ ingredient, index }) => {
-    const dispatch = useDispatch();
+    const dispatch =  useAppDispatch();
     const ref = useRef<HTMLLIElement | null>(null);
     const lastMovedRef = useRef<number | null>(null);
 

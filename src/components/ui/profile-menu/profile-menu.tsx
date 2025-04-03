@@ -1,23 +1,16 @@
 import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import styles from "./profile-menu.module.css";
-import { logOutThunk } from "../../../services/slices/userDataSlice";
-import { AppDispatch } from "../../../services/store";
-
-interface RootState {
-  userData: {
-    successLogout: boolean;
-  };
-}
+import { logOutThunk } from "../../../slices/userDataSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 const ProfileMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const currentPath = location.pathname;
 
-  const { successLogout } = useSelector((state: RootState) => state.userData);
+  const { successLogout } = useAppSelector((state) => state.userData);
 
   const handleLogout = () => {
     dispatch(logOutThunk({ token: localStorage.getItem("refreshToken") }))

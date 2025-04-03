@@ -1,15 +1,12 @@
 import React, { useMemo } from "react";
 import styles from "./order-history.module.css";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../services/store";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../services/store";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 export const OrderHistory: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch({ type: "websocket/start", payload: { type: "my" } });
@@ -20,11 +17,11 @@ export const OrderHistory: React.FC = () => {
   }, [dispatch]);
   const location = useLocation();
 
-  const orders: Order[] = useSelector(
-    (state: RootState) => state.websocket.userOrders || []
+  const orders: Order[] = useAppSelector(
+    (state) => state.websocket.userOrders || []
   );
-  const ingredientsData = useSelector(
-    (state: RootState) => state.ingredients.ingredients || []
+  const ingredientsData = useAppSelector(
+    (state) => state.ingredients.ingredients || []
   );
 
   const ingredientMap = useMemo(() => {

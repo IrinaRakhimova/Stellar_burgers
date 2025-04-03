@@ -2,10 +2,9 @@ import React, { useRef, useMemo, useCallback } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsCategory } from "./ingredients-category/ingredients-category";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentSection } from "../../services/slices/ingredientsSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setCurrentSection } from "../../slices/ingredientsSlice";
 import { Loader } from "../ui/loader/loader";
-import { RootState, AppDispatch } from "../../services/store";
 
 export const BurgerIngredients: React.FC = () => {
   const bunsRef = useRef<HTMLDivElement | null>(null);
@@ -13,10 +12,10 @@ export const BurgerIngredients: React.FC = () => {
   const mainsRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed, currentSection } =
-    useSelector(
-      (state: RootState) =>
+  useAppSelector(
+      state =>
         state.ingredients as {
           ingredients: Ingredient[];
           ingredientsRequest: boolean;

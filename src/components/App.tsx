@@ -12,14 +12,13 @@ import IngredientDetails from "./burger-ingredients/ingredient-details/ingredien
 import Modal from "./modals/modal/modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchIngredientsThunk } from "../services/slices/ingredientsSlice";
-import { getUserDataThunk } from "../services/slices/userDataSlice";
-import { useDispatch } from "react-redux";
+import { fetchIngredientsThunk } from "../slices/ingredientsSlice";
+import { getUserDataThunk } from "../slices/userDataSlice";
+import { useAppDispatch } from "../store/hooks";
 import { OrderHistory } from "./ui/order-history/order-history";
 import ProfileForm from "./ui/profile-form/profile-form";
 import { NotFound } from "../pages/not-found/not-found";
 import { Feed } from "../pages/feed/feed";
-import { AppDispatch } from "../services/store";
 import { OrderInfo } from "./ui/order-info/order-info";
 
 type LocationState = {
@@ -28,7 +27,7 @@ type LocationState = {
 
 const App: React.FC = () => {
   const location = useLocation();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const background = (location.state as LocationState)?.background;

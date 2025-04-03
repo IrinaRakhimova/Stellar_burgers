@@ -5,7 +5,7 @@ import {
   logOut,
   getUserData,
   updateUserData,
-} from "../../utils/api";
+} from "../utils/api";
 
 const initialState: UserDataState = {
   name: "",

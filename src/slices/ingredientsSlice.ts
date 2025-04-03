@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { fetchIngredients } from "../../utils/api";
+import { fetchIngredients } from "../utils/api";
 
 type IngredientsState = {
   ingredients: Ingredient[];

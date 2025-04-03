@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { createOrderRequest, fetchOrderByNumber } from "../../utils/api";
-import { RootState } from "../store";
+import { createOrderRequest, fetchOrderByNumber } from "../utils/api";
+import { RootState } from "../store/store";
 
 interface OrderResponse {
   order: Order;

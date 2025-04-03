@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import burgerConstructorReducer from "./slices/burgerConstructorSlice";
-import orderReducer from "./slices/orderSlice";
-import ingredientsReducer from "./slices/ingredientsSlice";
-import userDataReducer from "./slices/userDataSlice";
-import wsReducer from "./slices/wsSlice";
+import burgerConstructorReducer from "../slices/burgerConstructorSlice";
+import orderReducer from "../slices/orderSlice";
+import ingredientsReducer from "../slices/ingredientsSlice";
+import userDataReducer from "../slices/userDataSlice";
+import wsReducer from "../slices/wsSlice";
 import { wsMiddleware } from "../utils/wsMiddleware";
 
 export const store = configureStore({
@@ -20,5 +20,4 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-export default store;
+export type AppStore = typeof store;

@@ -1,28 +1,26 @@
 import React, { useEffect } from "react";
 import styles from "./ingredient-details.module.css";
-import { useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
-import { fetchIngredientsThunk } from "../../../services/slices/ingredientsSlice";
-import { useDispatch } from "react-redux";
+import { fetchIngredientsThunk } from "../../../slices/ingredientsSlice";
 import { Loader } from "../../ui/loader/loader";
-import { RootState, AppDispatch } from "../../../services/store";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 const IngredientDetails: React.FC = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const isModal =
     location.state && (location.state as { background?: boolean }).background;
 
-  const ingredients = useSelector(
-    (state: RootState) => state.ingredients.ingredients as Ingredient[]
+  const ingredients = useAppSelector(
+    (state) => state.ingredients.ingredients as Ingredient[]
   );
-  const isLoading = useSelector(
-    (state: RootState) => state.ingredients.ingredientsRequest
+  const isLoading = useAppSelector(
+    (state) => state.ingredients.ingredientsRequest
   );
-  const hasError = useSelector(
-    (state: RootState) => state.ingredients.ingredientsFailed
+  const hasError = useAppSelector(
+    (state) => state.ingredients.ingredientsFailed
   );
 
   const selectedIngredient = ingredients.find(

@@ -1,11 +1,10 @@
 import { Middleware, MiddlewareAPI, Dispatch } from "@reduxjs/toolkit";
 import {
-  wsConnect,
   wsDisconnect,
   wsError,
   wsMessage,
-} from "../services/slices/wsSlice";
-import { RootState } from "../services/store";
+} from "../slices/wsSlice";
+import { RootState } from "../store/store";
 
 interface WebSocketStartAction {
   type: "websocket/start";

@@ -2,27 +2,24 @@ import React, { useMemo, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import styles from "./order-info.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "../../../services/store";
-import { fetchOrderByNumberThunk } from "../../../services/slices/orderSlice";
+import { fetchOrderByNumberThunk } from "../../../slices/orderSlice";
 import { Loader } from "../loader/loader";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 export const OrderInfo: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
-  const allOrders = useSelector(
-    (state: RootState) => state.websocket.allOrders || []
+  const allOrders = useAppSelector((state) => state.websocket.allOrders || []);
+  const userOrders = useAppSelector(
+    (state) => state.websocket.userOrders || []
   );
-  const userOrders = useSelector(
-    (state: RootState) => state.websocket.userOrders || []
-  );
-  const ingredientsData = useSelector(
-    (state: RootState) => state.ingredients.ingredients || []
+  const ingredientsData = useAppSelector(
+    (state) => state.ingredients.ingredients || []
   );
 
-  const fetchedOrder = useSelector((state: RootState) => state.order.order);
-  const orderLoading = useSelector((state: RootState) => state.order.loading);
-  const orderError = useSelector((state: RootState) => state.order.error);
+  const fetchedOrder = useAppSelector((state) => state.order.order);
+  const orderLoading = useAppSelector((state) => state.order.loading);
+  const orderError = useAppSelector((state) => state.order.error);
 
   const orders: Order[] = useMemo(() => {
     return location.pathname.includes("/profile/orders")
