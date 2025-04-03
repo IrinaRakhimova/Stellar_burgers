@@ -1,6 +1,7 @@
 const URL = "https://norma.nomoreparties.space/api";
 
 type ApiResponse<T = {}> = {
+  data(data: any): unknown;
   user: any;
   accessToken: string;
   refreshToken: string;

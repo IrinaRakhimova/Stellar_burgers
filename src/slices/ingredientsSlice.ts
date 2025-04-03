@@ -18,7 +18,7 @@ export const fetchIngredientsThunk = createAsyncThunk<
     const res = await fetchIngredients();
 
     if (res && Array.isArray(res.data)) {
-      return res.data;
+      return res.data as unknown as Ingredient[];
     } else {
       throw new Error("Invalid response format");
     }
