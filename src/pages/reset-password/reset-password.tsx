@@ -4,26 +4,25 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import {
   setToken,
   setResetPassword,
   setError,
   setRequest,
   setSuccess,
-} from "../../services/slices/userDataSlice";
+} from "../../slices/userDataSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { resetPassword } from "../../utils/api";
-import { AppDispatch } from "../../services/store";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 const ResetPassword: React.FC = () => {
-  const { token, success } = useSelector(
+  const { token, success } = useAppSelector(
     (state: { userData: UserDataState }) => state.userData
   );
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value);

@@ -7,16 +7,14 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderDetails from "../modals/order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   addIngredient,
-  deleteIngredient,
   resetIngredients,
-} from "../../services/slices/burgerConstructorSlice";
-import { createOrderThunk, hideModal } from "../../services/slices/orderSlice";
+} from "../../slices/burgerConstructorSlice";
+import { createOrderThunk, hideModal } from "../../slices/orderSlice";
 import { DraggableElement } from "./draggable-element/draggable-element";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "../../services/store";
 
 interface BurgerConstructorState {
   bun: Ingredient | null;
@@ -28,14 +26,14 @@ interface OrderState {
 }
 
 export const BurgerConstructor: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { bun, ingredients } = useSelector(
+  const { bun, ingredients } = useAppSelector(
     (state: { burgerConstructor: BurgerConstructorState }) =>
       state.burgerConstructor
   );
-  const { isModalVisible } = useSelector(
+  const { isModalVisible } = useAppSelector(
     (state: { order: OrderState }) => state.order
   );
 

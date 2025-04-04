@@ -12,21 +12,22 @@ import IngredientDetails from "./burger-ingredients/ingredient-details/ingredien
 import Modal from "./modals/modal/modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchIngredientsThunk } from "../services/slices/ingredientsSlice";
-import { getUserDataThunk } from "../services/slices/userDataSlice";
-import { useDispatch } from "react-redux";
+import { fetchIngredientsThunk } from "../slices/ingredientsSlice";
+import { getUserDataThunk } from "../slices/userDataSlice";
+import { useAppDispatch } from "../store/hooks";
 import { OrderHistory } from "./ui/order-history/order-history";
 import ProfileForm from "./ui/profile-form/profile-form";
 import { NotFound } from "../pages/not-found/not-found";
-import { AppDispatch } from "../services/store";
+import { Feed } from "../pages/feed/feed";
+import { OrderInfo } from "./ui/order-info/order-info";
 
 type LocationState = {
   background?: Location;
-}
+};
 
 const App: React.FC = () => {
   const location = useLocation();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const background = (location.state as LocationState)?.background;
@@ -52,6 +53,8 @@ const App: React.FC = () => {
       <Routes location={background || location}>
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Main />} />
+        <Route path="/feed" element={<Feed />} />
+        {!background && <Route path="/feed/:number" element={<OrderInfo />} />}
         <Route
           path="/login"
           element={<ProtectedRouteElement element={<Login />} onlyUnAuth />}
@@ -85,6 +88,12 @@ const App: React.FC = () => {
         </Route>
         {!background && (
           <Route
+            path="profile/orders/:number"
+            element={<ProtectedRouteElement element={<OrderInfo />} />}
+          />
+        )}
+        {!background && (
+          <Route
             path="/ingredients/:ingredientId"
             element={<ProtectedRouteElement element={<IngredientDetails />} />}
           />
@@ -99,6 +108,26 @@ const App: React.FC = () => {
                 element={
                   <Modal onClose={handleModalClose}>
                     <IngredientDetails />
+                  </Modal>
+                }
+              />
+            }
+          />
+          <Route
+            path="/feed/:number"
+            element={
+              <Modal onClose={handleModalClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path="profile/orders/:number"
+            element={
+              <ProtectedRouteElement
+                element={
+                  <Modal onClose={handleModalClose}>
+                    <OrderInfo />
                   </Modal>
                 }
               />

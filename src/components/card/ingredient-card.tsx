@@ -5,10 +5,9 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
-import { setSelectedIngredient } from "../../services/slices/ingredientsSlice";
-import { RootState, AppDispatch } from "../../services/store";
+import { setSelectedIngredient } from "../../slices/ingredientsSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 interface IngredientCardProps {
   ingredient: Ingredient;
@@ -17,12 +16,12 @@ interface IngredientCardProps {
 export const IngredientCard: React.FC<IngredientCardProps> = ({
   ingredient,
 }) => {
-  const { bun, ingredients = [] } = useSelector((state: RootState) => ({
+  const { bun, ingredients = [] } = useAppSelector((state) => ({
     bun: state.burgerConstructor.bun,
     ingredients: state.burgerConstructor.ingredients || [],
   }));
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const { _id, name, image, price, type } = ingredient;

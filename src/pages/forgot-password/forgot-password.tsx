@@ -3,24 +3,23 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import {
   setEmail,
   setResetPassword,
   setError,
   setRequest,
-} from "../../services/slices/userDataSlice";
+} from "../../slices/userDataSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { handleForgotPassword } from "../../utils/api";
-import { AppDispatch } from "../../services/store";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 export const ForgotPassword: React.FC = () => {
-  const { email, error, resetPassword } = useSelector(
+  const { email, error, resetPassword } = useAppSelector(
     (state: { userData: UserDataState }) => state.userData
   );
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setEmail(e.target.value));

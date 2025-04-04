@@ -2,17 +2,16 @@ import React from "react";
 import styles from "./order-details.module.css";
 import Modal from "../modal/modal";
 import OrderReady from "../../../images/order-ready";
-import { useSelector } from "react-redux";
 import { Loader } from "../../ui/loader/loader";
-import { RootState } from "../../../services/store";
+import { useAppSelector } from "../../../store/hooks";
 
 interface OrderDetailsProps {
   onClose: () => void;
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ onClose }) => {
-  const { orderNumber, orderName, orderRequest } = useSelector(
-    (state: RootState) => state.order
+  const { orderNumber, orderName, orderRequest } = useAppSelector(
+    (state) => state.order
   );
 
   return (

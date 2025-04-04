@@ -3,9 +3,8 @@ import { BurgerIngredients } from "../../components/burger-ingredients/burger-in
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { addIngredient } from "../../services/slices/burgerConstructorSlice";
-import { AppDispatch } from "../../services/store";
+import { addIngredient } from "../../slices/burgerConstructorSlice";
+import { useAppDispatch } from "../../store/hooks";
 
 interface SavedIngredients {
   bun?: Ingredient;
@@ -13,7 +12,7 @@ interface SavedIngredients {
 }
 
 export const Main: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const savedIngredients = localStorage.getItem("selectedIngredients");

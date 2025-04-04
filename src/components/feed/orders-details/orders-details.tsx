@@ -1,25 +1,16 @@
 import React, { useMemo } from "react";
-import styles from "./order-history.module.css";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import styles from "./orders-details.module.css";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppSelector } from "../../../store/hooks";
 
-export const OrderHistory: React.FC = () => {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch({ type: "websocket/start", payload: { type: "my" } });
-
-    return () => {
-      dispatch({ type: "websocket/stop" });
-    };
-  }, [dispatch]);
+export const OrdersDetails: React.FC = () => {
   const location = useLocation();
 
   const orders: Order[] = useAppSelector(
-    (state) => state.websocket.userOrders || []
+    (state) => state.websocket.allOrders || []
   );
+
   const ingredientsData = useAppSelector(
     (state) => state.ingredients.ingredients || []
   );
@@ -37,9 +28,9 @@ export const OrderHistory: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {[...orders].reverse().map((order) => {
+      {orders.map((order) => {
         const totalPrice = order.ingredients.reduce((sum, ingredientId) => {
-          return sum + ingredientMap[ingredientId]?.price;
+          return sum + (ingredientMap[ingredientId]?.price || 0);
         }, 0);
 
         const totalIngredients = order.ingredients.length;
@@ -81,7 +72,7 @@ export const OrderHistory: React.FC = () => {
 
         return (
           <Link
-            to={`/profile/orders/${order.number}`}
+            to={`/feed/${order.number}`}
             key={order.number}
             className={styles.link}
             state={{ background: location }}
@@ -93,17 +84,6 @@ export const OrderHistory: React.FC = () => {
               </div>
               <div className={styles.nameContainer}>
                 <p className={styles.name}>{order.name}</p>
-                <p
-                  className={`${styles.status} ${
-                    order.status === "done" ? styles.done : ""
-                  }`}
-                >
-                  {order.status === "done"
-                    ? "Выполнен"
-                    : order.status === "pending"
-                    ? "Готовится"
-                    : "Создан"}
-                </p>
               </div>
               <div className={styles.cardLastRow}>
                 <div className={styles.pictures}>

@@ -7,21 +7,20 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
   setEmail,
   setName,
   updateUserDataThunk,
-} from "../../../services/slices/userDataSlice";
-import { RootState, AppDispatch } from "../../../services/store";
+} from "../../../slices/userDataSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 interface ProfileFormProps {}
 
 const ProfileForm: React.FC<ProfileFormProps> = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const { email, name, successLogout } = useSelector(
-    (state: RootState) => state.userData
+  const dispatch = useAppDispatch();
+  const { email, name, successLogout } = useAppSelector(
+    (state) => state.userData
   );
 
   const [password, setPassword] = useState<string>("");
@@ -62,7 +61,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
     }
   };
 
-  const handleCancel = (): void => {
+  const handleCancel: () => void = () => {
     dispatch(setName(initialName));
     dispatch(setEmail(initialEmail));
     setPassword(initialPassword);

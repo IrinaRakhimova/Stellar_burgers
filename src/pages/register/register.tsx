@@ -6,18 +6,17 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
   setName,
   setEmail,
   registerUserThunk,
-} from "../../services/slices/userDataSlice";
+} from "../../slices/userDataSlice";
 import { useState } from "react";
-import { AppDispatch } from "../../services/store";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 export const Register: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { name, email, error } = useSelector(
+  const dispatch = useAppDispatch();
+  const { name, email, error } = useAppSelector(
     (state: { userData: UserDataState }) => state.userData
   );
   const [password, setPassword] = useState<string>("");

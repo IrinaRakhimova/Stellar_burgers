@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../services/store";
+import { useAppSelector } from "../../store/hooks";
 
 interface ProtectedRouteElementProps {
   element: JSX.Element;
@@ -15,7 +14,7 @@ export const ProtectedRouteElement: React.FC<ProtectedRouteElementProps> = ({
 }) => {
   const location = useLocation();
 
-  const { request } = useSelector((state: RootState) => state.userData);
+  const { request } = useAppSelector((state) => state.userData);
   const accessToken = localStorage.getItem("accessToken");
   const resetPassword = localStorage.getItem("resetPassword") === "true";
   const resetSuccessful = localStorage.getItem("resetSuccessful") === "true";

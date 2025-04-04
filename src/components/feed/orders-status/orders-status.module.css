@@ -1,0 +1,62 @@
+.container {
+  margin-left: 60px;
+  width: 580px;
+}
+
+.upperContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+.ready {
+  width: 272px;
+}
+
+.making {
+  width: 272px;
+}
+
+.readyTitle {
+  composes: text text_type_main-large mb-6 from global;
+}
+
+.readyNumbers {
+  composes: text text_type_digits-default mb-2 from global;
+  color: rgba(0, 204, 204, 1);
+}
+
+.makingTitle {
+  composes: text text_type_main-large mb-6 from global;
+}
+
+.makingNumbers {
+  composes: text text_type_digits-default mb-2 from global;
+}
+
+.totalTitle {
+  composes: text text_type_main-large from global;
+}
+
+.totalNumber {
+  composes: text text_type_digits-large mb-15 from global;
+}
+
+.todayTitle {
+  composes: text text_type_main-large from global;
+}
+
+.todayNumber {
+  composes: text text_type_digits-large mb-15 from global;
+}
+
+.ordersGrid {
+  display: flex;
+  gap: 10px;
+}
+
+.orderColumn {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
