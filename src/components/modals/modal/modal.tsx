@@ -35,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({ children, header, onClose }) => {
       <div className={styles.modal}>
         <div className={styles.cardTop}>
           <h1 className={styles.header}>{header}</h1>
-          <div className={styles.close} onClick={onClose}>
+          <div className={styles.close} onClick={onClose} data-testid="modal-close">
             <CloseIcon type="primary" />
           </div>
         </div>

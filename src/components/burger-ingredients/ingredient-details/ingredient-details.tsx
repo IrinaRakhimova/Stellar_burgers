@@ -45,6 +45,7 @@ const IngredientDetails: React.FC = () => {
   return (
     <div
       className={`${styles.container} ${isModal ? styles.modal : styles.page}`}
+      data-testid="ingredient-modal"
     >
       <div className={styles.info}>
         <img
@@ -52,11 +53,11 @@ const IngredientDetails: React.FC = () => {
           alt={selectedIngredient.name}
           className={styles.image}
         />
-        <p className={styles.name}>{selectedIngredient.name}</p>
+        <p className={styles.name} data-testid="ingredient-name">{selectedIngredient.name}</p>
         <div className={styles.nutrition}>
           <div className={styles.textContainer}>
             <p className={styles.nutrient}>Калории, ккал</p>
-            <p className={styles.nutrientValue}>
+            <p className={styles.nutrientValue} data-testid="ingredient-calories">
               {selectedIngredient.calories}
             </p>
           </div>

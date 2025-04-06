@@ -104,13 +104,9 @@ const App: React.FC = () => {
           <Route
             path="/ingredients/:ingredientId"
             element={
-              <ProtectedRouteElement
-                element={
-                  <Modal onClose={handleModalClose}>
-                    <IngredientDetails />
-                  </Modal>
-                }
-              />
+              <Modal onClose={handleModalClose}>
+                <IngredientDetails />
+              </Modal>
             }
           />
           <Route
