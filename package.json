@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "/Stellar_burgers", 
+  "homepage": "https://irinarakhimova.github.io/Stellar_burgers/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,7 +12,7 @@
     "test": "jest",
     "cypress": "cypress open",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@babel/runtime": "^7.25.4",
