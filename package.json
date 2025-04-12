@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "/Stellar_burgers",
+  "homepage": "https://irinarakhimova.github.io/Stellar_burgers",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
