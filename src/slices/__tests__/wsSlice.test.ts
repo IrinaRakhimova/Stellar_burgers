@@ -3,17 +3,21 @@ import reducer, {
   wsDisconnect,
   wsError,
   wsMessage,
+  initialState,
 } from "../../slices/wsSlice";
 
 describe("webSocketSlice reducers", () => {
-  const initialState = {
-    allOrders: [],
-    userOrders: [],
-    total: null,
-    totalToday: null,
-    connected: false,
-    error: null,
-  };
+  it("should return the initial state", () => {
+    const state = reducer(undefined, { type: "UNKNOWN_ACTION" });
+    expect(state).toEqual({
+      allOrders: [],
+      userOrders: [],
+      total: null,
+      totalToday: null,
+      connected: false,
+      error: null,
+    });
+  });
 
   it("should handle wsConnect", () => {
     const state = reducer(initialState, wsConnect());

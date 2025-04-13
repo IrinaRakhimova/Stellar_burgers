@@ -55,6 +55,17 @@ describe("ingredientsSlice", () => {
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   });
 
+  it("should return the initial state", () => {
+    const state = store.getState().ingredients;
+    expect(state).toEqual({
+      ingredients: [],
+      ingredientsRequest: false,
+      ingredientsFailed: false,
+      currentSection: "bun",
+      selectedIngredient: null,
+    });
+  });
+
   it("should handle setCurrentSection", () => {
     store.dispatch(setCurrentSection("main"));
     const state = store.getState().ingredients;

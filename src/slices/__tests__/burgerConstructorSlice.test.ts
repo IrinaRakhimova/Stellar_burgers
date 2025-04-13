@@ -3,6 +3,7 @@ import reducer, {
   deleteIngredient,
   reorderIngredients,
   resetIngredients,
+  initialState,
 } from "../../slices/burgerConstructorSlice";
 
 const createFakeIngredient = (
@@ -28,10 +29,6 @@ const fakePatty = createFakeIngredient({ type: "main" });
 
 describe("burgerConstructorSlice", () => {
   it("should return the initial state", () => {
-    const initialState = {
-      bun: null,
-      ingredients: [],
-    };
     expect(reducer(undefined, { type: "unknown" })).toEqual(initialState);
   });
 
@@ -62,25 +59,24 @@ describe("burgerConstructorSlice", () => {
   });
 
   it("should delete an ingredient", () => {
-    const bun = fakeBun;
-    const patty = fakePatty;
-    const initialState = {
-      bun,
-      ingredients: [patty],
+    const stateWithIngredient = {
+      ...initialState,
+      bun: fakeBun,
+      ingredients: [fakePatty],
     };
-    const action = deleteIngredient(patty.instanceId);
-    const state = reducer(initialState, action);
+    const action = deleteIngredient(fakePatty.instanceId);
+    const state = reducer(stateWithIngredient, action);
     expect(state.ingredients).toEqual([]);
   });
 
   it("should delete a bun ingredient", () => {
-    const bun = fakeBun;
-    const initialState = {
-      bun,
+    const stateWithBun = {
+      ...initialState,
+      bun: fakeBun,
       ingredients: [],
     };
-    const action = deleteIngredient(bun.instanceId);
-    const state = reducer(initialState, action);
+    const action = deleteIngredient(fakeBun.instanceId);
+    const state = reducer(stateWithBun, action);
     expect(state.bun).toBeNull();
   });
 
@@ -90,26 +86,24 @@ describe("burgerConstructorSlice", () => {
       type: "main",
       name: "Chicken Patty",
     });
-    const initialState = {
-      bun: null,
+    const stateWithIngredients = {
+      ...initialState,
       ingredients: [patty1, patty2],
     };
     const action = reorderIngredients({ fromIndex: 0, toIndex: 1 });
-    const state = reducer(initialState, action);
+    const state = reducer(stateWithIngredients, action);
     expect(state.ingredients[0]).toEqual(patty2);
     expect(state.ingredients[1]).toEqual(patty1);
   });
 
   it("should reset ingredients", () => {
-    const initialState = {
+    const filledState = {
+      ...initialState,
       bun: fakeBun,
       ingredients: [fakeSauce, fakePatty],
     };
     const action = resetIngredients();
-    const state = reducer(initialState, action);
-    expect(state).toEqual({
-      bun: null,
-      ingredients: [],
-    });
+    const state = reducer(filledState, action);
+    expect(state).toEqual(initialState);
   });
 });

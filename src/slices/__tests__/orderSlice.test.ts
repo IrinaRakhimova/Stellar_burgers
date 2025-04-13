@@ -26,6 +26,24 @@ const getStore = () =>
     },
   });
 
+describe("orderSlice initial state", () => {
+  it("should return the initial state", () => {
+    const store = getStore();
+    const state = store.getState().order;
+
+    expect(state).toEqual({
+      order: null,
+      orderNumber: null,
+      orderName: "",
+      orderRequest: false,
+      orderFailed: false,
+      isModalVisible: false,
+      loading: false,
+      error: null,
+    });
+  });
+});
+
 describe("orderSlice reducers", () => {
   it("should handle showModal", () => {
     const store = getStore();

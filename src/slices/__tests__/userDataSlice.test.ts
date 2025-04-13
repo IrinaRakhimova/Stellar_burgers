@@ -10,6 +10,7 @@ import reducer, {
   registerUserThunk,
   logInThunk,
   getUserDataThunk,
+  initialState,
 } from "../../slices/userDataSlice";
 
 jest.mock("../../utils/api");
@@ -21,7 +22,7 @@ const mockPayload = {
   refreshToken: "fake-refresh-token",
   order: {},
   success: true,
-  message: "Success", // optional
+  message: "Success",
 };
 
 const userPayload = {
@@ -31,18 +32,22 @@ const userPayload = {
   token: "123",
 };
 
-const initialState = {
-  name: "",
-  email: "",
-  success: false,
-  error: null,
-  request: false,
-  token: "",
-  successLogout: false,
-  isAuth: false,
-  order: null,
-  resetPassword: false,
-};
+describe("userDataSlice initial state", () => {
+  it("should match the initial state structure", () => {
+    expect(initialState).toEqual({
+      name: "",
+      email: "",
+      success: false,
+      error: null,
+      request: false,
+      token: "",
+      successLogout: false,
+      isAuth: false,
+      order: null,
+      resetPassword: false,
+    });
+  });
+});
 
 describe("userDataSlice reducers", () => {
   it("should handle setName", () => {
