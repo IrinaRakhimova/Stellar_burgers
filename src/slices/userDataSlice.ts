@@ -7,7 +7,7 @@ import {
   updateUserData,
 } from "../utils/api";
 
-const initialState: UserDataState = {
+export const initialState: UserDataState = {
   name: "",
   email: "",
   success: false,

@@ -15,7 +15,7 @@ interface WebSocketState {
   error: string | null;
 }
 
-const initialState: WebSocketState = {
+export const initialState: WebSocketState = {
   allOrders: [],
   userOrders: [],
   total: null,

@@ -92,90 +92,79 @@ export const BurgerConstructor: React.FC = () => {
   };
 
   return (
-    <div ref={drop} className={styles.container}>
-      <ul className={styles.scrollContainer}>
-        <li className={styles.bunItem}>
-          {bun ? (
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
-            />
-          ) : (
-            <div
-              className={`${styles.bunHolderTop} ${
-                isOver ? styles.active : ""
-              }`}
-            >
-              <p className={styles.holderText}>Выберите булки</p>
-            </div>
-          )}
-        </li>
-
-        <div className={styles.scroll}>
-          {ingredients.length !== 0 ? (
-            ingredients.map((ingredient) => {
-              const realIndex = ingredients.findIndex(
-                (item) => item.instanceId === ingredient.instanceId
-              );
-
-              return (
-                <DraggableElement
-                  key={ingredient.instanceId}
-                  ingredient={ingredient}
-                  index={realIndex}
-                />
-              );
-            })
-          ) : (
-            <div
-              className={`${styles.ingredientHolder} ${
-                isOver ? styles.active : ""
-              }`}
-            >
-              <p className={styles.holderText}>Выберите начинку</p>
-            </div>
-          )}
+    <div ref={drop} className={styles.container} data-testid="burger-constructor-drop-zone">
+  <ul className={styles.scrollContainer}>
+    <li className={styles.bunItem} data-testid="burger-constructor-item">
+      {bun ? (
+        <ConstructorElement
+          type="top"
+          isLocked={true}
+          text={`${bun.name} (верх)`}
+          price={bun.price}
+          thumbnail={bun.image}
+        />
+      ) : (
+        <div className={`${styles.bunHolderTop} ${isOver ? styles.active : ""}`}>
+          <p className={styles.holderText}>Выберите булки</p>
         </div>
+      )}
+    </li>
 
-        <li className={styles.bunItem}>
-          {bun ? (
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
-            />
-          ) : (
-            <div
-              className={`${styles.bunHolderBottom} ${
-                isOver ? styles.active : ""
-              }`}
-            >
-              <p className={styles.holderText}>Выберите булки</p>
+    <div className={styles.scroll}>
+      {ingredients.length !== 0 ? (
+        ingredients.map((ingredient) => {
+          const realIndex = ingredients.findIndex(
+            (item) => item.instanceId === ingredient.instanceId
+          );
+          return (
+            <div key={ingredient.instanceId} data-testid="burger-constructor-item">
+              <DraggableElement
+                ingredient={ingredient}
+                index={realIndex}
+              />
             </div>
-          )}
-        </li>
-      </ul>
-
-      <div className={styles.totalGroup}>
-        <p className={styles.totalPrice}>{totalPrice}</p>
-        <div className={styles.iconContainer}>
-          <CurrencyIcon type="primary" className={styles.icon} />
+          );
+        })
+      ) : (
+        <div className={`${styles.ingredientHolder} ${isOver ? styles.active : ""}`}>
+          <p className={styles.holderText}>Выберите начинку</p>
         </div>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          onClick={handleOrderClick}
-        >
-          Оформить заказ
-        </Button>
-        {isModalVisible && <OrderDetails onClose={handleClose} />}
-      </div>
+      )}
     </div>
+
+    <li className={styles.bunItem}>
+      {bun ? (
+        <ConstructorElement
+          type="bottom"
+          isLocked={true}
+          text={`${bun.name} (низ)`}
+          price={bun.price}
+          thumbnail={bun.image}
+        />
+      ) : (
+        <div className={`${styles.bunHolderBottom} ${isOver ? styles.active : ""}`}>
+          <p className={styles.holderText}>Выберите булки</p>
+        </div>
+      )}
+    </li>
+  </ul>
+
+  <div className={styles.totalGroup}>
+    <p className={styles.totalPrice}>{totalPrice}</p>
+    <div className={styles.iconContainer}>
+      <CurrencyIcon type="primary" className={styles.icon} />
+    </div>
+    <Button
+      htmlType="button"
+      type="primary"
+      size="large"
+      onClick={handleOrderClick}
+      data-testid="order-button"
+    >
+      Оформить заказ
+    </Button>
+    {isModalVisible && <OrderDetails onClose={handleClose} />}
+  </div>
+</div>
   );
 };

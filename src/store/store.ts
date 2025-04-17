@@ -5,6 +5,7 @@ import ingredientsReducer from "../slices/ingredientsSlice";
 import userDataReducer from "../slices/userDataSlice";
 import wsReducer from "../slices/wsSlice";
 import { wsMiddleware } from "../utils/wsMiddleware";
+import { thunk } from "redux-thunk";
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,7 @@ export const store = configureStore({
     websocket: wsReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(wsMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(wsMiddleware, thunk),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -49,12 +49,14 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({
       to={`/ingredients/${_id}`}
       state={{ background: location }}
       className={styles.link}
+      data-testid="ingredient-link"
     >
       <div
         ref={dragRef}
         className={styles.card}
         style={{ opacity: isDragging ? 0.5 : 1 }}
         onClick={handleClick}
+        data-testid="ingredient"
       >
         <img src={image} alt={name} className={styles.image} />
         {count !== 0 && (
