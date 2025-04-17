@@ -18,7 +18,7 @@ export const Feed: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
-        <p className={styles.title}>Лента заказов</p>
+        <p className={styles.title}>Order Feed</p>
       </div>
       <div className={styles.flexContainer}>
         <OrdersDetails />

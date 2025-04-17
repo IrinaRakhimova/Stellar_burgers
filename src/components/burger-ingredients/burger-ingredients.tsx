@@ -75,14 +75,14 @@ export const BurgerIngredients: React.FC = () => {
 
   const content = useMemo(() => {
     if (ingredientsRequest) return <Loader />;
-    if (ingredientsFailed) return <p>Ошибка загрузки ингредиентов.</p>;
-    if (!ingredients.length) return <p>Ингредиенты не найдены.</p>;
+    if (ingredientsFailed) return <p>Error loading ingredients.</p>;
+    if (!ingredients.length) return <p> Ingredients not found.</p>;
 
     return (
       <div className={styles.scroll} onScroll={handleScroll}>
         <section id="bun" ref={bunsRef} className={styles.typeSection}>
           <IngredientsCategory
-            categoryName="Булки"
+            categoryName="Buns"
             categoryType="bun"
             burgerData={groupedIngredients.bun}
           />
@@ -90,7 +90,7 @@ export const BurgerIngredients: React.FC = () => {
 
         <section id="sauce" ref={saucesRef} className={styles.typeSection}>
           <IngredientsCategory
-            categoryName="Соусы"
+            categoryName="Sauces"
             categoryType="sauce"
             burgerData={groupedIngredients.sauce}
           />
@@ -98,7 +98,7 @@ export const BurgerIngredients: React.FC = () => {
 
         <section id="main" ref={mainsRef} className={styles.typeSection}>
           <IngredientsCategory
-            categoryName="Начинки"
+            categoryName="Fillings"
             categoryType="main"
             burgerData={groupedIngredients.main}
           />
@@ -115,20 +115,20 @@ export const BurgerIngredients: React.FC = () => {
 
   return (
     <div className={styles.container} ref={scrollContainerRef}>
-      <h1 className={styles.header}>Соберите бургер</h1>
+      <h1 className={styles.header}>Build your burger</h1>
       <section className={styles.tabs}>
         <Tab value="bun" active={currentSection === "bun"} onClick={() => {}}>
-          Булки
+          Buns
         </Tab>
         <Tab
           value="sauce"
           active={currentSection === "sauce"}
           onClick={() => {}}
         >
-          Соусы
+          Sauces
         </Tab>
         <Tab value="main" active={currentSection === "main"} onClick={() => {}}>
-          Начинки
+          Fillings
         </Tab>
       </section>
 

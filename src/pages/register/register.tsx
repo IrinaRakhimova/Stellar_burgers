@@ -40,12 +40,12 @@ export const Register: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.header}>Регистрация</p>
+      <p className={styles.header}>Sign Up</p>
       <form onSubmit={handleSubmit}>
         <Input
           type={"text"}
           name={"name"}
-          placeholder={"Имя"}
+          placeholder={"Name"}
           onChange={handleNameChange}
           value={name}
           extraClass="mb-6"
@@ -65,18 +65,19 @@ export const Register: React.FC = () => {
           value={password}
           name={"password"}
           extraClass="mb-6"
+          placeholder="Password"
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">
-            Зарегистрироваться
+            Sign Up
           </Button>
         </div>
       </form>
       {error && <p className={styles.error}>{error}</p>}
       <p className={styles.text}>
-        Уже зарегистрированы?{" "}
+        Already registered?{" "}
         <Link to="/login" className={styles.link}>
-          Войти
+          Sign In
         </Link>
       </p>
     </div>

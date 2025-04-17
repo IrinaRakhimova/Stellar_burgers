@@ -45,7 +45,7 @@ const ProfileMenu: React.FC = () => {
             currentPath === "/profile" ? styles.active : ""
           }`}
         >
-          Профиль
+          Profile
         </Link>
       </div>
       <div className={styles.navItemContainer}>
@@ -55,17 +55,17 @@ const ProfileMenu: React.FC = () => {
             currentPath === "/profile/orders" ? styles.active : ""
           }`}
         >
-          История заказов
+          Order History
         </Link>
       </div>
       <div className={styles.navItemContainer}>
         <button className={styles.navItem} onClick={handleLogout}>
-          Выход
+          Log Out
         </button>
       </div>
       <p className={styles.text}>
-        В этом разделе вы можете <br />
-        изменить свои персональные данные
+        In this section, you can change<br />
+         your personal information.
       </p>
     </div>
   );

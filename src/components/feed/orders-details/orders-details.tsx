@@ -56,9 +56,9 @@ export const OrdersDetails: React.FC = () => {
           );
 
           if (orderDate.getTime() === today.getTime()) {
-            return `Сегодня`;
+            return `Today`;
           } else if (orderDate.getTime() === yesterday.getTime()) {
-            return `Вчера`;
+            return `Yesterday`;
           } else {
             return date.toLocaleDateString();
           }
@@ -79,12 +79,12 @@ export const OrdersDetails: React.FC = () => {
           >
             <div className={styles.card}>
               <div className={styles.cardFirstRow}>
-                <p className={styles.number}>#{order.number}</p>
+                <div className={styles.nameContainer}>
+                  <p className={styles.name}>{`Order #${order.number}`}</p>
+                </div>
                 <p className={styles.date}>{`${dateString}, ${timeString}`}</p>
               </div>
-              <div className={styles.nameContainer}>
-                <p className={styles.name}>{order.name}</p>
-              </div>
+
               <div className={styles.cardLastRow}>
                 <div className={styles.pictures}>
                   {displayedIngredients.map((ingredientId, index) => {

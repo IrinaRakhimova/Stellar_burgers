@@ -9,6 +9,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { reorderIngredients } from "../../../slices/burgerConstructorSlice";
 import { deleteIngredient } from "../../../slices/burgerConstructorSlice";
 import type { Identifier } from "dnd-core";
+import { ingredientTranslations } from "../../../utils/translationMap";
 
 type TDraggableElement = {
   ingredient: Ingredient;
@@ -93,12 +94,12 @@ export const DraggableElement: React.FC<TDraggableElement> = React.memo(
         }}
         className={styles.constructorElement}
         style={{ opacity: isDragging ? 0.5 : 1 }}
-        aria-label={`Draggable ingredient: ${ingredient.name}`}
+        aria-label={`Draggable ingredient: ${ingredientTranslations[ingredient.name] || ingredient.name}`}
         role="listitem"
       >
         <DragIcon type="primary" />
         <ConstructorElement
-          text={ingredient.name}
+          text={ingredientTranslations[ingredient.name] || ingredient.name}
           thumbnail={ingredient.image}
           price={ingredient.price || 0}
           handleClose={() => onDelete(ingredient.instanceId)}

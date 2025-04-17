@@ -27,7 +27,7 @@ export const AppHeader: React.FC = () => {
                   currentPath === "/" ? styles.active : ""
                 }`}
               >
-                Конструктор
+                Constructor
               </Link>
             </div>
             <div className={styles.listItem}>
@@ -40,7 +40,7 @@ export const AppHeader: React.FC = () => {
                   currentPath.startsWith("/feed") ? styles.active : ""
                 }`}
               >
-                Лента заказов
+                Order Feed
               </Link>
             </div>
           </li>
@@ -61,7 +61,7 @@ export const AppHeader: React.FC = () => {
                 currentPath.startsWith("/profile") ? styles.active : ""
               }`}
             >
-              Личный кабинет
+              My Account
             </Link>
           </li>
         </ul>

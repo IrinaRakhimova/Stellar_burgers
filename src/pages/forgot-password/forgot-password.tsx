@@ -35,9 +35,9 @@ export const ForgotPassword: React.FC = () => {
       dispatch(setRequest(false));
     } catch (err: unknown) {
       if (err instanceof Error) {
-        dispatch(setError(err.message || "Ошибка восстановления пароля"));
+        dispatch(setError(err.message || "Password reset failed"));
       } else {
-        dispatch(setError("Ошибка восстановления пароля"));
+        dispatch(setError("Password reset failed"));
       }
       dispatch(setRequest(false));
     }
@@ -53,27 +53,27 @@ export const ForgotPassword: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.header}>Восстановление пароля</p>
+      <p className={styles.header}>Reset Password</p>
       <form onSubmit={handleSubmit}>
         <EmailInput
           onChange={handleEmailChange}
           value={email}
           name={"email"}
-          placeholder="Укажите e-mail"
+          placeholder="Enter your email"
           isIcon={false}
           extraClass="mb-6"
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">
-            Восстановить
+            Reset
           </Button>
         </div>
       </form>
       {error && <p className={styles.error}>{error}</p>}
       <p className={styles.text}>
-        Вспомнили пароль?{" "}
+        Remembered your password?{" "}
         <Link to="/login" className={styles.link}>
-          Войти
+          Log in
         </Link>
       </p>
     </div>

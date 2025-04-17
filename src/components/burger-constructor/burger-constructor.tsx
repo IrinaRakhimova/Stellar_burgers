@@ -15,6 +15,7 @@ import {
 import { createOrderThunk, hideModal } from "../../slices/orderSlice";
 import { DraggableElement } from "./draggable-element/draggable-element";
 import { useNavigate } from "react-router-dom";
+import { ingredientTranslations } from "../../utils/translationMap";
 
 interface BurgerConstructorState {
   bun: Ingredient | null;
@@ -60,11 +61,11 @@ export const BurgerConstructor: React.FC = () => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (!bun) {
-      alert("Не хватает булки!");
+      alert("Missing bun!");
       return;
     }
     if (ingredients.length === 0) {
-      alert("Нужно добавить ингредиенты!");
+      alert("You need to add ingredients!");
       return;
     }
 
@@ -83,7 +84,7 @@ export const BurgerConstructor: React.FC = () => {
       await dispatch(createOrderThunk(ingredientIds)).unwrap();
       dispatch(resetIngredients());
     } catch (error) {
-      console.error("Не удалось создать заказ", error);
+      console.error("Failed to create order", error);
     }
   };
 
@@ -99,13 +100,13 @@ export const BurgerConstructor: React.FC = () => {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={`${bun.name} (верх)`}
+          text={`${ingredientTranslations[bun.name] || bun.name} (top)`}
           price={bun.price}
           thumbnail={bun.image}
         />
       ) : (
         <div className={`${styles.bunHolderTop} ${isOver ? styles.active : ""}`}>
-          <p className={styles.holderText}>Выберите булки</p>
+          <p className={styles.holderText}>Choose a bun</p>
         </div>
       )}
     </li>
@@ -127,7 +128,7 @@ export const BurgerConstructor: React.FC = () => {
         })
       ) : (
         <div className={`${styles.ingredientHolder} ${isOver ? styles.active : ""}`}>
-          <p className={styles.holderText}>Выберите начинку</p>
+          <p className={styles.holderText}>Choose a filling</p>
         </div>
       )}
     </div>
@@ -137,13 +138,13 @@ export const BurgerConstructor: React.FC = () => {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={`${bun.name} (низ)`}
+          text={`${ingredientTranslations[bun.name] || bun.name} (bottom)`}
           price={bun.price}
           thumbnail={bun.image}
         />
       ) : (
         <div className={`${styles.bunHolderBottom} ${isOver ? styles.active : ""}`}>
-          <p className={styles.holderText}>Выберите булки</p>
+          <p className={styles.holderText}>Choose a bun</p>
         </div>
       )}
     </li>
@@ -161,7 +162,7 @@ export const BurgerConstructor: React.FC = () => {
       onClick={handleOrderClick}
       data-testid="order-button"
     >
-      Оформить заказ
+       Place Order
     </Button>
     {isModalVisible && <OrderDetails onClose={handleClose} />}
   </div>

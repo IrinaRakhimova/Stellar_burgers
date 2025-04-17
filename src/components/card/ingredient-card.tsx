@@ -8,6 +8,7 @@ import {
 import { useLocation, Link } from "react-router-dom";
 import { setSelectedIngredient } from "../../slices/ingredientsSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { ingredientTranslations } from "../../utils/translationMap";
 
 interface IngredientCardProps {
   ingredient: Ingredient;
@@ -66,7 +67,7 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({
           <p className={styles.priceValue}>{price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <p className={styles.name}>{name}</p>
+        <p className={styles.name}>{ingredientTranslations[name] || name}</p>
       </div>
     </Link>
   );
