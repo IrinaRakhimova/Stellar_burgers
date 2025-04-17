@@ -22,11 +22,10 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ onClose }) => {
         ) : (
           <>
             <h1 className={styles.header}>{orderNumber}</h1>
-            <p className={styles.orderText}>{orderName}</p>
             <OrderReady />
-            <p className={styles.statusText}>Ваш заказ начали готовить</p>
+            <p className={styles.statusText}>Your order is being prepared</p>
             <p className={styles.locationText}>
-              Дождитесь готовности на орбитальной станции
+              Please wait for completion at the orbital station
             </p>
           </>
         )}

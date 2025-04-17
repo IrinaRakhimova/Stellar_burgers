@@ -22,7 +22,7 @@
 }
 
 .number {
-  composes: text text_type_digits-default mb-10 from global;
+  composes: text text_type_digits-large mb-10 from global;
   text-align: center;
   width: 640px;
 }

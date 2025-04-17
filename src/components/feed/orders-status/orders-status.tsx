@@ -33,7 +33,7 @@ export const OrdersStatus: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.upperContainer}>
         <div className={styles.ready}>
-          <p className={styles.readyTitle}>Готовы:</p>
+          <p className={styles.readyTitle}>Ready:</p>
           <div className={styles.ordersGrid}>
             {readyOrdersChunks.map((chunk, index) => (
               <div key={`ready-col-${index}`} className={styles.orderColumn}>
@@ -50,7 +50,7 @@ export const OrdersStatus: React.FC = () => {
           </div>
         </div>
         <div className={styles.making}>
-          <p className={styles.makingTitle}>В работе:</p>
+          <p className={styles.makingTitle}>Preparing:</p>
           <div className={styles.ordersGrid}>
             {makingOrdersChunks.map((chunk, index) => (
               <div key={`making-col-${index}`} className={styles.orderColumn}>
@@ -68,11 +68,11 @@ export const OrdersStatus: React.FC = () => {
         </div>
       </div>
       <div>
-        <p className={styles.totalTitle}>Выполнено за все время:</p>
+        <p className={styles.totalTitle}>All orders</p>
         <p className={styles.totalNumber}>{total}</p>
       </div>
       <div>
-        <p className={styles.todayTitle}>Выполнено за сегодня:</p>
+        <p className={styles.todayTitle}>Orders today</p>
         <p className={styles.todayNumber}>{totalToday}</p>
       </div>
     </div>

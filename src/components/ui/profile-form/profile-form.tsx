@@ -78,7 +78,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
       <Input
         type={"text"}
         name={"name"}
-        placeholder={"Имя"}
+        placeholder={"Name"}
         onChange={handleNameChange}
         value={name}
         extraClass="mb-6"
@@ -88,7 +88,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
         onChange={handleEmailChange}
         value={email}
         name={"email"}
-        placeholder="Логин"
+        placeholder="Email"
         isIcon={false}
         extraClass="mb-6"
       />
@@ -97,7 +97,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
         value={password}
         name={"password"}
         extraClass="mb-6"
-        placeholder="Пароль"
+        placeholder="Password"
         icon="EditIcon"
       />
       {hasChanges && (
@@ -107,10 +107,10 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
             onClick={handleCancel}
             type="button"
           >
-            Отменить
+            Cancel
           </button>
           <Button htmlType="submit" type="primary" size="large">
-            Сохранить
+            Save
           </Button>
         </div>
       )}

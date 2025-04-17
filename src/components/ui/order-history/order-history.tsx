@@ -65,9 +65,9 @@ export const OrderHistory: React.FC = () => {
           );
 
           if (orderDate.getTime() === today.getTime()) {
-            return `Сегодня`;
+            return `Today`;
           } else if (orderDate.getTime() === yesterday.getTime()) {
-            return `Вчера`;
+            return `Yesterday`;
           } else {
             return date.toLocaleDateString();
           }
@@ -88,21 +88,20 @@ export const OrderHistory: React.FC = () => {
           >
             <div className={styles.card}>
               <div className={styles.cardFirstRow}>
-                <p className={styles.number}>#{order.number}</p>
+                <p className={styles.name}>Order #{order.number}</p>
                 <p className={styles.date}>{`${dateString}, ${timeString}`}</p>
               </div>
-              <div className={styles.nameContainer}>
-                <p className={styles.name}>{order.name}</p>
+              <div className={styles.nameContainer}>              
                 <p
                   className={`${styles.status} ${
                     order.status === "done" ? styles.done : ""
                   }`}
                 >
                   {order.status === "done"
-                    ? "Выполнен"
+                    ? "Ready"
                     : order.status === "pending"
-                    ? "Готовится"
-                    : "Создан"}
+                    ? "Preparing"
+                    : "Created"}
                 </p>
               </div>
               <div className={styles.cardLastRow}>

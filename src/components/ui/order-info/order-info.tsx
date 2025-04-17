@@ -5,6 +5,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { fetchOrderByNumberThunk } from "../../../slices/orderSlice";
 import { Loader } from "../loader/loader";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { ingredientTranslations } from "../../../utils/translationMap";
 
 export const OrderInfo: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -63,8 +64,8 @@ export const OrderInfo: React.FC = () => {
       date.getDate()
     );
 
-    if (orderDate.getTime() === today.getTime()) return `Сегодня`;
-    if (orderDate.getTime() === yesterday.getTime()) return `Вчера`;
+    if (orderDate.getTime() === today.getTime()) return `Today`;
+    if (orderDate.getTime() === yesterday.getTime()) return `Yesterday`;
     return date.toLocaleDateString();
   };
   const dateString = formatOrderDate(createdDate);
@@ -92,25 +93,22 @@ export const OrderInfo: React.FC = () => {
       className={`${styles.container} ${isModal ? styles.modal : styles.page}`}
     >
       <div className={styles.card} key={order.number}>
-        <div className={styles.cardFirstRow}>
-          <p className={styles.number}>#{order.number}</p>
-        </div>
         <div className={styles.nameContainer}>
-          <p className={styles.name}>{order.name}</p>
+        <p className={styles.number}>#{order.number}</p>
           <p
             className={`${styles.status} ${
               order.status === "done" ? styles.done : ""
             }`}
           >
             {order.status === "done"
-              ? "Выполнен"
+              ? "Ready"
               : order.status === "pending"
-              ? "Готовится"
-              : "Создан"}
+              ? "Preparing"
+              : "Created"}
           </p>
         </div>
 
-        <p className={styles.ingredientsTitle}>Состав:</p>
+        <p className={styles.ingredientsTitle}>Ingredients:</p>
 
         <div className={styles.pictures}>
           {Object.entries(ingredientCount).map(([id, count]) => {
@@ -123,11 +121,11 @@ export const OrderInfo: React.FC = () => {
                     <div className={styles.imageBackgroundOverlay}></div>
                     <img
                       src={ingredient?.image}
-                      alt={ingredient?.name}
+                      alt={ingredientTranslations[ingredient?.name] || ingredient?.name}
                       className={styles.picture}
                     />
                   </div>
-                  <p className={styles.ingredientName}>{ingredient?.name}</p>
+                  <p className={styles.ingredientName}>{ingredientTranslations[ingredient?.name] || ingredient?.name}</p>
                 </div>
                 <div className={styles.ingredientRowEnd}>
                   <p

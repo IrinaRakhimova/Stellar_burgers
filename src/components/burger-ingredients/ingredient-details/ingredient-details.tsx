@@ -4,6 +4,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { fetchIngredientsThunk } from "../../../slices/ingredientsSlice";
 import { Loader } from "../../ui/loader/loader";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { ingredientTranslations } from "../../../utils/translationMap";
 
 const IngredientDetails: React.FC = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
@@ -39,8 +40,8 @@ const IngredientDetails: React.FC = () => {
         <Loader />
       </p>
     );
-  if (hasError) return <p>Не удалось загрузить ингредиент</p>;
-  if (!selectedIngredient) return <p>Ингредиент не найден</p>;
+  if (hasError) return <p>Failed to load ingredient</p>;
+  if (!selectedIngredient) return <p>Ingredient not found</p>;
 
   return (
     <div
@@ -50,29 +51,29 @@ const IngredientDetails: React.FC = () => {
       <div className={styles.info}>
         <img
           src={selectedIngredient.image_large}
-          alt={selectedIngredient.name}
+          alt={ingredientTranslations[selectedIngredient.name] || selectedIngredient.name}
           className={styles.image}
         />
-        <p className={styles.name} data-testid="ingredient-name">{selectedIngredient.name}</p>
+        <p className={styles.name} data-testid="ingredient-name">{ingredientTranslations[selectedIngredient.name] || selectedIngredient.name}</p>
         <div className={styles.nutrition}>
           <div className={styles.textContainer}>
-            <p className={styles.nutrient}>Калории, ккал</p>
+            <p className={styles.nutrient}>Calories, kcal</p>
             <p className={styles.nutrientValue} data-testid="ingredient-calories">
               {selectedIngredient.calories}
             </p>
           </div>
           <div className={styles.textContainer}>
-            <p className={styles.nutrient}>Белки, г</p>
+            <p className={styles.nutrient}>Proteins, g</p>
             <p className={styles.nutrientValue}>
               {selectedIngredient.proteins}
             </p>
           </div>
           <div className={styles.textContainer}>
-            <p className={styles.nutrient}>Жиры, г</p>
+            <p className={styles.nutrient}>Fats, g</p>
             <p className={styles.nutrientValue}>{selectedIngredient.fat}</p>
           </div>
           <div className={styles.textContainer}>
-            <p className={styles.nutrient}>Углеводы, г</p>
+            <p className={styles.nutrient}>Carbohydrates, g</p>
             <p className={styles.nutrientValue}>
               {selectedIngredient.carbohydrates}
             </p>

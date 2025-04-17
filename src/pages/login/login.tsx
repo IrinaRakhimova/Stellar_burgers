@@ -47,7 +47,7 @@ export const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.header}>Вход</p>
+      <p className={styles.header}>Login</p>
       <form onSubmit={handleSubmit}>
         <EmailInput
           onChange={handleEmailChange}
@@ -62,24 +62,25 @@ export const Login: React.FC = () => {
           value={password}
           name="password"
           extraClass="mb-6"
+          placeholder="Password"
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">
-            Войти
+            Sign In
           </Button>
         </div>
       </form>
       {error && <p className={styles.error}>{error}</p>}
       <p className={styles.text}>
-        Вы — новый пользователь?{" "}
+        New here?{" "}
         <Link to="/register" className={styles.link}>
-          Зарегистрироваться
+          Sign Up
         </Link>
       </p>
       <p className={styles.text}>
-        Забыли пароль?{" "}
+        Forgot your password?{" "}
         <Link to="/forgot-password" className={styles.link}>
-          Восстановить пароль
+          Reset
         </Link>
       </p>
     </div>
