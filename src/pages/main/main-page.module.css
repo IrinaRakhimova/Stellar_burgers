@@ -1,0 +1,14 @@
+.main {
+    composes: pb-10 from global;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 148px);
+  }
+
+  @media (max-width: 1230px) {
+    .main {
+      height: auto;
+      flex-direction: column;
+      align-items: center;
+    }
+  }

@@ -14,8 +14,8 @@ export const BurgerIngredients: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed, currentSection } =
-  useAppSelector(
-      state =>
+    useAppSelector(
+      (state) =>
         state.ingredients as {
           ingredients: Ingredient[];
           ingredientsRequest: boolean;
@@ -117,17 +117,34 @@ export const BurgerIngredients: React.FC = () => {
     <div className={styles.container} ref={scrollContainerRef}>
       <h1 className={styles.header}>Build your burger</h1>
       <section className={styles.tabs}>
-        <Tab value="bun" active={currentSection === "bun"} onClick={() => {}}>
+        <Tab
+          value="bun"
+          active={currentSection === "bun"}
+          onClick={() => {
+            bunsRef.current?.scrollIntoView({ behavior: "smooth" });
+            dispatch(setCurrentSection("bun"));
+          }}
+        >
           Buns
         </Tab>
         <Tab
           value="sauce"
           active={currentSection === "sauce"}
-          onClick={() => {}}
+          onClick={() => {
+            saucesRef.current?.scrollIntoView({ behavior: "smooth" });
+            dispatch(setCurrentSection("sauce"));
+          }}
         >
           Sauces
         </Tab>
-        <Tab value="main" active={currentSection === "main"} onClick={() => {}}>
+        <Tab
+          value="main"
+          active={currentSection === "main"}
+          onClick={() => {
+            mainsRef.current?.scrollIntoView({ behavior: "smooth" });
+            dispatch(setCurrentSection("main"));
+          }}
+        >
           Fillings
         </Tab>
       </section>

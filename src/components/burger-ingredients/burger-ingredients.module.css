@@ -11,14 +11,14 @@
 
 .tabs {
     display: flex;
+    width: auto;
 }
 
 .scroll {
     composes: custom-scroll from global;
-    flex-grow: 1; 
     overflow-y: auto;
     overflow-x: hidden; 
-
+    margin-bottom: 50px;
 }
 
 .sauceHeader {
