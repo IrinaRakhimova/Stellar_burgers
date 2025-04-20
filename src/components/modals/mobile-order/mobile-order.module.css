@@ -1,0 +1,172 @@
+.container {
+    composes: pt-20 pr-10 pb-15 pl-10 from global;
+    background-color: rgba(28, 28, 33, 1);
+    border-radius: 40px;
+  }
+  
+  .page {
+    height: calc(100vh - 217px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    width: 640px;
+    margin-top: 40px;
+  }
+  
+  .cardFirstRow {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .number {
+    composes: text text_type_digits-large mb-10 from global;
+    text-align: center;
+    width: 640px;
+  }
+  
+  .nameContainer {
+    width: 640px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    box-sizing: border-box;
+  }
+  
+  .name {
+    composes: text text_type_main-medium mb-3 from global;
+  }
+  
+  .status {
+    composes: text text_type_main-small mb-15 from global;
+    color: rgba(0, 204, 204, 1);
+  }
+  
+  .ingredientsTitle {
+    composes: text text_type_main-medium mb-6 from global;
+  }
+  
+  .picture {
+    height: 60px;
+    width: 60px;
+    position: relative;
+    margin-top: 2px;
+    margin-left: 2px;
+    z-index: 4;
+    object-fit: cover;
+  }
+  .price {
+    display: flex;
+    align-items: center;
+  }
+  
+  .priceNumber {
+    composes: text text_type_digits-default from global;
+    margin-right: 8px;
+  }
+  
+  .imageBackground {
+    height: 64px;
+    width: 64px;
+    background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+    border-radius: 100%;
+  }
+  
+  .cardLastRow {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 8px;
+  }
+  
+  .date {
+    composes: text text_type_main-small text_color_inactive from global;
+  }
+  
+  .imageBackground {
+    height: 64px;
+    width: 64px;
+    background: #801ab3 0%;
+    border-radius: 100%;
+    position: absolute;
+  }
+  
+  .imageBackgroundOverlay {
+    height: 60px;
+    width: 60px;
+    background: rgba(19, 19, 22, 1);
+    border-radius: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 2px;
+    margin-left: 2px;
+  }
+  
+  .pictures {
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-bottom: 40px;
+  }
+  
+  .ingredientRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .ingredientRowStart {
+    display: flex;
+    align-items: center;
+  }
+  
+  .ingredientRowEnd {
+    display: flex;
+    align-items: center;
+  }
+  
+  .ingredientName {
+    composes: text text_type_main-small from global;
+  }
+  
+  .ingredientCount {
+    composes: text text_type_digits-default from global;
+    margin-right: 8px;
+  }
+  
+  .imageCard {
+    position: relative;
+    z-index: 2;
+    margin-right: 16px;
+  }
+  
+  .imageCard:last-child {
+    z-index: 3;
+  }
+  
+  .extraOverlay {
+    composes: text text_type_main-small from global;
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    top: 0;
+    left: 0;
+    margin-top: 2px;
+    margin-left: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50%;
+    z-index: 5;
+  }
+  

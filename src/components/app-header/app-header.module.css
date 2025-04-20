@@ -19,18 +19,12 @@
 }
 
 .list {
-    width: 1280px;
+    width: 100%;
     height: 56px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     list-style: none;
-}
-
-@media only screen and (max-width: 1280px) {
-    .list {
-      width: 100%;
-    }
 }
 
 .listItem {
@@ -58,5 +52,23 @@
     color: rgba(242, 242, 243, 1); 
 }
 
+@media (max-width: 740px) {
+    .logo {
+        display: none;
+    }
 
+    .navigation {
+        margin: 0px !important;
+    }
+}
 
+@media (max-width: 562px) {
+    .logo {
+        display: none;
+    }
+
+    .navigation {
+        margin: 0px !important;
+        background-color: transparent;
+    }
+}

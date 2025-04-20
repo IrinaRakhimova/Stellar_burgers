@@ -6,7 +6,7 @@ import { DndProvider } from "react-dnd";
 import { useEffect } from "react";
 import { addIngredient } from "../../slices/burgerConstructorSlice";
 import { useAppDispatch } from "../../store/hooks";
-import { useIsMobile } from "../../hooks/useIsMobile";
+import { useMediaQuery } from "../../hooks/useIsMobile";
 import { ConstructorFooter } from "../../components/constructor-footer/constructor-footer";
 
 interface SavedIngredients {
@@ -16,7 +16,7 @@ interface SavedIngredients {
 
 export const Main: React.FC = () => {
   const dispatch = useAppDispatch();
-  const isMobile = useIsMobile();
+  const isMobile = useMediaQuery(1230);
 
   useEffect(() => {
     const savedIngredients = localStorage.getItem("selectedIngredients");

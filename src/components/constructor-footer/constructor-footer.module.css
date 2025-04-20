@@ -58,3 +58,10 @@
     gap: 6px;
     margin-bottom: 10px;
   }
+
+  @media (max-width: 450px) {
+    .footer {
+        gap: 20px;
+        left: 0;
+    }
+}

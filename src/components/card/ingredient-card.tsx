@@ -11,7 +11,7 @@ import { setSelectedIngredient } from "../../slices/ingredientsSlice";
 import { addIngredient, deleteIngredient } from "../../slices/burgerConstructorSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { ingredientTranslations } from "../../utils/translationMap";
-import { useIsMobile } from "../../hooks/useIsMobile"; // import custom hook
+import { useMediaQuery } from "../../hooks/useIsMobile";
 
 interface IngredientCardProps {
   ingredient: Ingredient;
@@ -20,7 +20,7 @@ interface IngredientCardProps {
 export const IngredientCard: React.FC<IngredientCardProps> = ({
   ingredient,
 }) => {
-  const isMobile = useIsMobile();
+  const isMobile = useMediaQuery(1230);
   const dispatch = useAppDispatch();
   const location = useLocation();
 

@@ -7,9 +7,11 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useLocation } from "react-router-dom";
+import { useMediaQuery } from "../../hooks/useIsMobile";
 
 export const AppHeader: React.FC = () => {
   const location = useLocation();
+  const mobile = useMediaQuery(740);
   const currentPath: string = location.pathname;
 
   return (
@@ -44,7 +46,7 @@ export const AppHeader: React.FC = () => {
               </Link>
             </div>
           </li>
-          <li>
+          <li className={styles.logo}>
             <Link to="/">
               <Logo />
             </Link>

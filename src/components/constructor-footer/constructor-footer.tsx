@@ -6,17 +6,19 @@ import { createOrderThunk } from "../../slices/orderSlice";
 import { resetIngredients } from "../../slices/burgerConstructorSlice";
 import { useNavigate } from "react-router-dom";
 import MobileOrder from "../modals/mobile-order/mobile-order";
-import { hideModal, showModal } from "../../slices/orderSlice";
+import { hideMobileModal, showMobileModal, hideModal, showModal } from "../../slices/orderSlice";
+import OrderDetails from "../modals/order-details/order-details";
 
 interface OrderState {
-    isModalVisible: boolean;
-  }
+  isMobileModalVisible: boolean;
+  isModalVisible: boolean;
+}
 
 export const ConstructorFooter: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { isModalVisible } = useAppSelector(
+  const { isMobileModalVisible, isModalVisible } = useAppSelector(
       (state: { order: OrderState }) => state.order
     );
 
@@ -30,41 +32,53 @@ export const ConstructorFooter: React.FC = () => {
   }, [bun, ingredients]);
 
   const handleOrderClick = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (!bun) {
-      alert("Missing bun!");
-      return;
-    }
-
-    if (ingredients.length === 0) {
-      alert("You need to add ingredients!");
-      return;
-    }
-
-    if (!accessToken) {
-      navigate("/login", { state: { from: "/" } });
-      return;
-    }
-
-    const ingredientIds = [
-      bun._id,
-      ...ingredients.map((i) => i._id),
-      bun._id,
-    ];
-
-    try {
-      await dispatch(createOrderThunk(ingredientIds)).unwrap();
-      dispatch(resetIngredients());
-      hideModal();
-    } catch (error) {
-      console.error("Order failed", error);
-    }
-  };
-
-  const handleClose = () => {
-      dispatch(hideModal());
+      const accessToken = localStorage.getItem("accessToken");
+  
+      if (!bun) {
+        alert("Missing bun!");
+        return;
+      }
+      if (ingredients.length === 0) {
+        alert("You need to add ingredients!");
+        return;
+      }
+  
+      if (!accessToken) {
+        navigate("/login", { state: { from: "/" } });
+        return;
+      }
+  
+      const ingredientIds = [
+        ...(bun ? [bun._id] : []),
+        ...ingredients.map((i) => i._id),
+        ...(bun ? [bun._id] : []),
+      ];
+  
+      try {
+       dispatch(hideMobileModal());
+        await dispatch(createOrderThunk(ingredientIds)).unwrap();
+        
+        dispatch(resetIngredients());
+      } catch (error) {
+        console.error("Failed to create order", error);
+      }
     };
+
+  const handleMobileModalClose = () => {
+      dispatch(hideMobileModal());
+    };
+
+ const handleMobileModalOpen = () => {
+    dispatch(showMobileModal());
+ };   
+
+ const handleModalClose = () => {
+  dispatch(hideModal());
+};
+
+const handleModalOpen = () => {
+dispatch(showModal());
+}; 
 
   return (
     <>
@@ -73,12 +87,13 @@ export const ConstructorFooter: React.FC = () => {
           <span className={styles.totalPrice}>{`Total: ${totalPrice}`}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="medium" onClick={showModal} htmlType={"button"}>
+        <Button type="primary" size="medium" onClick={handleMobileModalOpen} htmlType={"button"}>
           View Order
         </Button>
       </div>
 
-      {isModalVisible && <MobileOrder handleOrderClick={handleOrderClick} onClose={handleClose} totalPrice={totalPrice}/>}
+      {isMobileModalVisible && <MobileOrder handleOrderClick={handleOrderClick} onClose={handleMobileModalClose} totalPrice={totalPrice} />}
+      {isModalVisible && <OrderDetails onClose={handleModalClose} />}
     </>
   );
 };
