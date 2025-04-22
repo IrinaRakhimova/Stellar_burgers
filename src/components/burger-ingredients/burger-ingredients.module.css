@@ -32,8 +32,7 @@
 @media (max-width: 640px) {
     .container {
         align-items: center;
-        height: 100vh;
-        margin-left: 80px;
+        height: calc(100vh - 158px);
     }
 
     .scroll {
