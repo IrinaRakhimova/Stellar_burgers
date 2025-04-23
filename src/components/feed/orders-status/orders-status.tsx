@@ -1,11 +1,13 @@
 import React from "react";
 import styles from "./orders-status.module.css";
 import { useAppSelector } from "../../../store/hooks";
+import { useMediaQuery } from "../../../hooks/useIsMobile";
 
 export const OrdersStatus: React.FC = () => {
   const { allOrders, total, totalToday } = useAppSelector(
     (state) => state.websocket
   );
+  const isMobile = useMediaQuery(1230);
   const getLastOrders = (status: string) =>
     allOrders
       .filter(
@@ -32,6 +34,7 @@ export const OrdersStatus: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.upperContainer}>
+        
         <div className={styles.ready}>
           <p className={styles.readyTitle}>Ready:</p>
           <div className={styles.ordersGrid}>
@@ -67,13 +70,15 @@ export const OrdersStatus: React.FC = () => {
           </div>
         </div>
       </div>
-      <div>
-        <p className={styles.totalTitle}>All orders</p>
-        <p className={styles.totalNumber}>{total}</p>
-      </div>
-      <div>
-        <p className={styles.todayTitle}>Orders today</p>
-        <p className={styles.todayNumber}>{totalToday}</p>
+      <div className={styles.statContainer}>
+        <div className={styles.statItem}>
+          <p className={styles.totalTitle}>All orders</p>
+          <p className={styles.totalNumber}>{total}</p>
+        </div>
+        <div className={styles.statItem}>
+          <p className={styles.todayTitle}>Orders today</p>
+          <p className={styles.todayNumber}>{totalToday}</p>
+        </div>
       </div>
     </div>
   );

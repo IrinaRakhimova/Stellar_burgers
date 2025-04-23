@@ -53,10 +53,78 @@
 .ordersGrid {
   display: flex;
   gap: 10px;
+  @media (max-width: 1230px) {
+    height: 150px;
+    overflow-y: scroll;
+  }
 }
 
 .orderColumn {
   display: flex;
   flex-direction: column;
   margin-right: 20px;
+}
+
+@media (max-width: 1230px) {
+  .totalNumber {
+    font-size: 50px;
+    margin-top: 10px;
+  }
+
+  .todayNumber {
+    font-size: 50px;
+    margin-top: 10px;
+  }
+
+  .statContainer {
+    display: flex;
+    gap: 50px;
+  }
+
+  .statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: auto;
+  }
+
+  .ready {
+    width: auto;
+  }
+
+  .ordersGrid {
+    flex-direction: column;
+  } 
+  
+  .making {
+    width: auto;
+  }
+
+  .readyTitle {
+    font-size: 30px;
+  }
+
+  .makingTitle {
+    font-size: 30px;
+  }
+
+  .upperContainer {
+    justify-content: center;
+    gap: 80px;
+  }
+
+  .totalTitle {
+    font-size: 30px;
+  }
+
+  .todayTitle {
+    font-size: 30px;
+  }
 }
