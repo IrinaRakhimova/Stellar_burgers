@@ -3,9 +3,11 @@ import { useLocation, Link } from "react-router-dom";
 import styles from "./orders-details.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppSelector } from "../../../store/hooks";
+import { useMediaQuery } from "../../../hooks/useIsMobile";
 
 export const OrdersDetails: React.FC = () => {
   const location = useLocation();
+  const mobile = useMediaQuery(640);
 
   const orders: Order[] = useAppSelector(
     (state) => state.websocket.allOrders || []
@@ -34,8 +36,8 @@ export const OrdersDetails: React.FC = () => {
         }, 0);
 
         const totalIngredients = order.ingredients.length;
-        const displayedIngredients = order.ingredients.slice(0, 6);
-        const extraCount = totalIngredients - 5;
+        const displayedIngredients = mobile ? order.ingredients.slice(0, 3) : order.ingredients.slice(0, 6);
+        const extraCount = mobile? (totalIngredients - 2) : (totalIngredients - 5);
 
         const createdDate = new Date(order.createdAt);
 
