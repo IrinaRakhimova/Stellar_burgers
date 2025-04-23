@@ -15,3 +15,11 @@
   color: #593feb;
   cursor: pointer;
 }
+
+@media (max-width: 640px) {
+  .form {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 10px;
+  }
+}

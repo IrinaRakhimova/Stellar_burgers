@@ -13,12 +13,14 @@ import {
   updateUserDataThunk,
 } from "../../../slices/userDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useMediaQuery } from "../../../hooks/useIsMobile";
 
 interface ProfileFormProps {}
 
 const ProfileForm: React.FC<ProfileFormProps> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const mobile = useMediaQuery(640);
   const { email, name, successLogout } = useAppSelector(
     (state) => state.userData
   );
