@@ -33,6 +33,7 @@
     .container {
         align-items: center;
         height: calc(100vh - 158px);
+        width: 100vw;
     }
 
     .scroll {
