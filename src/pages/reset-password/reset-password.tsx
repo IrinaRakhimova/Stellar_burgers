@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { resetPassword } from "../../utils/api";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useMediaQuery } from "../../hooks/useIsMobile";
 
 const ResetPassword: React.FC = () => {
   const { token, success } = useAppSelector(
@@ -23,6 +24,7 @@ const ResetPassword: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const mobile = useMediaQuery(640);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value);
@@ -69,6 +71,7 @@ const ResetPassword: React.FC = () => {
           name={"password"}
           extraClass="mb-6"
           placeholder="Введите новый пароль"
+          size={mobile ? "small" : "default"}
         />
         <Input
           type={"text"}
@@ -79,6 +82,7 @@ const ResetPassword: React.FC = () => {
           extraClass="mb-6"
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
+          size={mobile ? "small" : "default"}
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">

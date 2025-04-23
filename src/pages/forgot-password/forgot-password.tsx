@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { handleForgotPassword } from "../../utils/api";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useMediaQuery } from "../../hooks/useIsMobile";
 
 export const ForgotPassword: React.FC = () => {
   const { email, error, resetPassword } = useAppSelector(
@@ -20,6 +21,7 @@ export const ForgotPassword: React.FC = () => {
   );
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const mobile = useMediaQuery(640);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setEmail(e.target.value));
@@ -62,6 +64,7 @@ export const ForgotPassword: React.FC = () => {
           placeholder="Enter your email"
           isIcon={false}
           extraClass="mb-6"
+          size={mobile ? "small" : "default"}
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">

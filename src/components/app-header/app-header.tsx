@@ -18,56 +18,68 @@ export const AppHeader: React.FC = () => {
     <header className={styles.header}>
       <nav className={styles.navigation}>
         <ul className={styles.list}>
-          <li className={styles.leftSideList}>
+          {mobile ? (
             <div>
-              <Link
-                to="/"
-                className={`${styles.link} ${styles.listItem} ${
-                  currentPath === "/" ? styles.active : ""
-                }`}
-              >
-                <BurgerIcon
-                  type={currentPath === "/" ? "primary" : "secondary"}
-                />
-                {!mobile && "Constructor"}
-              </Link>
+              <li></li>
             </div>
-            <div>
-              <Link
-                to="/feed"
-                className={`${styles.link} ${styles.listItem} ${
-                  currentPath.startsWith("/feed") ? styles.active : ""
-                }`}
-              >
-                <ListIcon
-                  type={
-                    currentPath.startsWith("/feed") ? "primary" : "secondary"
-                  }
-                />
-                {!mobile && "Order Feed"}
-              </Link>
-            </div>
-          </li>
-          <li className={styles.logo}>
-            <Link to="/">
-              <Logo />
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/profile"
-              className={`${styles.link} ${styles.listItem} ${
-                currentPath.startsWith("/profile") ? styles.active : ""
-              }`}
-            >
-              <ProfileIcon
-                type={
-                  currentPath.startsWith("/profile") ? "primary" : "secondary"
-                }
-              />
-              {!mobile && "My Account"}
-            </Link>
-          </li>
+          ) : (
+            <>
+              <li className={styles.leftSideList}>
+                <div>
+                  <Link
+                    to="/"
+                    className={`${styles.link} ${styles.listItem} ${
+                      currentPath === "/" ? styles.active : ""
+                    }`}
+                  >
+                    <BurgerIcon
+                      type={currentPath === "/" ? "primary" : "secondary"}
+                    />
+                    Constructor
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    to="/feed"
+                    className={`${styles.link} ${styles.listItem} ${
+                      currentPath.startsWith("/feed") ? styles.active : ""
+                    }`}
+                  >
+                    <ListIcon
+                      type={
+                        currentPath.startsWith("/feed")
+                          ? "primary"
+                          : "secondary"
+                      }
+                    />
+                    Order Feed
+                  </Link>
+                </div>
+              </li>
+              <li className={styles.logo}>
+                <Link to="/">
+                  <Logo />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/profile"
+                  className={`${styles.link} ${styles.listItem} ${
+                    currentPath.startsWith("/profile") ? styles.active : ""
+                  }`}
+                >
+                  <ProfileIcon
+                    type={
+                      currentPath.startsWith("/profile")
+                        ? "primary"
+                        : "secondary"
+                    }
+                  />
+                  My Account
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
