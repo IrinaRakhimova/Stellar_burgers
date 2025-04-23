@@ -13,9 +13,11 @@ import {
 } from "../../slices/userDataSlice";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useMediaQuery } from "../../hooks/useIsMobile";
 
 export const Register: React.FC = () => {
   const dispatch = useAppDispatch();
+  const mobile = useMediaQuery(640);
   const { name, email, error } = useAppSelector(
     (state: { userData: UserDataState }) => state.userData
   );
@@ -51,6 +53,7 @@ export const Register: React.FC = () => {
           extraClass="mb-6"
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
+          size={mobile ? "small" : "default"}
         />
         <EmailInput
           onChange={handleEmailChange}
@@ -59,6 +62,7 @@ export const Register: React.FC = () => {
           placeholder="E-mail"
           isIcon={false}
           extraClass="mb-6"
+          size={mobile ? "small" : "default"}
         />
         <PasswordInput
           onChange={handlePasswordChange}
@@ -66,6 +70,7 @@ export const Register: React.FC = () => {
           name={"password"}
           extraClass="mb-6"
           placeholder="Password"
+          size={mobile ? "small" : "default"}
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">

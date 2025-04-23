@@ -85,6 +85,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
         value={name}
         extraClass="mb-6"
         icon="EditIcon"
+        size={mobile ? "small" : "default"}
       />
       <EmailInput
         onChange={handleEmailChange}
@@ -93,6 +94,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
         placeholder="Email"
         isIcon={false}
         extraClass="mb-6"
+        size={mobile ? "small" : "default"}
       />
       <PasswordInput
         onChange={handlePasswordChange}
@@ -101,6 +103,7 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
         extraClass="mb-6"
         placeholder="Password"
         icon="EditIcon"
+        size={mobile ? "small" : "default"}
       />
       {hasChanges && (
         <div className={styles.buttonsContainer}>
