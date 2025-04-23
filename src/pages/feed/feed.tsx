@@ -3,8 +3,10 @@ import { OrdersDetails } from "../../components/feed/orders-details/orders-detai
 import { OrdersStatus } from "../../components/feed/orders-status/orders-status";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../store/hooks";
+import { useMediaQuery } from "../../hooks/useIsMobile";
 
 export const Feed: React.FC = () => {
+  const isMobile = useMediaQuery(1230);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

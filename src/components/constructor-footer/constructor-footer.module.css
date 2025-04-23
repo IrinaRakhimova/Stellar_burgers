@@ -1,0 +1,67 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #1c1c21;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    border-top: 1px solid #2f2f37;
+    gap: 50px;
+    height: 80px;
+  }
+  
+  .total {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .totalPrice {
+    composes: text text_type_main-small from global;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .modalContent {
+    padding: 16px 0;
+  }
+  
+  .ingredientsList {
+    margin-bottom: 16px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .ingredientItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 14px;
+    color: #f2f2f3;
+  }
+  
+  .footerActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  
+  .totalConfirm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 450px) {
+    .footer {
+        gap: 20px;
+        left: 0;
+    }
+}

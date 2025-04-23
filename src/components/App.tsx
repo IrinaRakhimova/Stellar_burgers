@@ -2,7 +2,7 @@ import "./App.css";
 import { AppHeader } from "./app-header/app-header";
 import { Routes, Route } from "react-router-dom";
 import { ProtectedRouteElement } from "./protected-route/protected-route";
-import { Main } from "../pages/main/main";
+import { Main } from "../pages/main/main-page";
 import { Login } from "../pages/login/login";
 import { Register } from "../pages/register/register";
 import { ForgotPassword } from "../pages/forgot-password/forgot-password";
@@ -48,7 +48,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="app-container">
+    <div>
       <AppHeader />
       <Routes location={background || location}>
         <Route path="*" element={<NotFound />} />

@@ -17,6 +17,7 @@ interface OrderState {
   orderRequest: boolean;
   orderFailed: boolean;
   isModalVisible: boolean;
+  isMobileModalVisible: boolean;
   loading: boolean;
   error: string | null;
 }
@@ -28,6 +29,7 @@ const initialState: OrderState = {
   orderRequest: false,
   orderFailed: false,
   isModalVisible: false,
+  isMobileModalVisible: false,
   loading: false,
   error: null,
 };
@@ -97,6 +99,12 @@ const orderSlice = createSlice({
     hideModal: (state) => {
       state.isModalVisible = false;
     },
+    showMobileModal: (state) => {
+      state.isMobileModalVisible = true;
+    },
+    hideMobileModal: (state) => {
+      state.isMobileModalVisible = false;
+    },
     clearOrder: (state) => {
       state.order = null;
       state.error = null;
@@ -142,5 +150,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const { showModal, hideModal, clearOrder } = orderSlice.actions;
+export const { showModal, hideModal, showMobileModal, hideMobileModal, clearOrder } = orderSlice.actions;
 export default orderSlice.reducer;

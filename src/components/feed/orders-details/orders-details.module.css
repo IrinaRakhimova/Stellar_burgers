@@ -2,10 +2,9 @@
   height: calc(100vh - 217px);
   overflow-y: scroll;
 }
-
 .card {
   height: 110px;
-  width: 536px;
+  max-width: 536px;
   background-color: rgba(28, 28, 33, 1);
   box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
     0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
@@ -130,4 +129,31 @@
   font-weight: bold;
   border-radius: 50%;
   z-index: 5;
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .container {
+    margin-left: 40px;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    margin-left: 80px;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    margin-left: 100px;
+  }
 }

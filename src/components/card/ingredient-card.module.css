@@ -1,25 +1,74 @@
 .image {
-    composes: mr-4 mb-1 ml-4 from global;
-    width: 100%;
+  composes: mr-4 mb-1 ml-4 from global;
+  width: auto;
+  margin-top: 20px;
 }
 
-.price  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .priceValue {
-    composes: text text_type_digits-default mt-2 mb-2 mr-2 from global;
+  composes: text text_type_digits-default mt-2 mb-2 mr-2 from global;
 }
 
 .name {
-    composes: text text_type_main-default from global;
-    text-align: center;
-    height: 46px;
+  composes: text text_type_main-default from global;
+  text-align: center;
+  height: 25px;
 }
 
 .link {
-    text-decoration: none;
-    color: #ffffff;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+@media (max-width: 1230px) {
+  .name {
+    height: 25px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .cardWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #20202a;
+    border-radius: 20px;
+    height: 400px;
+  }
+  .mobileControls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .counterRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .localCount {
+    composes: text text_type_digits-default mt-2 mb-2 mr-2 from global;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 20px;
+  }
+
+  .ingredientButton {
+    composes: text text_type_main-default from global;
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    color: #672bec;
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
 }

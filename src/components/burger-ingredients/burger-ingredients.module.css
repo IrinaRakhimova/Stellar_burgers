@@ -1,5 +1,4 @@
 .container {
-    width: 620px;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 148px);
@@ -11,14 +10,14 @@
 
 .tabs {
     display: flex;
+    width: auto;
 }
 
 .scroll {
     composes: custom-scroll from global;
-    flex-grow: 1; 
     overflow-y: auto;
     overflow-x: hidden; 
-
+    margin-bottom: 50px;
 }
 
 .sauceHeader {
@@ -30,3 +29,17 @@
 }
 
 
+@media (max-width: 640px) {
+    .container {
+        align-items: center;
+        height: calc(100vh - 158px);
+    }
+
+    .scroll {
+        width: 300px;
+    }
+
+    .tabs {
+        display: none;
+    }
+}

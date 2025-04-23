@@ -1,3 +1,4 @@
+import styles from "./main-page.module.css";
 import { BurgerConstructor } from "../../components/burger-constructor/burger-constructor";
 import { BurgerIngredients } from "../../components/burger-ingredients/burger-ingredients";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -5,6 +6,8 @@ import { DndProvider } from "react-dnd";
 import { useEffect } from "react";
 import { addIngredient } from "../../slices/burgerConstructorSlice";
 import { useAppDispatch } from "../../store/hooks";
+import { useMediaQuery } from "../../hooks/useIsMobile";
+import { ConstructorFooter } from "../../components/constructor-footer/constructor-footer";
 
 interface SavedIngredients {
   bun?: Ingredient;
@@ -13,6 +16,7 @@ interface SavedIngredients {
 
 export const Main: React.FC = () => {
   const dispatch = useAppDispatch();
+  const isMobile = useMediaQuery(1230);
 
   useEffect(() => {
     const savedIngredients = localStorage.getItem("selectedIngredients");
@@ -33,9 +37,10 @@ export const Main: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="main">
+      <div className={styles.main}>
         <BurgerIngredients />
-        <BurgerConstructor />
+        {!isMobile && <BurgerConstructor />}
+        {isMobile && <ConstructorFooter />}
       </div>
     </DndProvider>
   );

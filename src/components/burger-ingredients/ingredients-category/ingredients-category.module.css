@@ -6,6 +6,7 @@
     composes: mb-8 ml-4 from global;
     display: flex;
     width: 100%;
+    max-width: 620px;
     flex-wrap: wrap;
     padding: 0;
     gap: 24px;
@@ -19,4 +20,22 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+}
+
+
+@media (max-width: 1230px) {
+    .ingredientType  {
+        height: auto;
+        row-gap: 70px;
+        margin-bottom: 100px;
+    }
+}
+
+@media (max-width: 640px) {
+    .ingredientType  {
+        height: auto;
+        row-gap: 70px;
+        margin-bottom: 100px;
+        width: 230px;
+    }
 }
