@@ -5,3 +5,12 @@
     position: relative;
     margin-top: 110px;
 }
+
+@media (max-width: 1200px) {
+    .container {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 20px;
+    }
+  }

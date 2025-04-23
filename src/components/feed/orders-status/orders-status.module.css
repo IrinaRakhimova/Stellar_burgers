@@ -93,6 +93,7 @@
 @media (max-width: 640px) {
   .container {
     width: auto;
+    margin-top: 180px;
   }
 
   .ready {

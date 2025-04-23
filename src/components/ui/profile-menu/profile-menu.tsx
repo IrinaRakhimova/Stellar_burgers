@@ -3,12 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./profile-menu.module.css";
 import { logOutThunk } from "../../../slices/userDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useMediaQuery } from "../../../hooks/useIsMobile";
 
 const ProfileMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const currentPath = location.pathname;
+  const mobile = useMediaQuery(1200);
 
   const { successLogout } = useAppSelector((state) => state.userData);
 
@@ -63,10 +65,10 @@ const ProfileMenu: React.FC = () => {
           Log Out
         </button>
       </div>
-      <p className={styles.text}>
+      {!mobile && <p className={styles.text}>
         In this section, you can change<br />
          your personal information.
-      </p>
+      </p>}
     </div>
   );
 };

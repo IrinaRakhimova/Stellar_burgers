@@ -8,10 +8,12 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { setEmail, logInThunk } from "../../slices/userDataSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useMediaQuery } from "../../hooks/useIsMobile";
 
 export const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const mobile = useMediaQuery(640);
 
   const { email, error } = useAppSelector(
     (state: { userData: UserDataState }) => state.userData
@@ -56,6 +58,7 @@ export const Login: React.FC = () => {
           placeholder="E-mail"
           isIcon={false}
           extraClass="mb-6"
+          size={mobile ? "small" : "default"}
         />
         <PasswordInput
           onChange={handlePasswordChange}
@@ -63,6 +66,7 @@ export const Login: React.FC = () => {
           name="password"
           extraClass="mb-6"
           placeholder="Password"
+          size={mobile ? "small" : "default"}
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">
