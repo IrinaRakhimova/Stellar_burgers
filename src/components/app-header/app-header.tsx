@@ -19,30 +19,32 @@ export const AppHeader: React.FC = () => {
       <nav className={styles.navigation}>
         <ul className={styles.list}>
           <li className={styles.leftSideList}>
-            <div className={styles.listItem}>
-              <BurgerIcon
-                type={currentPath === "/" ? "primary" : "secondary"}
-              />
+            <div>
               <Link
                 to="/"
-                className={`${styles.link} ${
+                className={`${styles.link} ${styles.listItem} ${
                   currentPath === "/" ? styles.active : ""
                 }`}
               >
-                Constructor
+                <BurgerIcon
+                  type={currentPath === "/" ? "primary" : "secondary"}
+                />
+                {!mobile && "Constructor"}
               </Link>
             </div>
-            <div className={styles.listItem}>
-              <ListIcon
-                type={ currentPath.startsWith("/feed") ? "primary" : "secondary"}
-              />
+            <div>
               <Link
                 to="/feed"
-                className={`${styles.link} ${
+                className={`${styles.link} ${styles.listItem} ${
                   currentPath.startsWith("/feed") ? styles.active : ""
                 }`}
               >
-                Order Feed
+                <ListIcon
+                  type={
+                    currentPath.startsWith("/feed") ? "primary" : "secondary"
+                  }
+                />
+                {!mobile && "Order Feed"}
               </Link>
             </div>
           </li>
@@ -51,19 +53,19 @@ export const AppHeader: React.FC = () => {
               <Logo />
             </Link>
           </li>
-          <li className={styles.listItem}>
-            <ProfileIcon
-              type={
-                currentPath.startsWith("/profile") ? "primary" : "secondary"
-              }
-            />
+          <li>
             <Link
               to="/profile"
-              className={`${styles.link} ${
+              className={`${styles.link} ${styles.listItem} ${
                 currentPath.startsWith("/profile") ? styles.active : ""
               }`}
             >
-              My Account
+              <ProfileIcon
+                type={
+                  currentPath.startsWith("/profile") ? "primary" : "secondary"
+                }
+              />
+              {!mobile && "My Account"}
             </Link>
           </li>
         </ul>
