@@ -25,3 +25,9 @@
     composes: text text_type_main-default from global;
     color: rgba(133, 133, 173, 1);
 }
+
+@media (max-width: 450px) {
+    .header {
+      font-size: 80px;
+    }
+}

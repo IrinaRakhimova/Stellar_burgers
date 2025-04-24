@@ -45,3 +45,15 @@
 .textContainer {
     text-align: center;
 }
+
+
+
+@media (max-width: 480px) {
+.nutrition {
+    flex-direction: column;
+}
+
+.name {
+    text-align: center;
+} 
+}
