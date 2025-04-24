@@ -1,3 +1,6 @@
+import React from 'react';
+
+const MobileLogo: React.FC<React.SVGProps<SVGSVGElement>> = () => (
 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#filter0_f_849_11073)">
     <path d="M30.6668 29.8193C31.1755 29.219 30.7267 28.3497 29.9399 28.3376C22.8833 28.2287 16.8898 28.3646 9.59712 28.809C8.81186 28.8568 8.40263 29.7452 8.93765 30.322C11.6102 33.2032 15.3896 35 19.5794 35C24.0077 35 27.9776 32.9927 30.6668 29.8193Z" stroke="#4C4CFF" stroke-linecap="round" stroke-linejoin="round"/>
@@ -102,4 +105,7 @@
     </filter>
     </defs>
     </svg>
+    );
+
+    export default MobileLogo;
     

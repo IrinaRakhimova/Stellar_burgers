@@ -39,6 +39,8 @@
     composes: text_type_main-default ml-2 from global;
     color: rgba(133, 133, 173, 1);
     text-decoration: none;
+    display: flex;
+    gap: 10px;
 }
 
 .leftSideList {
@@ -73,3 +75,28 @@
         background-color: transparent;
     }
 }
+
+.mobileMenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-right: 40px;
+}
+
+.mobileNavList {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(28, 28, 33, 1);
+    position: absolute;
+    top: 88px;
+    right: 0;
+    width: 100%;
+    padding: 16px;
+    z-index: 1000;
+    align-items: center;
+  }
+  
+  .mobileNavList li {
+    margin: 8px 0;
+  }

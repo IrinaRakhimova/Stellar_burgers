@@ -28,3 +28,34 @@ button.navItem {
 .active {
   color: rgba(242, 242, 243, 1);
 }
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.mobileLogoutWrapper {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  margin-bottom: 20px;
+}
+
+.logoutButton {
+  background-color: rgb(113, 0, 0);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 1230px) {
+  .nav {
+    margin: 0;
+    width: 100%;
+  }
+}

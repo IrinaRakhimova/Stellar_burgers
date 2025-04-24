@@ -7,18 +7,15 @@ export const OrdersStatus: React.FC = () => {
   const { allOrders, total, totalToday } = useAppSelector(
     (state) => state.websocket
   );
-  const isMobile = useMediaQuery(1230);
+
+  const isVeryMobile = useMediaQuery(560);
+
   const getLastOrders = (status: string) =>
     allOrders
-      .filter(
-        (order: { status: string; number: number }) =>
-          order.status.toLowerCase() === status
-      )
+      .filter((order) => order.status.toLowerCase() === status)
       .sort(
-        (
-          a: { createdAt: string | number | Date },
-          b: { createdAt: string | number | Date }
-        ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
       .slice(0, 20);
 
@@ -28,23 +25,27 @@ export const OrdersStatus: React.FC = () => {
     );
   };
 
-  const readyOrdersChunks = chunkArray(getLastOrders("done"), 10);
-  const makingOrdersChunks = chunkArray(getLastOrders("pending"), 10);
+  const readyOrders = getLastOrders("done");
+  const makingOrders = getLastOrders("pending");
+
+  const readyOrdersChunks = isVeryMobile
+    ? [readyOrders] 
+    : chunkArray(readyOrders, 10);
+
+  const makingOrdersChunks = isVeryMobile
+    ? [makingOrders] 
+    : chunkArray(makingOrders, 10);
 
   return (
     <div className={styles.container}>
       <div className={styles.upperContainer}>
-        
         <div className={styles.ready}>
           <p className={styles.readyTitle}>Ready:</p>
           <div className={styles.ordersGrid}>
             {readyOrdersChunks.map((chunk, index) => (
               <div key={`ready-col-${index}`} className={styles.orderColumn}>
                 {chunk.map((order) => (
-                  <p
-                    key={`ready-${order.number}`}
-                    className={styles.readyNumbers}
-                  >
+                  <p key={`ready-${order.number}`} className={styles.readyNumbers}>
                     {order.number}
                   </p>
                 ))}
@@ -52,16 +53,14 @@ export const OrdersStatus: React.FC = () => {
             ))}
           </div>
         </div>
+
         <div className={styles.making}>
           <p className={styles.makingTitle}>Preparing:</p>
           <div className={styles.ordersGrid}>
             {makingOrdersChunks.map((chunk, index) => (
               <div key={`making-col-${index}`} className={styles.orderColumn}>
                 {chunk.map((order) => (
-                  <p
-                    key={`making-${order.number}`}
-                    className={styles.makingNumbers}
-                  >
+                  <p key={`making-${order.number}`} className={styles.makingNumbers}>
                     {order.number}
                   </p>
                 ))}
@@ -70,6 +69,7 @@ export const OrdersStatus: React.FC = () => {
           </div>
         </div>
       </div>
+
       <div className={styles.statContainer}>
         <div className={styles.statItem}>
           <p className={styles.totalTitle}>All orders</p>
@@ -83,3 +83,4 @@ export const OrdersStatus: React.FC = () => {
     </div>
   );
 };
+

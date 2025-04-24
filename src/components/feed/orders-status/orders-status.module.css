@@ -1,6 +1,6 @@
 .container {
   margin-left: 60px;
-  width: 580px;
+  max-width: 580px;
 }
 
 .upperContainer {
@@ -66,6 +66,15 @@
 }
 
 @media (max-width: 1230px) {
+  .container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    margin-left: 0;
+  }
+
   .totalNumber {
     font-size: 50px;
     margin-top: 10px;
@@ -76,56 +85,48 @@
     margin-top: 10px;
   }
 
-  .statContainer {
-    display: flex;
-    gap: 50px;
-  }
-
   .statItem {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-
 }
 
-@media (max-width: 640px) {
-  .container {
-    width: auto;
-    margin-top: 180px;
-  }
-
-  .ready {
-    width: auto;
-  }
-
-  .ordersGrid {
-    flex-direction: column;
-  } 
-  
-  .making {
-    width: auto;
-  }
-
+@media (max-width: 560px) {
   .readyTitle {
-    font-size: 30px;
+    font-size: 25px;
   }
 
   .makingTitle {
-    font-size: 30px;
-  }
-
-  .upperContainer {
-    justify-content: center;
-    gap: 80px;
+    font-size: 25px;
   }
 
   .totalTitle {
-    font-size: 30px;
+    font-size: 25px;
   }
 
   .todayTitle {
-    font-size: 30px;
+    font-size: 25px;
+  }
+
+  .totalNumber {
+    font-size: 25px;
+  }
+
+  .todayNumber {
+    font-size: 25px;
+  }
+
+  .ready {
+    width: 100px;
+  }
+  
+  .making {
+    width: 100px;
+  }
+
+  .upperContainer {
+    gap: 20px;
   }
 }
