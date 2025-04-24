@@ -80,9 +80,6 @@ const MobileOrder: React.FC<MobileOrderProps> = ({
     }
   }, [order, orderNumber, dispatch]);
 
-  const isModal =
-    location.state && (location.state as { background?: boolean }).background;
-
   if (orderLoading)
     return (
       <p className={styles.loading}>

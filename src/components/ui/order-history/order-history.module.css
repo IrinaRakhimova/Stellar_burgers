@@ -5,7 +5,7 @@
 
 .card {
   height: 180px;
-  width: 916px;
+  max-width: 916px;
   background-color: rgba(28, 28, 33, 1);
   box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04),
     0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
@@ -48,7 +48,7 @@
 }
 
 .status {
-  composes: text text_type_main-small mb-6 from global;
+  composes: text text_type_main-small from global;
 }
 
 .done {
@@ -139,4 +139,22 @@
   font-weight: bold;
   border-radius: 50%;
   z-index: 5;
+}
+
+@media (max-width: 730px) {
+  .card {
+    width: 500px;
+  }
+}
+
+@media (max-width: 580px) {
+  .card {
+    width: 400px;
+  }
+}
+
+@media (max-width: 500px) {
+  .card {
+    width: 300px;
+  }
 }

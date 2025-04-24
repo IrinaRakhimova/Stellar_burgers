@@ -1,16 +1,16 @@
 .container {
     display: flex; 
-    justify-content: center; 
-    height: calc(100vh - 160px);  
+    justify-content: center;    
     position: relative;
     margin-top: 110px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1230px) {
     .container {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
       margin-top: 20px;
+      height: calc(100vh - 100px);
     }
   }

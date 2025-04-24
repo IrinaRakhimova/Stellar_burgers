@@ -1,12 +1,14 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import styles from "./order-history.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useMediaQuery } from "../../../hooks/useIsMobile"; 
 
 export const OrderHistory: React.FC = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const isSmallScreen = useMediaQuery(500); 
 
   useEffect(() => {
     dispatch({ type: "websocket/start", payload: { type: "my" } });
@@ -15,7 +17,6 @@ export const OrderHistory: React.FC = () => {
       dispatch({ type: "websocket/stop" });
     };
   }, [dispatch]);
-  const location = useLocation();
 
   const orders: Order[] = useAppSelector(
     (state) => state.websocket.userOrders || []
@@ -43,34 +44,21 @@ export const OrderHistory: React.FC = () => {
         }, 0);
 
         const totalIngredients = order.ingredients.length;
-        const displayedIngredients = order.ingredients.slice(0, 6);
-        const extraCount = totalIngredients - 5;
+        const maxVisible = isSmallScreen ? 3 : 6; 
+        const displayedIngredients = order.ingredients.slice(0, maxVisible);
+        const extraCount = totalIngredients - (maxVisible - 1);
 
         const createdDate = new Date(order.createdAt);
-
         const formatOrderDate = (date: Date) => {
           const now = new Date();
-          const today = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate()
-          );
+          const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
           const yesterday = new Date(today);
           yesterday.setDate(today.getDate() - 1);
+          const orderDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-          const orderDate = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate()
-          );
-
-          if (orderDate.getTime() === today.getTime()) {
-            return `Today`;
-          } else if (orderDate.getTime() === yesterday.getTime()) {
-            return `Yesterday`;
-          } else {
-            return date.toLocaleDateString();
-          }
+          if (orderDate.getTime() === today.getTime()) return "Today";
+          if (orderDate.getTime() === yesterday.getTime()) return "Yesterday";
+          return date.toLocaleDateString();
         };
 
         const dateString = formatOrderDate(createdDate);
@@ -91,7 +79,7 @@ export const OrderHistory: React.FC = () => {
                 <p className={styles.name}>Order #{order.number}</p>
                 <p className={styles.date}>{`${dateString}, ${timeString}`}</p>
               </div>
-              <div className={styles.nameContainer}>              
+              <div className={styles.nameContainer}>
                 <p
                   className={`${styles.status} ${
                     order.status === "done" ? styles.done : ""
@@ -110,10 +98,7 @@ export const OrderHistory: React.FC = () => {
                     const isFirstVisually = index === 0;
                     const ingredientImg = ingredientMap[ingredientId]?.image;
                     return (
-                      <div
-                        key={`${ingredientId}-${index}`}
-                        className={styles.imageCard}
-                      >
+                      <div key={`${ingredientId}-${index}`} className={styles.imageCard}>
                         <div className={styles.imageBackground}></div>
                         <div className={styles.imageBackgroundOverlay}></div>
                         <img
@@ -122,9 +107,7 @@ export const OrderHistory: React.FC = () => {
                           className={styles.picture}
                         />
                         {isFirstVisually && extraCount > 0 && (
-                          <div className={styles.extraOverlay}>
-                            +{extraCount}
-                          </div>
+                          <div className={styles.extraOverlay}>+{extraCount}</div>
                         )}
                       </div>
                     );

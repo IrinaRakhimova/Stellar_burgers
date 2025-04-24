@@ -76,10 +76,6 @@ export const ConstructorFooter: React.FC = () => {
   dispatch(hideModal());
 };
 
-const handleModalOpen = () => {
-dispatch(showModal());
-}; 
-
   return (
     <>
       <div className={styles.footer}>
@@ -87,7 +83,7 @@ dispatch(showModal());
           <span className={styles.totalPrice}>{`Total: ${totalPrice}`}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="medium" onClick={handleMobileModalOpen} htmlType={"button"}>
+        <Button type="primary" size="medium" onClick={handleMobileModalOpen} htmlType={"button"} disabled={totalPrice === 0}>
           View Order
         </Button>
       </div>
