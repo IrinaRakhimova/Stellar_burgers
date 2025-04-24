@@ -7,6 +7,7 @@ export type IngredientsState = {
   ingredientsFailed: boolean;
   currentSection: string;
   selectedIngredient: Ingredient | null;
+  localCounts: Record<string, number>;
 };
 
 export const fetchIngredientsThunk = createAsyncThunk<
@@ -36,6 +37,7 @@ const initialState: IngredientsState = {
   ingredientsFailed: false,
   currentSection: "bun",
   selectedIngredient: null,
+  localCounts: {},
 };
 
 const ingredientsSlice = createSlice({
@@ -50,6 +52,19 @@ const ingredientsSlice = createSlice({
       action: PayloadAction<Ingredient | null>
     ) => {
       state.selectedIngredient = action.payload;
+    },
+    incrementIngredientCount: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.localCounts[id] = (state.localCounts[id] || 0) + 1;
+    },
+    decrementIngredientCount: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      if (state.localCounts[id]) {
+        state.localCounts[id] = Math.max(state.localCounts[id] - 1, 0);
+      }
+    },
+    resetAllCounts: (state) => {
+      state.localCounts = {};
     },
   },
   extraReducers: (builder) => {
@@ -69,7 +84,12 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const { setCurrentSection, setSelectedIngredient } =
-  ingredientsSlice.actions;
+export const {
+  setCurrentSection,
+  setSelectedIngredient,
+  incrementIngredientCount,
+  decrementIngredientCount,
+  resetAllCounts,
+} = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

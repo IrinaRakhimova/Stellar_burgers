@@ -6,8 +6,9 @@ import { createOrderThunk } from "../../slices/orderSlice";
 import { resetIngredients } from "../../slices/burgerConstructorSlice";
 import { useNavigate } from "react-router-dom";
 import MobileOrder from "../modals/mobile-order/mobile-order";
-import { hideMobileModal, showMobileModal, hideModal, showModal } from "../../slices/orderSlice";
+import { hideMobileModal, showMobileModal, hideModal } from "../../slices/orderSlice";
 import OrderDetails from "../modals/order-details/order-details";
+import { resetAllCounts } from "../../slices/ingredientsSlice";
 
 interface OrderState {
   isMobileModalVisible: boolean;
@@ -47,7 +48,7 @@ export const ConstructorFooter: React.FC = () => {
         navigate("/login", { state: { from: "/" } });
         return;
       }
-  
+
       const ingredientIds = [
         ...(bun ? [bun._id] : []),
         ...ingredients.map((i) => i._id),
@@ -56,9 +57,9 @@ export const ConstructorFooter: React.FC = () => {
   
       try {
        dispatch(hideMobileModal());
-        await dispatch(createOrderThunk(ingredientIds)).unwrap();
-        
+        await dispatch(createOrderThunk(ingredientIds)).unwrap();       
         dispatch(resetIngredients());
+        dispatch(resetAllCounts());
       } catch (error) {
         console.error("Failed to create order", error);
       }

@@ -13,7 +13,7 @@
 }
 
 .card {
-  width: 640px;
+  width: 100%;
 }
 
 .cardFirstRow {
@@ -24,11 +24,11 @@
 .number {
   composes: text text_type_digits-large mb-10 from global;
   text-align: center;
-  width: 640px;
+  width: 100%;
 }
 
 .nameContainer {
-  width: 640px;
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -117,6 +117,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .ingredientRowStart {
@@ -131,11 +132,13 @@
 
 .ingredientName {
   composes: text text_type_main-small from global;
+  width: auto;
 }
 
 .ingredientCount {
   composes: text text_type_digits-default from global;
   margin-right: 8px;
+  text-align: right;
 }
 
 .imageCard {
@@ -166,4 +169,32 @@
   font-weight: bold;
   border-radius: 50%;
   z-index: 5;
+}
+
+@media (max-width: 650px) {
+  .number {
+    font-size: 40px;
+  }
+
+  .ingredientCount {
+    font-size: 20px;
+  }
+
+  .picture {
+    height: 30px;
+    width: 30px;
+    margin-bottom: 30px;
+  }
+
+  .imageBackgroundOverlay {
+    height: 30px;
+    width: 30px;
+    margin-top: 1px;
+    margin-left: 1px;
+  }
+
+  .imageBackground {
+    height: 32px;
+    width: 32px;
+  }
 }

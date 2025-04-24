@@ -145,14 +145,6 @@ const MobileOrder: React.FC<MobileOrderProps> = ({
               >
                 Place Order
               </Button>
-              <Button
-                size="medium"
-                type="secondary"
-                onClick={onClose}
-                htmlType={"button"}
-              >
-                Cancel
-              </Button>
             </div>
             <div className={styles.price}>
               <p className={styles.priceNumber}>{totalPrice}</p>

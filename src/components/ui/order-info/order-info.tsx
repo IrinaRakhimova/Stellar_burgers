@@ -6,10 +6,12 @@ import { fetchOrderByNumberThunk } from "../../../slices/orderSlice";
 import { Loader } from "../loader/loader";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { ingredientTranslations } from "../../../utils/translationMap";
+import { useMediaQuery } from "../../../hooks/useIsMobile";
 
 export const OrderInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const mobile = useMediaQuery(690);
   const allOrders = useAppSelector((state) => state.websocket.allOrders || []);
   const userOrders = useAppSelector(
     (state) => state.websocket.userOrders || []
@@ -131,7 +133,7 @@ export const OrderInfo: React.FC = () => {
                   <p
                     className={styles.ingredientCount}
                   >{`${count} x ${ingredient?.price}`}</p>
-                  <CurrencyIcon type="primary" />
+                  {!mobile && <CurrencyIcon type="primary" />}
                 </div>
               </div>
             );
