@@ -140,6 +140,7 @@
   .ingredientCount {
     composes: text text_type_digits-default from global;
     margin-right: 8px;
+    text-align: end;
   }
   
   .imageCard {
@@ -172,3 +173,41 @@
     z-index: 5;
   }
   
+  @media (max-width: 650px) {
+    .container{
+      padding: 90px 20px 40px 20px;
+    }
+
+    .modal {
+      padding: 40px 20px ;
+    }
+  
+    .number {
+      font-size: 40px;
+    }
+  
+    .ingredientCount {
+      font-size: 20px;
+    }
+  
+    .picture {
+      height: 30px;
+      width: 30px;
+    }
+  
+    .imageBackgroundOverlay {
+      height: 30px;
+      width: 30px;
+      margin-top: 1px;
+      margin-left: 1px;
+    }
+  
+    .imageBackground {
+      height: 32px;
+      width: 32px;
+    }
+  
+    .ingredientRow {
+      margin-bottom: 20px;
+    }
+  }
