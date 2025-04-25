@@ -44,13 +44,13 @@ const ProfileMenu: React.FC = () => {
       {isMobile ? (
         <>
           <div className={styles.tabs}>
-            <Tab value="profile" active={currentTab === "profile"} onClick={() => {
+            <Tab value="profile" active={location.pathname === "/profile"} onClick={() => {
               setCurrentTab("profile");
               navigate("/profile");
             }}>
               Profile
             </Tab>
-            <Tab value="orders" active={currentTab === "orders"} onClick={() => {
+            <Tab value="orders"  active={location.pathname.startsWith("/profile/orders")} onClick={() => {
               setCurrentTab("orders");
               navigate("/profile/orders");
             }}>
