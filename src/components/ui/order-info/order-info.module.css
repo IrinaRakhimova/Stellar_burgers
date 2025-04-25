@@ -5,7 +5,6 @@
 }
 
 .page {
-  height: calc(100vh - 217px);
   width: 100vw;
   display: flex;
   justify-content: center;
@@ -172,6 +171,10 @@
 }
 
 @media (max-width: 650px) {
+  .modal {
+    padding: 40px 20px ;
+  }
+
   .number {
     font-size: 40px;
   }
@@ -183,7 +186,6 @@
   .picture {
     height: 30px;
     width: 30px;
-    margin-bottom: 30px;
   }
 
   .imageBackgroundOverlay {
@@ -196,5 +198,9 @@
   .imageBackground {
     height: 32px;
     width: 32px;
+  }
+
+  .ingredientRow {
+    margin-bottom: 20px;
   }
 }

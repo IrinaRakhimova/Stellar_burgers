@@ -4,6 +4,7 @@ import styles from "./orders-details.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppSelector } from "../../../store/hooks";
 import { useMediaQuery } from "../../../hooks/useIsMobile";
+import { Loader } from "../../ui/loader/loader";
 
 export const OrdersDetails: React.FC = () => {
   const location = useLocation();
@@ -12,6 +13,10 @@ export const OrdersDetails: React.FC = () => {
   const orders: Order[] = useAppSelector(
     (state) => state.websocket.allOrders || []
   );
+
+  const connected = useAppSelector((state) => state.websocket.connected);
+
+  const isLoading = connected && orders.length === 0;
 
   const ingredientsData = useAppSelector(
     (state) => state.ingredients.ingredients || []
@@ -28,7 +33,9 @@ export const OrdersDetails: React.FC = () => {
     return map;
   }, [ingredientsData]);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className={styles.container}>
       {orders.map((order) => {
         const totalPrice = order.ingredients.reduce((sum, ingredientId) => {
@@ -36,8 +43,10 @@ export const OrdersDetails: React.FC = () => {
         }, 0);
 
         const totalIngredients = order.ingredients.length;
-        const displayedIngredients = mobile ? order.ingredients.slice(0, 3) : order.ingredients.slice(0, 6);
-        const extraCount = mobile? (totalIngredients - 2) : (totalIngredients - 5);
+        const displayedIngredients = mobile
+          ? order.ingredients.slice(0, 3)
+          : order.ingredients.slice(0, 6);
+        const extraCount = mobile ? totalIngredients - 2 : totalIngredients - 5;
 
         const createdDate = new Date(order.createdAt);
 
