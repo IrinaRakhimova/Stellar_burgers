@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { ingredientTranslations } from "../../../utils/translationMap";
 import OrderDetails from "../order-details/order-details";
 import { hideModal } from "../../../slices/orderSlice";
+import { useMediaQuery } from "../../../hooks/useIsMobile";
 
 interface MobileOrderProps {
   onClose: () => void;
@@ -29,6 +30,7 @@ const MobileOrder: React.FC<MobileOrderProps> = ({
   totalPrice,
 }) => {
   const dispatch = useAppDispatch();
+  const mobile = useMediaQuery(650);
   const location = useLocation();
   const allOrders = useAppSelector((state) => state.websocket.allOrders || []);
   const userOrders = useAppSelector(
@@ -129,7 +131,7 @@ const MobileOrder: React.FC<MobileOrderProps> = ({
                     <p
                       className={styles.ingredientCount}
                     >{`${count} x ${ingredient?.price}`}</p>
-                    <CurrencyIcon type="primary" />
+                    {!mobile && <CurrencyIcon type="primary" />}
                   </div>
                 </div>
               );
