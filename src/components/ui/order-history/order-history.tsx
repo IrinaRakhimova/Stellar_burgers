@@ -3,12 +3,13 @@ import styles from "./order-history.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { useMediaQuery } from "../../../hooks/useIsMobile"; 
+import { useMediaQuery } from "../../../hooks/useIsMobile";
+import { Loader } from "../loader/loader";
 
 export const OrderHistory: React.FC = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const isSmallScreen = useMediaQuery(500); 
+  const isSmallScreen = useMediaQuery(500);
 
   useEffect(() => {
     dispatch({ type: "websocket/start", payload: { type: "my" } });
@@ -21,6 +22,11 @@ export const OrderHistory: React.FC = () => {
   const orders: Order[] = useAppSelector(
     (state) => state.websocket.userOrders || []
   );
+
+  const connected = useAppSelector((state) => state.websocket.connected);
+
+  const isLoading = connected && orders.length === 0;
+
   const ingredientsData = useAppSelector(
     (state) => state.ingredients.ingredients || []
   );
@@ -36,7 +42,9 @@ export const OrderHistory: React.FC = () => {
     return map;
   }, [ingredientsData]);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className={styles.container}>
       {[...orders].reverse().map((order) => {
         const totalPrice = order.ingredients.reduce((sum, ingredientId) => {
@@ -44,17 +52,25 @@ export const OrderHistory: React.FC = () => {
         }, 0);
 
         const totalIngredients = order.ingredients.length;
-        const maxVisible = isSmallScreen ? 3 : 6; 
+        const maxVisible = isSmallScreen ? 3 : 6;
         const displayedIngredients = order.ingredients.slice(0, maxVisible);
         const extraCount = totalIngredients - (maxVisible - 1);
 
         const createdDate = new Date(order.createdAt);
         const formatOrderDate = (date: Date) => {
           const now = new Date();
-          const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          const today = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+          );
           const yesterday = new Date(today);
           yesterday.setDate(today.getDate() - 1);
-          const orderDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+          const orderDate = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate()
+          );
 
           if (orderDate.getTime() === today.getTime()) return "Today";
           if (orderDate.getTime() === yesterday.getTime()) return "Yesterday";
@@ -98,7 +114,10 @@ export const OrderHistory: React.FC = () => {
                     const isFirstVisually = index === 0;
                     const ingredientImg = ingredientMap[ingredientId]?.image;
                     return (
-                      <div key={`${ingredientId}-${index}`} className={styles.imageCard}>
+                      <div
+                        key={`${ingredientId}-${index}`}
+                        className={styles.imageCard}
+                      >
                         <div className={styles.imageBackground}></div>
                         <div className={styles.imageBackgroundOverlay}></div>
                         <img
@@ -107,7 +126,9 @@ export const OrderHistory: React.FC = () => {
                           className={styles.picture}
                         />
                         {isFirstVisually && extraCount > 0 && (
-                          <div className={styles.extraOverlay}>+{extraCount}</div>
+                          <div className={styles.extraOverlay}>
+                            +{extraCount}
+                          </div>
                         )}
                       </div>
                     );
