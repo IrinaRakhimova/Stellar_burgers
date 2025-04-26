@@ -43,9 +43,9 @@ const ResetPassword: React.FC = () => {
       dispatch(setRequest(false));
     } catch (err: unknown) {
       if (err instanceof Error) {
-        dispatch(setError(err.message || "Ошибка восстановления пароля"));
+        dispatch(setError(err.message || "Password reset error"));
       } else {
-        dispatch(setError("Ошибка восстановления пароля"));
+        dispatch(setError("Password reset error"));
       }
       dispatch(setRequest(false));
     }
@@ -63,20 +63,20 @@ const ResetPassword: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.header}>Восстановление пароля</p>
+      <p className={styles.header}>Password Reset</p>
       <form onSubmit={handleSubmit}>
         <PasswordInput
           onChange={handlePasswordChange}
           value={password}
           name={"password"}
           extraClass="mb-6"
-          placeholder="Введите новый пароль"
+          placeholder="Enter new password"
           size={mobile ? "small" : "default"}
         />
         <Input
           type={"text"}
           name={"code"}
-          placeholder={"Введите код из письма"}
+          placeholder={"Enter the code from the email"}
           onChange={handleTokenChange}
           value={token}
           extraClass="mb-6"
@@ -86,14 +86,14 @@ const ResetPassword: React.FC = () => {
         />
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">
-            Сохранить
+            Save
           </Button>
         </div>
       </form>
       <p className={styles.text}>
-        Вспомнили пароль?{" "}
+        Remembered your password?{" "}
         <Link to="/login" className={styles.link}>
-          Войти
+          Log In
         </Link>
       </p>
     </div>

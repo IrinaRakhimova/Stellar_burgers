@@ -57,13 +57,6 @@ const ProfileMenu: React.FC = () => {
               Order History
             </Tab>
           </div>
-          {currentTab === "profile" && (
-            <div className={styles.mobileLogoutWrapper}>
-              <button className={styles.logoutButton} onClick={handleLogout}>
-                Log Out
-              </button>
-            </div>
-          )}
         </>
       ) : (
         <>

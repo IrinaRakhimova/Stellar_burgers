@@ -14,6 +14,7 @@ import {
 } from "../../../slices/userDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useMediaQuery } from "../../../hooks/useIsMobile";
+import { logOutThunk } from "../../../slices/userDataSlice";
 
 interface ProfileFormProps {}
 
@@ -75,51 +76,74 @@ const ProfileForm: React.FC<ProfileFormProps> = () => {
     }
   }, [successLogout, navigate]);
 
+  const handleLogout = () => {
+    dispatch(logOutThunk({ token: localStorage.getItem("refreshToken") }))
+      .unwrap()
+      .then(() => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        navigate("/login");
+      })
+      .catch((error: unknown) => {
+        console.error("Logout failed:", error);
+        navigate("/login");
+      });
+  };
+
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <Input
-        type={"text"}
-        name={"name"}
-        placeholder={"Name"}
-        onChange={handleNameChange}
-        value={name}
-        extraClass="mb-6"
-        icon="EditIcon"
-        size={mobile ? "small" : "default"}
-      />
-      <EmailInput
-        onChange={handleEmailChange}
-        value={email}
-        name={"email"}
-        placeholder="Email"
-        isIcon={false}
-        extraClass="mb-6"
-        size={mobile ? "small" : "default"}
-      />
-      <PasswordInput
-        onChange={handlePasswordChange}
-        value={password}
-        name={"password"}
-        extraClass="mb-6"
-        placeholder="Password"
-        icon="EditIcon"
-        size={mobile ? "small" : "default"}
-      />
-      {hasChanges && (
-        <div className={styles.buttonsContainer}>
-          <button
-            className={styles.button}
-            onClick={handleCancel}
-            type="button"
-          >
-            Cancel
+    <div className={styles.container}>
+      {mobile && (
+        <div className={styles.mobileLogoutWrapper}>
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            Log Out
           </button>
-          <Button htmlType="submit" type="primary" size="large">
-            Save
-          </Button>
         </div>
       )}
-    </form>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <Input
+          type={"text"}
+          name={"name"}
+          placeholder={"Name"}
+          onChange={handleNameChange}
+          value={name}
+          extraClass="mb-6"
+          icon="EditIcon"
+          size={mobile ? "small" : "default"}
+        />
+        <EmailInput
+          onChange={handleEmailChange}
+          value={email}
+          name={"email"}
+          placeholder="Email"
+          isIcon={false}
+          extraClass="mb-6"
+          size={mobile ? "small" : "default"}
+        />
+        <PasswordInput
+          onChange={handlePasswordChange}
+          value={password}
+          name={"password"}
+          extraClass="mb-6"
+          placeholder="Password"
+          icon="EditIcon"
+          size={mobile ? "small" : "default"}
+        />
+        {hasChanges && (
+          <div className={styles.buttonsContainer}>
+            <button
+              className={styles.button}
+              onClick={handleCancel}
+              type="button"
+            >
+              Cancel
+            </button>
+            <Button htmlType="submit" type="primary" size="large">
+              Save
+            </Button>
+          </div>
+        )}
+      </form>
+    </div>
   );
 };
 

@@ -45,19 +45,30 @@ export const fetchWithRefresh = async <T = {}>(
   options: RequestInit & { headers: Record<string, string> }
 ): Promise<ApiResponse<T>> => {
   let res = await fetch(url, options);
-  let data = await res.json(); 
+  let data = await res.json();
 
-  if (res.status === 401 || (data.success === false && data.message === "jwt expired")) {
-    const refreshData = await refreshToken();
+  const hasAuthHeader = Boolean(options.headers.Authorization);
 
-    if (!refreshData.success) {
+  if (
+    (res.status === 401 || (data.success === false && data.message === "jwt expired")) &&
+    hasAuthHeader 
+  ) {
+    try {
+      const refreshData = await refreshToken();
+
+      if (!refreshData.success) {
+        return Promise.reject(new Error("Token refresh failed"));
+      }
+
+      options.headers.Authorization = `Bearer ${refreshData.accessToken}`;
+
+      res = await fetch(url, options);
+      data = await res.json();
+    } catch (refreshError) {
       return Promise.reject(new Error("Token refresh failed"));
     }
-
-    options.headers.Authorization = `Bearer ${refreshData.accessToken}`;
-
-    res = await fetch(url, options);
-    data = await res.json();
+  } else if (res.status === 401 && !hasAuthHeader) {
+    return Promise.reject(data);
   }
 
   return data;
@@ -91,12 +102,19 @@ const request = async <T = {}>(
   method: string = "GET",
   body?: unknown
 ): Promise<ApiResponse<T>> => {
+  const isAuthEndpoint = !endpoint.startsWith("/auth/login") && !endpoint.startsWith("/auth/register");
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (isAuthEndpoint && localStorage.getItem("accessToken")) {
+    headers.Authorization = localStorage.getItem("accessToken")!;
+  }
+
   const options: RequestInit & { headers: Record<string, string> } = {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("accessToken") || "",
-    },
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   };
 

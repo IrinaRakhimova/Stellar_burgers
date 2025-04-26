@@ -76,7 +76,7 @@ export const ForgotPassword: React.FC = () => {
       <p className={styles.text}>
         Remembered your password?{" "}
         <Link to="/login" className={styles.link}>
-          Log in
+          Log In
         </Link>
       </p>
     </div>
