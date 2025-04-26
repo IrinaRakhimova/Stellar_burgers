@@ -82,7 +82,7 @@ export const Register: React.FC = () => {
       <p className={styles.text}>
         Already registered?{" "}
         <Link to="/login" className={styles.link}>
-          Sign In
+          Log In
         </Link>
       </p>
     </div>

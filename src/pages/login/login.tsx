@@ -15,9 +15,9 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const mobile = useMediaQuery(640);
 
-  const { email, error } = useAppSelector(
+  const { email, isAuth, error } = useAppSelector(
     (state: { userData: UserDataState }) => state.userData
-  ); 
+  );
 
   const [password, setPassword] = useState<string>("");
 
@@ -28,17 +28,21 @@ export const Login: React.FC = () => {
     dispatch(setEmail(e.target.value));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(logInThunk({ email, password }));
-    setPassword("");
+
+    try {
+      await dispatch(logInThunk({ email, password })).unwrap();
+    } catch (err: any) {
+      console.error("Login failed", err);
+    }
   };
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
+    if (isAuth) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [isAuth, navigate]);
 
   useEffect(() => {
     const resetSuccessful = localStorage.getItem("resetSuccessful") === "true";
@@ -49,7 +53,7 @@ export const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.header}>Login</p>
+      <p className={styles.header}>Log In</p>
       <form onSubmit={handleSubmit}>
         <EmailInput
           onChange={handleEmailChange}
@@ -68,17 +72,18 @@ export const Login: React.FC = () => {
           placeholder="Password"
           size={mobile ? "small" : "default"}
         />
+        {error && <p className={styles.error}>{error}</p>}
         <div className={styles.button}>
           <Button htmlType="submit" type="primary" size="large">
-            Sign In
+            Log In
           </Button>
         </div>
       </form>
-      {error && <p className={styles.error}>{error}</p>}
+
       <p className={styles.text}>
         New here?{" "}
         <Link to="/register" className={styles.link}>
-          Sign Up
+          Sign up
         </Link>
       </p>
       <p className={styles.text}>

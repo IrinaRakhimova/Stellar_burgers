@@ -112,6 +112,7 @@ const userDataSlice = createSlice({
       })
       .addCase(logInThunk.rejected, (state, action) => {
         state.success = false;
+        state.request = false;
         state.error =
           typeof action.payload === "string"
             ? action.payload
@@ -129,6 +130,28 @@ const userDataSlice = createSlice({
         state.error = null;
       })
       .addCase(getUserDataThunk.rejected, (state, action) => {
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : "Неизвестная ошибка";
+      })
+      .addCase(logOutThunk.fulfilled, (state) => {
+        state.name = "";
+        state.email = "";
+        state.token = "";
+        state.isAuth = false;
+        state.successLogout = true;
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        state.error = null;
+        state.request = false;
+      })
+      .addCase(logOutThunk.pending, (state) => {
+        state.request = true;
+        state.error = null;
+      })
+      .addCase(logOutThunk.rejected, (state, action) => {
+        state.request = false;
         state.error =
           typeof action.payload === "string"
             ? action.payload

@@ -30,6 +30,7 @@
 .error {
   composes: text text_type_main-default text_color_inactive mb-4 from global;
   color: red;
+  text-align: center;
 }
 
 @media (max-width: 1200px) {

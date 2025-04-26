@@ -1,7 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 148px);
+    height: calc(100dvh - 148px);
 }
 
 .header {
@@ -32,7 +32,7 @@
 @media (max-width: 640px) {
     .container {
         align-items: center;
-        height: calc(100vh - 158px);
+        height: calc(100dvh - 158px);
         width: 100vw;
     }
 

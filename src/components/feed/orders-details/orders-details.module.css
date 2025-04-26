@@ -1,5 +1,5 @@
 .container {
-  height: calc(100vh - 217px);
+  height: calc(100dvh - 217px);
   overflow-y: scroll;
 }
 .card {
